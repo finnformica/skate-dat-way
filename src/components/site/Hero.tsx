@@ -59,10 +59,15 @@ export function Hero({ ready, videoSrc }: Props) {
         />
       </div>
 
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-end gap-10 px-5 py-16 md:grid-cols-12 md:px-8 md:py-24">
-        <div className="md:col-span-7">
-          <Reveal stagger show={ready} className="space-y-5">
-            {/* Big headline — line-by-line reveal */}
+      {/*
+        Mobile flow (DOM order): headline → video → para+CTAs → stats.
+        Desktop (md+): explicit grid positions — left column stacks heading,
+        para+CTAs, and stats on rows 1/2/3; video spans rows 1–3 on the right.
+      */}
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-5 py-12 md:grid-cols-12 md:items-end md:gap-10 md:px-8 md:py-24">
+        {/* [1] Headline */}
+        <div className="md:col-span-7 md:col-start-1 md:row-start-1">
+          <Reveal show={ready}>
             <h1 className="text-[clamp(3.5rem,11vw,10rem)] leading-[0.85]">
               <LineWipe show={ready} delay={80}>
                 Skate
@@ -72,48 +77,14 @@ export function Hero({ ready, videoSrc }: Props) {
                 <span className="text-bone"> way.</span>
               </LineWipe>
             </h1>
-
-            <p className="max-w-xl text-lg text-bone/70">
-              Rollerblading out of London. Deep in the wizard scene — soul slides
-              down tube ramps, natural-line spots, anti-rocker trucks and no
-              helmet cam cinema. This is the personal archive.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Magnetic>
-                <a
-                  href="#edits"
-                  className="press inline-flex items-center gap-3 border-2 border-ink bg-acid px-6 py-4 font-display text-sm uppercase tracking-widest text-ink shadow-[6px_6px_0_0_#0a0a0a]"
-                >
-                  Watch the edits
-                  <ArrowDown className="size-4" />
-                </a>
-              </Magnetic>
-              <Magnetic strength={0.25}>
-                <a
-                  href="#about"
-                  className="press inline-flex items-center gap-3 border-2 border-bone/40 px-6 py-4 font-display text-sm uppercase tracking-widest text-bone transition-colors duration-150 hover:border-acid hover:text-acid"
-                >
-                  What is wizard?
-                </a>
-              </Magnetic>
-            </div>
-          </Reveal>
-
-          <Reveal
-            stagger
-            show={ready}
-            className="mt-14 grid grid-cols-3 gap-8 border-t border-bone/15 pt-8"
-          >
-            <Stat value={ready ? 7 : 0} suffix="y" label="Bladed" />
-            <Stat value={ready ? 43 : 0} label="Spots logged" />
-            <Stat value={ready ? 12 : 0} label="Edits dropped" />
           </Reveal>
         </div>
 
-        <div className="relative md:col-span-5">
+        {/* [2] Video — 2nd in DOM (mobile), spans right column on desktop */}
+        <div className="relative md:col-span-5 md:col-start-8 md:row-start-1 md:row-span-3">
           <Tilt max={6} className="relative">
             <figure
-              className="relative aspect-[4/5] w-full overflow-hidden border-2 border-bone shadow-[14px_14px_0_0_#d6ff3e] transition-[clip-path] duration-[900ms] ease-[cubic-bezier(0.77,0,0.175,1)]"
+              className="relative aspect-video w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_#d6ff3e] transition-[clip-path] duration-[900ms] ease-[cubic-bezier(0.77,0,0.175,1)] md:aspect-[4/5] md:shadow-[14px_14px_0_0_#d6ff3e]"
               style={{
                 clipPath: ready ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
               }}
@@ -151,16 +122,17 @@ export function Hero({ ready, videoSrc }: Props) {
                     Soul on the deathbox
                   </p>
                 </div>
-                <span className="flex h-11 w-11 items-center justify-center border-2 border-bone bg-ink text-bone">
+                <span className="hidden h-11 w-11 items-center justify-center border-2 border-bone bg-ink text-bone sm:flex">
                   ↗
                 </span>
               </figcaption>
             </figure>
           </Tilt>
 
-          {/* Sticker slap — arrives last with a small bounce */}
+          {/* "new edit" sticker — mobile: inside top-right of video;
+              desktop: outside the video's left edge. */}
           <div
-            className="absolute -left-6 top-1/3 hidden h-24 w-24 items-center justify-center border-2 border-ink bg-hot text-center font-display text-xs uppercase leading-tight text-bone shadow-[4px_4px_0_0_#0a0a0a] transition-[transform,opacity] duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] md:flex"
+            className="absolute right-3 top-3 z-10 flex h-16 w-16 items-center justify-center border-2 border-ink bg-hot text-center font-display text-[10px] uppercase leading-tight text-bone shadow-[4px_4px_0_0_#0a0a0a] transition-[transform,opacity] duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] md:-left-6 md:right-auto md:top-1/3 md:h-24 md:w-24 md:text-xs"
             style={{
               transitionDelay: ready ? "900ms" : "0ms",
               transform: ready
@@ -173,12 +145,12 @@ export function Hero({ ready, videoSrc }: Props) {
             <br />
             edit
             <br />
-            <span className="text-lg">↓</span>
+            <span className="text-sm md:text-lg">↓</span>
           </div>
 
-          {/* Tape label */}
+          {/* Hazard tape — London, UK label */}
           <div
-            className="absolute -bottom-3 -right-3 hidden border-2 border-ink bg-hazard px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-ink transition-[transform,opacity] duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)] md:block"
+            className="absolute -bottom-2 -right-2 border-2 border-ink bg-hazard px-2 py-1.5 font-mono text-[10px] uppercase tracking-widest text-ink transition-[transform,opacity] duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)] md:-bottom-3 md:-right-3 md:px-3 md:py-2"
             style={{
               transitionDelay: ready ? "1100ms" : "0ms",
               transform: ready ? "translateY(0)" : "translateY(10px)",
@@ -189,8 +161,50 @@ export function Hero({ ready, videoSrc }: Props) {
             London, UK
           </div>
         </div>
-      </div>
 
+        {/* [3] Paragraph + CTAs */}
+        <div className="md:col-span-7 md:col-start-1 md:row-start-2">
+          <Reveal stagger show={ready} className="space-y-5">
+            <p className="max-w-xl text-sm text-bone/70 md:text-base">
+              Rollerblading out of London. Deep in the wizard scene — soul slides
+              down tube ramps, natural-line spots, anti-rocker trucks and no
+              helmet cam cinema. This is the personal archive.
+            </p>
+            <div className="flex flex-wrap items-center gap-4 pt-1">
+              <Magnetic>
+                <a
+                  href="#edits"
+                  className="press inline-flex items-center gap-3 border-2 border-ink bg-acid px-6 py-4 font-display text-sm uppercase tracking-widest text-ink shadow-[6px_6px_0_0_#0a0a0a]"
+                >
+                  Watch the edits
+                  <ArrowDown className="size-4" />
+                </a>
+              </Magnetic>
+              <Magnetic strength={0.25}>
+                <a
+                  href="#about"
+                  className="press inline-flex items-center gap-3 border-2 border-bone/40 px-6 py-4 font-display text-sm uppercase tracking-widest text-bone transition-colors duration-150 hover:border-acid hover:text-acid"
+                >
+                  What is wizard?
+                </a>
+              </Magnetic>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* [4] Stats */}
+        <div className="md:col-span-7 md:col-start-1 md:row-start-3">
+          <Reveal
+            stagger
+            show={ready}
+            className="mt-2 grid grid-cols-3 gap-6 border-t border-bone/15 pt-6 md:mt-6 md:gap-8 md:pt-8"
+          >
+            <Stat value={ready ? 7 : 0} suffix="y" label="Bladed" />
+            <Stat value={ready ? 43 : 0} label="Spots logged" />
+            <Stat value={ready ? 12 : 0} label="Edits dropped" />
+          </Reveal>
+        </div>
+      </div>
     </section>
   )
 }
@@ -237,7 +251,7 @@ function Stat({
 }) {
   return (
     <div>
-      <div className="font-display text-5xl leading-none text-acid tabular-nums">
+      <div className="font-display text-4xl leading-none text-acid tabular-nums md:text-5xl">
         <CountUp to={value} suffix={suffix} />
       </div>
       <div className="mt-1 font-mono text-[11px] uppercase tracking-widest text-bone/60">
