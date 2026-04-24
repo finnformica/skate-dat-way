@@ -7,7 +7,7 @@ const NAV = [
   { label: "Reels", href: "#edits", id: "edits" },
   { label: "Map", href: "#spots", id: "spots" },
   { label: "Journal", href: "#journal", id: "journal" },
-  { label: "Signal", href: "#contact", id: "contact" },
+  { label: "Contact", href: "#contact", id: "contact" },
 ] as const
 
 const NAV_IDS = NAV.map((n) => n.id)

@@ -31,9 +31,9 @@ export function Contact() {
               05
             </span>
             <span className="flex items-center gap-3 px-3 py-1.5 font-display text-xs uppercase tracking-widest text-ink">
-              Signal
+              Contact
               <span className="font-mono text-[10px] tracking-widest text-ink/50">
-                / contact
+                / say hello
               </span>
             </span>
           </div>
@@ -61,18 +61,17 @@ export function Contact() {
               <a
                 key={l.label}
                 href={l.href}
-               
                 className="group relative flex items-center justify-between gap-4 bg-acid p-6 transition-colors duration-200 hover:bg-ink"
               >
-                <div>
+                <div className="min-w-0 flex-1">
                   <p className="font-mono text-[10px] uppercase tracking-widest text-ink/60 transition-colors duration-200 group-hover:text-bone/60">
                     {l.label}
                   </p>
-                  <p className="font-display text-2xl uppercase text-ink transition-colors duration-200 group-hover:text-bone">
+                  <p className="break-words font-display text-lg uppercase leading-tight text-ink transition-colors duration-200 group-hover:text-bone md:text-xl">
                     {l.handle}
                   </p>
                 </div>
-                <span className="font-display text-2xl text-ink transition-all duration-200 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-acid">
+                <span className="shrink-0 font-display text-2xl text-ink transition-all duration-200 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-acid">
                   ↗
                 </span>
               </a>

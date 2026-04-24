@@ -62,27 +62,14 @@ export function Hero({ ready, videoSrc }: Props) {
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-end gap-10 px-5 py-16 md:grid-cols-12 md:px-8 md:py-24">
         <div className="md:col-span-7">
           <Reveal stagger show={ready} className="space-y-5">
-            <div className="inline-flex items-center gap-3 border-2 border-bone bg-ink px-3 py-1.5">
-              <span className="relative flex h-2 w-2">
-                <span
-                  className={`absolute inset-0 rounded-full bg-acid opacity-75 ${ready ? "animate-ping" : ""}`}
-                />
-                <span className="relative rounded-full bg-acid" />
-              </span>
-              <span className="font-mono text-[11px] uppercase tracking-widest text-bone">
-                Live from London · wizard skating
-              </span>
-            </div>
-
             {/* Big headline — line-by-line reveal */}
             <h1 className="text-[clamp(3.5rem,11vw,10rem)] leading-[0.85]">
               <LineWipe show={ready} delay={80}>
                 Skate
               </LineWipe>
               <LineWipe show={ready} delay={220}>
-                <span className="text-bone">dat </span>
-                <span className="text-acid italic">way</span>
-                <span className="text-bone">.</span>
+                <span className="text-acid italic">dat</span>
+                <span className="text-bone"> way.</span>
               </LineWipe>
             </h1>
 
@@ -217,12 +204,19 @@ function LineWipe({
   show: boolean
   delay?: number
 }) {
+  // Anton's ascent+descent exceeds 1em, so a 0.85em mask clips the cap top.
+  // Give the mask 1.05em to fit the glyph, then pull the next line up with
+  // a -0.2em bottom margin so the visual line-to-line spacing stays at 0.85em.
   return (
-    <span className="block overflow-hidden">
+    <span
+      className="block overflow-hidden"
+      style={{ height: "1.05em", marginBottom: "-0.2em" }}
+    >
       <span
         className="block will-change-transform"
         style={{
-          transform: show ? "translate3d(0,0,0)" : "translate3d(0,100%,0)",
+          lineHeight: 1,
+          transform: show ? "translate3d(0,0,0)" : "translate3d(0,110%,0)",
           transition: `transform 900ms cubic-bezier(0.77,0,0.175,1) ${delay}ms`,
         }}
       >

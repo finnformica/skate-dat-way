@@ -4,6 +4,7 @@ import { Reveal } from "@/components/motion/Reveal"
 import { Tilt } from "@/components/motion/Tilt"
 import { SectionHeader } from "@/components/site/SectionHeader"
 import { useIsTouch } from "@/hooks/useIsTouch"
+import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
 
 type Edit = {
   title: string
@@ -73,6 +74,8 @@ const edits: Edit[] = [
 
 export function Edits() {
   const touch = useIsTouch()
+  const { activeIndex, setCardRef } = useActiveCardIndex(edits.length, touch)
+
   return (
     <section id="edits" className="relative border-b border-bone/15 bg-ink">
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
@@ -98,7 +101,14 @@ export function Edits() {
 
         <Reveal stagger className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {edits.map((e, i) => (
-            <EditCard edit={e} key={e.title} offset={i % 2 === 1} touch={touch} />
+            <EditCard
+              edit={e}
+              key={e.title}
+              offset={i % 2 === 1}
+              touch={touch}
+              isActive={touch && activeIndex === i}
+              articleRef={setCardRef(i)}
+            />
           ))}
         </Reveal>
       </div>
@@ -110,13 +120,16 @@ function EditCard({
   edit,
   offset,
   touch,
+  isActive,
+  articleRef,
 }: {
   edit: Edit
   offset: boolean
   touch: boolean
+  isActive: boolean
+  articleRef: (el: HTMLElement | null) => void
 }) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const articleRef = useRef<HTMLElement>(null)
 
   const play = () => {
     const v = videoRef.current
@@ -131,27 +144,18 @@ function EditCard({
     v.currentTime = 0
   }
 
-  // On touch: autoplay when card is mostly in view; pause when not.
+  // Touch: drive playback from the single "active" flag — only one at a time
   useEffect(() => {
     if (!touch) return
-    const el = articleRef.current
     const v = videoRef.current
-    if (!el || !v) return
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.intersectionRatio > 0.6) {
-          v.play().catch(() => {})
-        } else {
-          v.pause()
-        }
-      },
-      { threshold: [0, 0.3, 0.6, 0.9] },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [touch])
+    if (!v) return
+    if (isActive) v.play().catch(() => {})
+    else {
+      v.pause()
+      v.currentTime = 0
+    }
+  }, [isActive, touch])
 
-  // Desktop pointer handlers only — no-op on touch
   const hoverProps = touch
     ? {}
     : {
@@ -167,7 +171,8 @@ function EditCard({
         ref={articleRef}
         {...hoverProps}
         tabIndex={0}
-        className={`group relative overflow-hidden border-2 border-bone/15 bg-ink-2 transition-colors duration-200 hover:border-acid focus-visible:border-acid focus-visible:outline-none ${
+        data-active={isActive ? "true" : undefined}
+        className={`group relative overflow-hidden border-2 border-bone/15 bg-ink-2 transition-colors duration-200 hover:border-hot focus-visible:border-hot focus-visible:outline-none data-[active=true]:border-hot ${
           offset ? "md:translate-y-6" : ""
         }`}
       >
@@ -180,13 +185,12 @@ function EditCard({
             playsInline
             preload="metadata"
             style={{ objectPosition: edit.objectPosition ?? "center" }}
-            className="h-full w-full object-cover grayscale transition-[filter,transform] duration-[500ms] ease-out group-hover:scale-[1.02] group-hover:grayscale-0 group-focus-visible:scale-[1.02] group-focus-visible:grayscale-0"
+            className="h-full w-full object-cover grayscale transition-[filter,transform] duration-[500ms] ease-out group-hover:scale-[1.02] group-hover:grayscale-0 group-focus-visible:scale-[1.02] group-focus-visible:grayscale-0 group-data-[active=true]:scale-[1.02] group-data-[active=true]:grayscale-0"
             aria-label={`${edit.title} preview`}
           />
           <div className="pointer-events-none absolute inset-0 scanlines opacity-25 mix-blend-multiply" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent" />
 
-          {/* Top-left: location */}
           <div className="absolute left-3 top-3 flex items-center gap-1.5 border border-acid/60 bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-acid backdrop-blur-sm">
             <MapPin size={10} />
             {edit.location}
@@ -204,11 +208,11 @@ function EditCard({
             <p className="font-mono text-[11px] uppercase tracking-widest text-bone/50">
               Reel · {edit.year}
             </p>
-            <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-acid">
+            <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-hot group-data-[active=true]:text-hot">
               {edit.title}
             </h3>
           </div>
-          <span className="font-mono text-xs uppercase tracking-widest text-acid transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+          <span className="font-mono text-xs uppercase tracking-widest text-hot transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-data-[active=true]:-translate-y-0.5 group-data-[active=true]:translate-x-0.5">
             watch ↗
           </span>
         </div>

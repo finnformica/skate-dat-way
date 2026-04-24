@@ -1,6 +1,8 @@
 import { ArrowUpRight } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
 import { SectionHeader } from "@/components/site/SectionHeader"
+import { useIsTouch } from "@/hooks/useIsTouch"
+import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
 
 const posts = [
   {
@@ -30,6 +32,9 @@ const posts = [
 ]
 
 export function Journal() {
+  const touch = useIsTouch()
+  const { activeIndex, setCardRef } = useActiveCardIndex(posts.length, touch)
+
   return (
     <section id="journal" className="border-b border-bone/15 bg-ink">
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
@@ -41,9 +46,7 @@ export function Journal() {
             note="words / notes"
           >
             <Reveal>
-              <h2 className="text-5xl text-bone md:text-7xl">
-                Journal.
-              </h2>
+              <h2 className="text-5xl text-bone md:text-7xl">Journal.</h2>
             </Reveal>
           </SectionHeader>
           <a
@@ -54,35 +57,39 @@ export function Journal() {
           </a>
         </div>
 
-        <Reveal stagger className="grid grid-cols-1 gap-px bg-bone/15 md:grid-cols-3">
-          {posts.map((post) => (
+        <Reveal
+          stagger
+          className="grid grid-cols-1 gap-px bg-bone/15 md:grid-cols-3"
+        >
+          {posts.map((post, i) => (
             <article
               key={post.title}
-             
-              className="group flex flex-col bg-ink transition-colors duration-200 hover:bg-ink-2"
+              ref={setCardRef(i)}
+              data-active={touch && activeIndex === i ? "true" : undefined}
+              className="group flex flex-col bg-ink transition-colors duration-200 hover:bg-ink-2 data-[active=true]:bg-ink-2"
             >
               <div className="aspect-[16/10] overflow-hidden">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="h-full w-full object-cover grayscale transition-all duration-[700ms] ease-out group-hover:scale-[1.03] group-hover:grayscale-0"
+                  className="h-full w-full object-cover grayscale transition-all duration-[700ms] ease-out group-hover:scale-[1.03] group-hover:grayscale-0 group-data-[active=true]:scale-[1.03] group-data-[active=true]:grayscale-0"
                   loading="lazy"
                 />
               </div>
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-3 flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest">
-                  <span className="border border-acid px-2 py-1 text-acid">
+                  <span className="border border-hazard px-2 py-1 text-hazard">
                     {post.tag}
                   </span>
                   <span className="text-bone/50">{post.date}</span>
                   <span className="text-bone/50">· {post.read}</span>
                 </div>
-                <h3 className="font-display text-2xl uppercase leading-tight text-bone transition-colors duration-150 group-hover:text-acid">
+                <h3 className="font-display text-2xl uppercase leading-tight text-bone transition-colors duration-150 group-hover:text-hazard group-data-[active=true]:text-hazard">
                   {post.title}
                 </h3>
                 <div className="mt-auto flex items-center gap-2 pt-4 font-display text-sm uppercase tracking-widest text-bone">
                   Read it
-                  <ArrowUpRight className="size-4 transition-transform duration-200 ease-out group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  <ArrowUpRight className="size-4 transition-transform duration-200 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-data-[active=true]:-translate-y-1 group-data-[active=true]:translate-x-1" />
                 </div>
               </div>
             </article>

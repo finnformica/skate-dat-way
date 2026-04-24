@@ -1,5 +1,7 @@
 import { Reveal } from "@/components/motion/Reveal"
 import { SectionHeader } from "@/components/site/SectionHeader"
+import { useIsTouch } from "@/hooks/useIsTouch"
+import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
 
 const glossary = [
   {
@@ -21,6 +23,12 @@ const glossary = [
 ]
 
 export function About() {
+  const touch = useIsTouch()
+  const { activeIndex, setCardRef } = useActiveCardIndex(
+    glossary.length,
+    touch,
+  )
+
   return (
     <section id="about" className="relative border-b border-bone/15 bg-ink-2">
       <div className="pointer-events-none absolute inset-0 halftone opacity-30" />
@@ -72,7 +80,9 @@ export function About() {
             {glossary.map((g, i) => (
               <article
                 key={g.term}
-                className="group relative overflow-hidden bg-ink-2 p-6 transition-colors duration-200 hover:bg-ink"
+                ref={setCardRef(i)}
+                data-active={touch && activeIndex === i ? "true" : undefined}
+                className="group relative overflow-hidden bg-ink-2 p-6 transition-colors duration-200 hover:bg-ink data-[active=true]:bg-ink"
               >
                 <div className="flex items-start justify-between gap-4">
                   <span className="font-mono text-[10px] uppercase tracking-widest text-bone/40">
@@ -85,14 +95,14 @@ export function About() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="mt-6 font-display text-2xl uppercase leading-none text-bone transition-colors duration-200 group-hover:text-acid">
+                <h3 className="mt-6 font-display text-2xl uppercase leading-none text-bone transition-colors duration-200 group-hover:text-acid group-data-[active=true]:text-acid">
                   {g.term}
                 </h3>
                 <p className="mt-3 text-sm text-bone/70">{g.def}</p>
-                {/* Accent rule — a thin line that slides in on hover */}
+                {/* Accent rule — slides in on hover OR when active on touch */}
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-acid transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-x-100"
+                  className="pointer-events-none absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-acid transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-x-100 group-data-[active=true]:scale-x-100"
                 />
               </article>
             ))}

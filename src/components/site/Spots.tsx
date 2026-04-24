@@ -1,6 +1,8 @@
 import { MapPin } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
 import { SectionHeader } from "@/components/site/SectionHeader"
+import { useIsTouch } from "@/hooks/useIsTouch"
+import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
 
 type Spot = {
   name: string
@@ -51,6 +53,9 @@ const spots: Spot[] = [
 ]
 
 export function Spots() {
+  const touch = useIsTouch()
+  const { activeIndex, setCardRef } = useActiveCardIndex(spots.length, touch)
+
   return (
     <section id="spots" className="relative border-b border-bone/15 bg-ink-2">
       <div className="pointer-events-none absolute inset-0 chainlink opacity-40" />
@@ -79,43 +84,45 @@ export function Spots() {
           </div>
         </div>
 
-        <Reveal stagger className="grid grid-cols-1 gap-px bg-bone/15 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal
+          stagger
+          className="grid grid-cols-1 gap-px bg-bone/15 sm:grid-cols-2 lg:grid-cols-4"
+        >
           {spots.map((spot, i) => (
             <article
               key={spot.name}
-             
+              ref={setCardRef(i)}
+              data-active={touch && activeIndex === i ? "true" : undefined}
               className="group relative aspect-[3/4] overflow-hidden bg-ink-2"
             >
               <img
                 src={spot.image}
                 alt={spot.name}
-                className="h-full w-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-[1.04]"
+                className="h-full w-full object-cover grayscale transition-[filter,transform] duration-[700ms] ease-out group-hover:scale-[1.04] group-hover:grayscale-0 group-data-[active=true]:scale-[1.04] group-data-[active=true]:grayscale-0"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent" />
 
-              {/* Index badge */}
               <div className="absolute left-4 top-4 font-display text-5xl leading-none text-bone/80 mix-blend-difference">
                 {String(i + 1).padStart(2, "0")}
               </div>
 
-              {/* Hover note overlay — clip-path reveal from bottom */}
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-acid">
+                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-rust">
                   <MapPin size={10} />
                   {spot.zone} · {spot.tube}
                 </div>
-                <h3 className="mt-1 font-display text-2xl uppercase text-bone">
+                <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-rust group-data-[active=true]:text-rust">
                   {spot.name}
                 </h3>
-                <div className="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows,opacity] duration-[420ms] ease-[cubic-bezier(0.23,1,0.32,1)] opacity-0 group-hover:grid-rows-[1fr] group-hover:opacity-100">
-                  <p className="min-h-0 mt-3 font-mono text-xs text-bone/80">
+                <div className="grid grid-rows-[0fr] overflow-hidden opacity-0 transition-[grid-template-rows,opacity] duration-[420ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:grid-rows-[1fr] group-hover:opacity-100 group-data-[active=true]:grid-rows-[1fr] group-data-[active=true]:opacity-100">
+                  <p className="mt-3 min-h-0 font-mono text-xs text-bone/80">
                     {spot.note}
                   </p>
                 </div>
               </div>
 
-              <div className="absolute right-4 top-4 border border-acid/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-acid">
+              <div className="absolute right-4 top-4 border border-rust/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-rust">
                 {spot.type}
               </div>
             </article>
