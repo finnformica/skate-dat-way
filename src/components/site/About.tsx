@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion/Reveal"
+import { SectionHeader } from "@/components/site/SectionHeader"
 
 const glossary = [
   {
@@ -25,16 +26,20 @@ export function About() {
       <div className="pointer-events-none absolute inset-0 halftone opacity-30" />
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 py-20 md:grid-cols-12 md:px-8 md:py-28">
         <div className="md:col-span-5">
-          <p className="mb-3 font-mono text-xs uppercase tracking-widest text-acid">
-            01 · Manifesto
-          </p>
-          <Reveal>
-            <h2 className="text-5xl text-bone md:text-7xl">
-              Blading,
-              <br />
-              <span className="text-acid italic">not skating.</span>
-            </h2>
-          </Reveal>
+          <SectionHeader
+            index="01"
+            label="Manifesto"
+            tone="acid"
+            note="entry"
+          >
+            <Reveal>
+              <h2 className="text-5xl text-bone md:text-7xl">
+                Blading,
+                <br />
+                <span className="text-acid italic">not skating.</span>
+              </h2>
+            </Reveal>
+          </SectionHeader>
           <div className="mt-6 space-y-4 text-bone/70">
             <p>
               I'm a rollerblader. Eight wheels, two boots, zero interest in the

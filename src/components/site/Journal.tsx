@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
+import { SectionHeader } from "@/components/site/SectionHeader"
 
 const posts = [
   {
@@ -33,17 +34,20 @@ export function Journal() {
     <section id="journal" className="border-b border-bone/15 bg-ink">
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <div className="mb-12 flex items-end justify-between gap-6">
-          <div>
-            <p className="mb-3 font-mono text-xs uppercase tracking-widest text-hot">
-              04 · Words
-            </p>
+          <SectionHeader
+            index="04"
+            label="Journal"
+            tone="hazard"
+            note="words / notes"
+          >
             <Reveal>
-              <h2 className="text-5xl text-bone md:text-7xl">The journal.</h2>
+              <h2 className="text-5xl text-bone md:text-7xl">
+                Journal.
+              </h2>
             </Reveal>
-          </div>
+          </SectionHeader>
           <a
             href="#"
-           
             className="link-underline hidden font-display text-sm uppercase tracking-widest text-bone md:inline-flex"
           >
             All posts ↗

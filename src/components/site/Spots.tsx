@@ -1,5 +1,6 @@
 import { MapPin } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
+import { SectionHeader } from "@/components/site/SectionHeader"
 
 type Spot = {
   name: string
@@ -56,16 +57,19 @@ export function Spots() {
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <div className="mb-12 grid grid-cols-1 items-end gap-6 md:grid-cols-12">
           <div className="md:col-span-7">
-            <p className="mb-3 font-mono text-xs uppercase tracking-widest text-acid">
-              03 · The map
-            </p>
-            <Reveal>
-              <h2 className="text-5xl text-bone md:text-7xl">
-                London, as
-                <br />
-                <span className="text-acid italic">a grind line.</span>
-              </h2>
-            </Reveal>
+            <SectionHeader
+              index="03"
+              label="Map"
+              tone="rust"
+              note="spots / london"
+            >
+              <Reveal>
+                <h2 className="text-5xl text-bone md:text-7xl">
+                  London, as{" "}
+                  <span className="text-rust italic">a grind line.</span>
+                </h2>
+              </Reveal>
+            </SectionHeader>
           </div>
           <div className="md:col-span-5">
             <p className="text-bone/70">

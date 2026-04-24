@@ -23,9 +23,20 @@ export function Contact() {
       />
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-5 py-20 md:grid-cols-12 md:px-8 md:py-28">
         <div className="md:col-span-6">
-          <p className="mb-3 font-mono text-xs uppercase tracking-widest text-ink/60">
-            05 · Say hello
-          </p>
+          {/* Section is already acid-coloured — use an ink-on-acid pill
+              rather than SectionHeader's bone-on-ink palette */}
+          <div className="mb-6 inline-flex items-stretch border-2 border-ink">
+            <span className="flex items-center gap-1.5 bg-ink px-3 py-1.5 font-display text-xs uppercase tracking-widest text-acid">
+              <span aria-hidden>✱</span>
+              05
+            </span>
+            <span className="flex items-center gap-3 px-3 py-1.5 font-display text-xs uppercase tracking-widest text-ink">
+              Signal
+              <span className="font-mono text-[10px] tracking-widest text-ink/50">
+                / contact
+              </span>
+            </span>
+          </div>
           <Reveal>
             <h2 className="text-5xl text-ink md:text-7xl">
               Filming, spots,

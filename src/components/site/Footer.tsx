@@ -29,10 +29,11 @@ const columns = [
   {
     title: "Site",
     links: [
-      { label: "About", href: "#about" },
-      { label: "Edits", href: "#edits" },
-      { label: "Spots", href: "#spots" },
+      { label: "Manifesto", href: "#about" },
+      { label: "Reels", href: "#edits" },
+      { label: "Map", href: "#spots" },
       { label: "Journal", href: "#journal" },
+      { label: "Signal", href: "#contact" },
     ],
   },
   {

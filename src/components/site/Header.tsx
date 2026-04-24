@@ -1,39 +1,47 @@
 import { useEffect, useState } from "react"
 import { Menu, X } from "lucide-react"
+import { useActiveSection } from "@/hooks/useActiveSection"
 
 const NAV = [
-  { label: "About", href: "#about" },
-  { label: "Edits", href: "#edits" },
-  { label: "Spots", href: "#spots" },
-  { label: "Journal", href: "#journal" },
-  { label: "Contact", href: "#contact" },
-]
+  { label: "Manifesto", href: "#about", id: "about" },
+  { label: "Reels", href: "#edits", id: "edits" },
+  { label: "Map", href: "#spots", id: "spots" },
+  { label: "Journal", href: "#journal", id: "journal" },
+  { label: "Signal", href: "#contact", id: "contact" },
+] as const
+
+const NAV_IDS = NAV.map((n) => n.id)
+
+function getLondonClock(): string {
+  const now = new Date()
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZoneName: "short",
+  }).formatToParts(now)
+  const get = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((p) => p.type === type)?.value ?? ""
+  const tz = get("timeZoneName") || "GMT"
+  return `LDN · ${get("hour")}:${get("minute")}:${get("second")} ${tz}`
+}
 
 export function Header() {
   const [open, setOpen] = useState(false)
-  const [clock, setClock] = useState("")
+  const [clock, setClock] = useState(getLondonClock)
+  const active = useActiveSection(NAV_IDS)
 
   useEffect(() => {
-    const tick = () => {
-      const d = new Date()
-      const hh = String(d.getUTCHours()).padStart(2, "0")
-      const mm = String(d.getUTCMinutes()).padStart(2, "0")
-      const ss = String(d.getUTCSeconds()).padStart(2, "0")
-      setClock(`LDN · ${hh}:${mm}:${ss} UTC`)
-    }
-    tick()
-    const id = setInterval(tick, 1000)
-    return () => clearInterval(id)
+    const id = window.setInterval(() => setClock(getLondonClock()), 1000)
+    return () => window.clearInterval(id)
   }, [])
 
   return (
     <header className="sticky top-0 z-40 border-b border-bone/15 bg-ink/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
-        <a
-          href="#top"
-         
-          className="press flex items-center gap-3"
-        >
+        <a href="#top" className="press flex items-center gap-3">
           <Roundel />
           <span className="font-display text-2xl leading-none tracking-tight">
             Skate Dat Way
@@ -45,8 +53,8 @@ export function Header() {
             <a
               key={item.label}
               href={item.href}
-             
-              className="link-underline font-display text-sm uppercase tracking-widest text-bone/80 transition-colors duration-150 hover:text-bone"
+              data-active={active === item.id ? "true" : undefined}
+              className="link-underline font-display text-sm uppercase tracking-widest text-bone/70 transition-colors duration-150 hover:text-bone data-[active=true]:text-bone"
             >
               {item.label}
             </a>
@@ -60,6 +68,7 @@ export function Header() {
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
+            aria-expanded={open}
             className="press flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone md:hidden"
           >
             {open ? <X size={18} /> : <Menu size={18} />}
@@ -67,24 +76,29 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — always mounted; visibility driven by data-mobile-open */}
       <div
+        data-mobile-open={open}
         aria-hidden={!open}
         className="overflow-hidden border-t border-bone/15 bg-ink md:hidden"
         style={{
-          maxHeight: open ? 320 : 0,
-          transition: "max-height 320ms cubic-bezier(0.32,0.72,0,1)",
+          maxHeight: open ? 380 : 0,
+          transition: "max-height 360ms cubic-bezier(0.32,0.72,0,1)",
         }}
       >
-        <nav className="flex flex-col gap-4 px-5 py-6">
+        <nav className="flex flex-col px-5 py-5">
           {NAV.map((item) => (
             <a
               key={item.label}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="font-display text-2xl uppercase text-bone"
+              data-active={active === item.id ? "true" : undefined}
+              className="mobile-nav-item link-underline inline-flex w-fit items-center gap-3 py-2 font-display text-2xl uppercase text-bone/80 data-[active=true]:text-bone"
             >
-              {item.label} <span className="text-acid">↗</span>
+              <span className="font-mono text-[10px] tracking-widest text-bone/30">
+                {String(NAV.indexOf(item) + 1).padStart(2, "0")}
+              </span>
+              {item.label}
             </a>
           ))}
         </nav>
@@ -94,7 +108,6 @@ export function Header() {
 }
 
 function Roundel() {
-  // London-underground-roundel inspired mark
   return (
     <span
       aria-hidden

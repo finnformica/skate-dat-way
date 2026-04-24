@@ -36,6 +36,13 @@
     border-color: rgb(255 255 255 / 0.12);
   }
 
+  html {
+    /* Prevent decorative wordmarks/shadows from triggering a horizontal scroll.
+       `clip` (vs `hidden`) doesn't create a new scroll container, so sticky
+       positioning on descendants keeps working. */
+    overflow-x: clip;
+  }
+
   html,
   body,
   #root {
@@ -194,6 +201,51 @@
 .link-underline:hover::after,
 .link-underline[data-active="true"]::after {
   clip-path: inset(0 0 0 0);
+}
+
+/* Mobile-nav stagger — each link enters from the left when open,
+   exits in reverse order when closing. */
+.mobile-nav-item {
+  opacity: 0;
+  transform: translate3d(-24px, 0, 0);
+  transition:
+    opacity 280ms var(--ease-out),
+    transform 280ms var(--ease-out);
+}
+[data-mobile-open="true"] .mobile-nav-item {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+[data-mobile-open="true"] .mobile-nav-item:nth-child(1) {
+  transition-delay: 120ms;
+}
+[data-mobile-open="true"] .mobile-nav-item:nth-child(2) {
+  transition-delay: 180ms;
+}
+[data-mobile-open="true"] .mobile-nav-item:nth-child(3) {
+  transition-delay: 240ms;
+}
+[data-mobile-open="true"] .mobile-nav-item:nth-child(4) {
+  transition-delay: 300ms;
+}
+[data-mobile-open="true"] .mobile-nav-item:nth-child(5) {
+  transition-delay: 360ms;
+}
+/* Exit — last child leaves first (reverse cascade) */
+[data-mobile-open="false"] .mobile-nav-item:nth-child(5) {
+  transition-delay: 0ms;
+}
+[data-mobile-open="false"] .mobile-nav-item:nth-child(4) {
+  transition-delay: 40ms;
+}
+[data-mobile-open="false"] .mobile-nav-item:nth-child(3) {
+  transition-delay: 80ms;
+}
+[data-mobile-open="false"] .mobile-nav-item:nth-child(2) {
+  transition-delay: 120ms;
+}
+[data-mobile-open="false"] .mobile-nav-item:nth-child(1) {
+  transition-delay: 160ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
