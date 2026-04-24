@@ -6,7 +6,7 @@ const links = [
   { label: "Instagram", handle: "@skatedatway", href: "#" },
   { label: "YouTube", handle: "/@skatedatway", href: "#" },
   { label: "Vimeo", handle: "/skatedatway", href: "#" },
-  { label: "Email", handle: "hello@skatedatway.co.uk", href: "#" },
+  { label: "Email", handle: "hello@skatedatway.com", href: "#" },
 ]
 
 export function Contact() {
@@ -51,7 +51,7 @@ export function Contact() {
           </p>
 
           <div className="mt-8 inline-block">
-            <CopyEmail value="hello@skatedatway.co.uk" />
+            <CopyEmail value="hello@skatedatway.com" />
           </div>
         </div>
 

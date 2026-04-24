@@ -63,7 +63,7 @@ const columns = [
   {
     title: "Signal",
     links: [
-      { label: "hello@skatedatway.co.uk", href: "#contact" },
+      { label: "hello@skatedatway.com", href: "#contact" },
       { label: "London, UK", href: "#" },
       { label: "Open to filmers", href: "#contact" },
     ],
