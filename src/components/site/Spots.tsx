@@ -57,7 +57,7 @@ export function Spots() {
   const { activeIndex, setCardRef } = useActiveCardIndex(spots.length, touch)
 
   return (
-    <section id="spots" className="relative border-b border-bone/15 bg-ink-2">
+    <section id="map" className="relative border-b border-bone/15 bg-ink-2">
       <div className="pointer-events-none absolute inset-0 chainlink opacity-40" />
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <div className="mb-12 grid grid-cols-1 items-end gap-6 md:grid-cols-12">

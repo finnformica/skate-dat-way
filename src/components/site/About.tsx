@@ -30,7 +30,7 @@ export function About() {
   )
 
   return (
-    <section id="about" className="relative border-b border-bone/15 bg-ink-2">
+    <section id="manifesto" className="relative border-b border-bone/15 bg-ink-2">
       <div className="pointer-events-none absolute inset-0 halftone opacity-30" />
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 py-20 md:grid-cols-12 md:px-8 md:py-28">
         <div className="md:col-span-5">

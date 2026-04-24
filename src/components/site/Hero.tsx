@@ -173,16 +173,16 @@ export function Hero({ ready, videoSrc }: Props) {
             <div className="flex flex-wrap items-center gap-4 pt-1">
               <Magnetic>
                 <a
-                  href="#edits"
+                  href="#reels"
                   className="press inline-flex items-center gap-3 border-2 border-ink bg-acid px-6 py-4 font-display text-sm uppercase tracking-widest text-ink shadow-[6px_6px_0_0_#0a0a0a]"
                 >
-                  Watch the edits
+                  Watch the reels
                   <ArrowDown className="size-4" />
                 </a>
               </Magnetic>
               <Magnetic strength={0.25}>
                 <a
-                  href="#about"
+                  href="#manifesto"
                   className="press inline-flex items-center gap-3 border-2 border-bone/40 px-6 py-4 font-display text-sm uppercase tracking-widest text-bone transition-colors duration-150 hover:border-acid hover:text-acid"
                 >
                   What is wizard?

@@ -1,4 +1,4 @@
-import { Asterisk, ArrowLeft, Film } from "lucide-react"
+import { Asterisk, ArrowLeft } from "lucide-react"
 
 /**
  * 404 page — mirrors the main site's visual language without any of its
@@ -66,20 +66,13 @@ export function NotFound() {
             start over.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 pt-2">
+          <div className="pt-2">
             <a
               href="/"
               className="press inline-flex items-center gap-3 border-2 border-ink bg-acid px-6 py-4 font-display text-sm uppercase tracking-widest text-ink shadow-[6px_6px_0_0_#0a0a0a]"
             >
               <ArrowLeft className="size-4" />
               Back to the spots
-            </a>
-            <a
-              href="/#edits"
-              className="press inline-flex items-center gap-3 border-2 border-bone/40 px-6 py-4 font-display text-sm uppercase tracking-widest text-bone transition-colors duration-150 hover:border-acid hover:text-acid"
-            >
-              <Film className="size-4" />
-              Watch the reels
             </a>
           </div>
         </div>

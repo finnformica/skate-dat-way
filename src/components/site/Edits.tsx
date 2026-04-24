@@ -77,7 +77,7 @@ export function Edits() {
   const { activeIndex, setCardRef } = useActiveCardIndex(edits.length, touch)
 
   return (
-    <section id="edits" className="relative border-b border-bone/15 bg-ink">
+    <section id="reels" className="relative border-b border-bone/15 bg-ink">
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <SectionHeader
