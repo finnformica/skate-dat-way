@@ -1,57 +1,69 @@
 import { useRef } from "react"
-import { Play, Clock } from "lucide-react"
+import { MapPin } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
 import { Tilt } from "@/components/motion/Tilt"
 
 type Edit = {
   title: string
-  runtime: string
   year: string
   location: string
   video: string
-  poster: string
   tag?: "new" | "vhs" | "featured"
 }
 
+// All 8 reels — thumbnails come from the video itself (first frame via #t=0.1)
 const edits: Edit[] = [
   {
     title: "South of the river",
-    runtime: "4:12",
     year: "2026",
     location: "Peckham → Elephant",
-    video: "/videos/video2.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1520975661595-6453be3f7070?w=1600&q=80&auto=format&fit=crop",
+    video: "/videos/video1.mp4",
     tag: "new",
   },
   {
     title: "Night shift",
-    runtime: "3:44",
     year: "2025",
     location: "Barbican · after hours",
-    video: "/videos/video3.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1502014822147-1aedfb0676e0?w=1600&q=80&auto=format&fit=crop",
+    video: "/videos/video2.mp4",
     tag: "featured",
   },
   {
     title: "Wet concrete",
-    runtime: "2:58",
     year: "2025",
     location: "Southbank undercroft",
-    video: "/videos/video4.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1583252997434-7a7dca85eba7?w=1600&q=80&auto=format&fit=crop",
+    video: "/videos/video3.mp4",
   },
   {
     title: "Mind the gap",
-    runtime: "5:30",
     year: "2024",
     location: "Canada Water → Rotherhithe",
-    video: "/videos/video5.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1565108150403-c0f12d458bf6?w=1600&q=80&auto=format&fit=crop",
+    video: "/videos/video4.mp4",
     tag: "vhs",
+  },
+  {
+    title: "Crystal lines",
+    year: "2024",
+    location: "Crystal Palace · SE19",
+    video: "/videos/video5.mp4",
+  },
+  {
+    title: "Hackney rails",
+    year: "2023",
+    location: "Broadway Market · E8",
+    video: "/videos/video6.mp4",
+    tag: "vhs",
+  },
+  {
+    title: "Thames path blues",
+    year: "2023",
+    location: "Bermondsey → Deptford",
+    video: "/videos/video7.mp4",
+  },
+  {
+    title: "Green Park after dark",
+    year: "2022",
+    location: "Mayfair · W1J",
+    video: "/videos/video8.mp4",
   },
 ]
 
@@ -76,26 +88,25 @@ export function Edits() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <Reveal stagger className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {edits.map((e, i) => (
-            <EditCard edit={e} key={e.title} featured={i === 1} />
+            <EditCard edit={e} key={e.title} offset={i % 2 === 1} />
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   )
 }
 
-function EditCard({ edit, featured }: { edit: Edit; featured: boolean }) {
+function EditCard({ edit, offset }: { edit: Edit; offset: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const play = () => {
     const v = videoRef.current
     if (!v) return
-    // Lazy-hydrate the video source on first hover
-    if (!v.src) v.src = edit.video
+    v.currentTime = 0
     v.play().catch(() => {
-      /* ignore — autoplay policy */
+      /* autoplay blocked, ignore */
     })
   }
   const stop = () => {
@@ -106,63 +117,57 @@ function EditCard({ edit, featured }: { edit: Edit; featured: boolean }) {
   }
 
   return (
-    <Tilt max={5}>
+    <Tilt max={4}>
       <article
         onPointerEnter={play}
         onPointerLeave={stop}
         onFocus={play}
         onBlur={stop}
-        className={`group relative overflow-hidden border-2 border-bone/15 bg-ink-2 transition-colors duration-200 hover:border-acid ${
-          featured ? "md:translate-y-6" : ""
+        tabIndex={0}
+        className={`group relative overflow-hidden border-2 border-bone/15 bg-ink-2 transition-colors duration-200 hover:border-acid focus-visible:border-acid focus-visible:outline-none ${
+          offset ? "md:translate-y-6" : ""
         }`}
       >
         <div className="relative aspect-[16/10] overflow-hidden">
-          {/* Poster — cross-fades out when video is ready */}
-          <img
-            src={edit.poster}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover grayscale transition-[opacity,filter,transform] duration-[500ms] ease-out group-hover:opacity-0 group-hover:grayscale-0"
-            loading="lazy"
-          />
+          {/* Single video element — its first frame is the thumbnail
+              (via #t=0.1 fragment), plays on hover, seeks back to 0 on leave. */}
           <video
             ref={videoRef}
+            src={`${edit.video}#t=0.1`}
             muted
             loop
             playsInline
-            preload="none"
-            className="h-full w-full object-cover opacity-0 transition-opacity duration-[500ms] ease-out group-hover:opacity-100"
+            preload="metadata"
+            className="h-full w-full object-cover grayscale transition-[filter,transform] duration-[500ms] ease-out group-hover:scale-[1.02] group-hover:grayscale-0 group-focus-visible:scale-[1.02] group-focus-visible:grayscale-0"
             aria-label={`${edit.title} preview`}
           />
           <div className="pointer-events-none absolute inset-0 scanlines opacity-30 mix-blend-multiply" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent" />
 
-          <div className="absolute left-3 top-3 flex items-center gap-2 border border-acid/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-acid">
-            <Clock size={10} />
-            {edit.runtime} · {edit.year}
+          {/* Top-left: location badge (replaces runtime) */}
+          <div className="absolute left-3 top-3 flex items-center gap-1.5 border border-acid/60 bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-acid backdrop-blur-sm">
+            <MapPin size={10} />
+            {edit.location}
           </div>
 
+          {/* Top-right: tag sticker */}
           {edit.tag && (
             <div className="absolute right-3 top-3 border-2 border-ink bg-hazard px-2 py-1 font-display text-[10px] uppercase tracking-widest text-ink">
               {edit.tag}
             </div>
           )}
-
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <div className="press flex h-20 w-20 scale-[0.92] items-center justify-center rounded-full border-2 border-bone bg-acid text-ink opacity-0 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-100 group-hover:opacity-100">
-              <Play className="ml-1 size-7 fill-ink" />
-            </div>
-          </div>
         </div>
+
         <div className="flex items-start justify-between gap-4 p-5">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-widest text-bone/50">
-              {edit.location}
+              Edit · {edit.year}
             </p>
-            <h3 className="mt-1 font-display text-2xl uppercase text-bone">
+            <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-acid">
               {edit.title}
             </h3>
           </div>
-          <span className="font-mono text-xs uppercase tracking-widest text-acid">
+          <span className="font-mono text-xs uppercase tracking-widest text-acid transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
             watch ↗
           </span>
         </div>

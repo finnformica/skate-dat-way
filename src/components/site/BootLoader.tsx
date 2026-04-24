@@ -20,16 +20,19 @@ const STATUS_LINES = [
 ]
 
 export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(() =>
+    assets.length === 0 ? 100 : 0,
+  )
   const [status, setStatus] = useState(0)
   const [phase, setPhase] = useState<"loading" | "out">("loading")
-  const startedAt = useRef(performance.now())
+  const startedAt = useRef<number | null>(null)
 
   useEffect(() => {
-    if (!assets.length) {
-      setProgress(100)
-      return
-    }
+    if (startedAt.current === null) startedAt.current = performance.now()
+  }, [])
+
+  useEffect(() => {
+    if (!assets.length) return
     let loaded = 0
     const advance = () => {
       loaded += 1
@@ -80,10 +83,19 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
     return () => window.clearInterval(id)
   }, [])
 
+  // Lock scroll while the loader is up
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [])
+
   // Trigger exit when progress hits 100 AND min-time has elapsed
   useEffect(() => {
     if (progress < 100) return
-    const elapsed = performance.now() - startedAt.current
+    const elapsed = performance.now() - (startedAt.current ?? performance.now())
     const wait = Math.max(0, minMs - elapsed)
     const t1 = window.setTimeout(() => setPhase("out"), wait)
     const t2 = window.setTimeout(onDone, wait + 720) // match CSS exit duration

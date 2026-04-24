@@ -107,7 +107,7 @@ function CopyEmail({ value }: { value: string }) {
         {/* Copied label */}
         <span
           aria-hidden={!copied}
-          className="col-start-1 row-start-1 flex items-center gap-3 translate-y-1 opacity-0 blur-[2px] transition-[opacity,filter,transform] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-data-[state=copied]:translate-y-0 group-data-[state=copied]:opacity-100 group-data-[state=copied]:blur-0"
+          className="col-start-1 row-start-1 flex items-center gap-3 translate-y-1 opacity-0 blur-[2px] transition-[opacity,filter,transform] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-data-[state=copied]:translate-y-0 group-data-[state=copied]:opacity-100 group-data-[state=copied]:blur-none"
         >
           <Check className="size-4" strokeWidth={3} />
           Copied to clipboard

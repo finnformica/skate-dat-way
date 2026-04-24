@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+:root {
+  /* Footer height — content wrapper uses the same value as margin-bottom
+     so the fixed footer has scroll space to reveal into. */
+  --footer-h: 720px;
+}
+@media (min-width: 768px) {
+  :root {
+    --footer-h: 640px;
+  }
+}
+
 @theme {
   --font-sans: "Inter", system-ui, sans-serif;
   --font-display: "Anton", "Bebas Neue", "Impact", system-ui, sans-serif;

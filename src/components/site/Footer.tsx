@@ -1,5 +1,10 @@
-import { useRef } from "react"
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react"
+import { useEffect } from "react"
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useReducedMotion,
+} from "motion/react"
 
 const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -48,32 +53,50 @@ const columns = [
   },
 ]
 
+function getFooterHeight() {
+  if (typeof window === "undefined") return 720
+  return window.innerWidth >= 768 ? 640 : 720
+}
+
 export function Footer() {
-  const ref = useRef<HTMLElement>(null)
   const reduce = useReducedMotion()
+  const progress = useMotionValue(0)
 
-  // Track scroll as footer enters the viewport
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end end"],
-  })
+  useEffect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement.scrollHeight - window.innerHeight
+      const footerH = getFooterHeight()
+      if (doc <= 0 || footerH <= 0) {
+        progress.set(0)
+        return
+      }
+      const y = window.scrollY
+      const start = doc - footerH
+      const p = Math.max(0, Math.min(1, (y - start) / footerH))
+      progress.set(p)
+    }
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll)
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
+    }
+  }, [progress])
 
-  // Parallax: wordmark drifts up, socials drift slower, content fades/slides in
-  const wordmarkY = useTransform(scrollYProgress, [0, 1], [120, -40])
-  const wordmarkScale = useTransform(scrollYProgress, [0, 1], [0.95, 1])
-  const contentY = useTransform(scrollYProgress, [0, 1], [60, 0])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.55], [0, 1])
+  const wordmarkY = useTransform(progress, [0, 1], [120, -40])
+  const wordmarkScale = useTransform(progress, [0, 1], [0.96, 1])
+  const contentY = useTransform(progress, [0, 1], [60, 0])
+  const contentOpacity = useTransform(progress, [0, 0.55], [0, 1])
 
   return (
     <footer
-      ref={ref}
-      className="sticky bottom-0 z-0 h-[720px] overflow-hidden bg-ink-2 md:h-[640px]"
       aria-label="Footer"
+      className="fixed inset-x-0 bottom-0 z-0 h-[var(--footer-h)] overflow-hidden bg-ink-2"
     >
       <div className="pointer-events-none absolute inset-0 halftone opacity-25" />
       <div className="pointer-events-none absolute inset-0 chainlink opacity-30" />
 
-      {/* Giant parallax wordmark — anchors the footer */}
       <motion.div
         aria-hidden
         style={reduce ? undefined : { y: wordmarkY, scale: wordmarkScale }}
@@ -84,9 +107,9 @@ export function Footer() {
 
       <motion.div
         style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
-        className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pb-10 pt-16 md:px-8"
+        className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pb-10 pt-14 md:px-8"
       >
-        <div className="grid grid-cols-2 gap-10 border-b border-bone/15 pb-10 md:grid-cols-5">
+        <div className="grid grid-cols-2 gap-8 border-b border-bone/15 pb-8 md:grid-cols-5 md:gap-10 md:pb-10">
           <div className="col-span-2">
             <div className="flex items-center gap-3">
               <span aria-hidden className="relative grid h-10 w-10 place-items-center">
@@ -100,11 +123,11 @@ export function Footer() {
                 Skate Dat Way
               </span>
             </div>
-            <p className="mt-4 max-w-sm text-sm text-bone/60">
+            <p className="mt-3 max-w-sm text-sm text-bone/60">
               A personal archive of London wizard skating — edits, spots,
               notes. No shop, no team, no sponsors.
             </p>
-            <div className="mt-6 flex items-center gap-3">
+            <div className="mt-5 flex items-center gap-3">
               {[Instagram, Youtube, Vimeo].map((Icon, i) => (
                 <a
                   key={i}
@@ -120,7 +143,7 @@ export function Footer() {
 
           {columns.map((col) => (
             <div key={col.title}>
-              <h4 className="mb-4 font-display text-sm uppercase tracking-widest text-bone">
+              <h4 className="mb-3 font-display text-sm uppercase tracking-widest text-bone">
                 {col.title}
               </h4>
               <ul className="space-y-2 text-sm text-bone/60">
@@ -136,7 +159,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-auto flex flex-col items-center justify-between gap-4 pt-6 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
+        <div className="mt-auto flex flex-col items-center justify-between gap-3 pt-6 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
           <p>© 2026 Skate Dat Way · London · All edits self-filmed</p>
           <div className="flex items-center gap-5">
             <a href="#" className="link-underline hover:text-acid">
