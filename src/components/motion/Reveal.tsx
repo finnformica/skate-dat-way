@@ -7,16 +7,25 @@ type Props = {
   as?: "div" | "section" | "article" | "figure"
   stagger?: boolean
   className?: string
+  /** External visibility override — skip the intersection observer */
+  show?: boolean
 }
 
-export function Reveal({ children, as = "div", stagger = false, className }: Props) {
+export function Reveal({
+  children,
+  as = "div",
+  stagger = false,
+  className,
+  show,
+}: Props) {
   const Tag = as
   const { ref, visible } = useInView<HTMLDivElement>()
+  const isVisible = show ?? visible
 
   return (
     <Tag
-      ref={ref as never}
-      data-visible={visible ? "true" : "false"}
+      ref={show === undefined ? (ref as never) : undefined}
+      data-visible={isVisible ? "true" : "false"}
       data-stagger={stagger ? "true" : undefined}
       className={cn(!stagger && "reveal-clip", className)}
     >

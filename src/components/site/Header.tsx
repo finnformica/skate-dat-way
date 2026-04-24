@@ -31,7 +31,7 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
         <a
           href="#top"
-          data-cursor="hover"
+         
           className="press flex items-center gap-3"
         >
           <Roundel />
@@ -45,7 +45,7 @@ export function Header() {
             <a
               key={item.label}
               href={item.href}
-              data-cursor="hover"
+             
               className="link-underline font-display text-sm uppercase tracking-widest text-bone/80 transition-colors duration-150 hover:text-bone"
             >
               {item.label}

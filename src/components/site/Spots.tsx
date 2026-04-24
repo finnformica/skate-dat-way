@@ -79,7 +79,7 @@ export function Spots() {
           {spots.map((spot, i) => (
             <article
               key={spot.name}
-              data-cursor="hover"
+             
               className="group relative aspect-[3/4] overflow-hidden bg-ink-2"
             >
               <img

@@ -1,3 +1,6 @@
+import { useRef } from "react"
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react"
+
 const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <rect x="2" y="2" width="20" height="20" rx="5" />
@@ -17,12 +20,73 @@ const Vimeo = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
+const columns = [
+  {
+    title: "Site",
+    links: [
+      { label: "About", href: "#about" },
+      { label: "Edits", href: "#edits" },
+      { label: "Spots", href: "#spots" },
+      { label: "Journal", href: "#journal" },
+    ],
+  },
+  {
+    title: "Colophon",
+    links: [
+      { label: "Anton / Inter", href: "#" },
+      { label: "Filmed on VX1000", href: "#" },
+      { label: "Edited in Resolve", href: "#" },
+    ],
+  },
+  {
+    title: "Signal",
+    links: [
+      { label: "hello@skatedatway.co.uk", href: "#contact" },
+      { label: "London, UK", href: "#" },
+      { label: "Open to filmers", href: "#contact" },
+    ],
+  },
+]
+
 export function Footer() {
+  const ref = useRef<HTMLElement>(null)
+  const reduce = useReducedMotion()
+
+  // Track scroll as footer enters the viewport
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end end"],
+  })
+
+  // Parallax: wordmark drifts up, socials drift slower, content fades/slides in
+  const wordmarkY = useTransform(scrollYProgress, [0, 1], [120, -40])
+  const wordmarkScale = useTransform(scrollYProgress, [0, 1], [0.95, 1])
+  const contentY = useTransform(scrollYProgress, [0, 1], [60, 0])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.55], [0, 1])
+
   return (
-    <footer className="relative bg-ink">
-      <div className="pointer-events-none absolute inset-0 halftone opacity-20" />
-      <div className="mx-auto max-w-7xl px-5 py-16 md:px-8">
-        <div className="grid grid-cols-2 gap-10 border-b border-bone/15 pb-12 md:grid-cols-5">
+    <footer
+      ref={ref}
+      className="sticky bottom-0 z-0 h-[720px] overflow-hidden bg-ink-2 md:h-[640px]"
+      aria-label="Footer"
+    >
+      <div className="pointer-events-none absolute inset-0 halftone opacity-25" />
+      <div className="pointer-events-none absolute inset-0 chainlink opacity-30" />
+
+      {/* Giant parallax wordmark — anchors the footer */}
+      <motion.div
+        aria-hidden
+        style={reduce ? undefined : { y: wordmarkY, scale: wordmarkScale }}
+        className="pointer-events-none absolute inset-x-0 bottom-[-6vw] select-none text-center font-display text-[18vw] leading-[0.85] text-bone/[0.06]"
+      >
+        SKATE DAT WAY
+      </motion.div>
+
+      <motion.div
+        style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
+        className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pb-10 pt-16 md:px-8"
+      >
+        <div className="grid grid-cols-2 gap-10 border-b border-bone/15 pb-10 md:grid-cols-5">
           <div className="col-span-2">
             <div className="flex items-center gap-3">
               <span aria-hidden className="relative grid h-10 w-10 place-items-center">
@@ -45,7 +109,6 @@ export function Footer() {
                 <a
                   key={i}
                   href="#"
-                  data-cursor="hover"
                   className="press flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone transition-colors duration-150 hover:border-acid hover:text-acid"
                   aria-label="social"
                 >
@@ -55,33 +118,7 @@ export function Footer() {
             </div>
           </div>
 
-          {[
-            {
-              title: "Site",
-              links: [
-                { label: "About", href: "#about" },
-                { label: "Edits", href: "#edits" },
-                { label: "Spots", href: "#spots" },
-                { label: "Journal", href: "#journal" },
-              ],
-            },
-            {
-              title: "Colophon",
-              links: [
-                { label: "Anton / Inter", href: "#" },
-                { label: "Filmed on VX1000", href: "#" },
-                { label: "Edited in Resolve", href: "#" },
-              ],
-            },
-            {
-              title: "Signal",
-              links: [
-                { label: "hello@skatedatway.co.uk", href: "#contact" },
-                { label: "London, UK", href: "#" },
-                { label: "Open to filmers", href: "#contact" },
-              ],
-            },
-          ].map((col) => (
+          {columns.map((col) => (
             <div key={col.title}>
               <h4 className="mb-4 font-display text-sm uppercase tracking-widest text-bone">
                 {col.title}
@@ -89,10 +126,7 @@ export function Footer() {
               <ul className="space-y-2 text-sm text-bone/60">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="link-underline hover:text-acid"
-                    >
+                    <a href={link.href} className="link-underline hover:text-acid">
                       {link.label}
                     </a>
                   </li>
@@ -102,8 +136,8 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 pt-8 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
-          <p>© 2026 Skate Dat Way · London wizard · Eight wheels, two feet</p>
+        <div className="mt-auto flex flex-col items-center justify-between gap-4 pt-6 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
+          <p>© 2026 Skate Dat Way · London · All edits self-filmed</p>
           <div className="flex items-center gap-5">
             <a href="#" className="link-underline hover:text-acid">
               Privacy
@@ -113,14 +147,7 @@ export function Footer() {
             </a>
           </div>
         </div>
-
-        <div
-          aria-hidden
-          className="pointer-events-none mt-14 select-none text-center font-display text-[16vw] leading-none text-bone/[0.05]"
-        >
-          SKATE DAT WAY
-        </div>
-      </div>
+      </motion.div>
     </footer>
   )
 }

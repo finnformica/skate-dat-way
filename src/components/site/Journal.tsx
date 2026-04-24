@@ -43,7 +43,7 @@ export function Journal() {
           </div>
           <a
             href="#"
-            data-cursor="hover"
+           
             className="link-underline hidden font-display text-sm uppercase tracking-widest text-bone md:inline-flex"
           >
             All posts ↗
@@ -54,7 +54,7 @@ export function Journal() {
           {posts.map((post) => (
             <article
               key={post.title}
-              data-cursor="hover"
+             
               className="group flex flex-col bg-ink transition-colors duration-200 hover:bg-ink-2"
             >
               <div className="aspect-[16/10] overflow-hidden">

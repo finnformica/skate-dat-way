@@ -185,21 +185,6 @@
   clip-path: inset(0 0 0 0);
 }
 
-/* Hold-to-send overlay (asymmetric: slow press, snappy release) */
-.hold-overlay {
-  position: absolute;
-  inset: 0;
-  background: var(--color-ink);
-  mix-blend-mode: normal;
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 200ms var(--ease-out);
-  pointer-events: none;
-}
-.hold-btn:active .hold-overlay {
-  clip-path: inset(0 0 0 0);
-  transition: clip-path 1600ms linear;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .marquee {
     animation: none;

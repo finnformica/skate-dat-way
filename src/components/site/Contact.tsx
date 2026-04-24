@@ -1,3 +1,5 @@
+import { useState } from "react"
+import { Check, Copy } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
 
 const links = [
@@ -38,7 +40,7 @@ export function Contact() {
           </p>
 
           <div className="mt-8 inline-block">
-            <HoldToCopy value="hello@skatedatway.co.uk" />
+            <CopyEmail value="hello@skatedatway.co.uk" />
           </div>
         </div>
 
@@ -48,7 +50,7 @@ export function Contact() {
               <a
                 key={l.label}
                 href={l.href}
-                data-cursor="hover"
+               
                 className="group relative flex items-center justify-between gap-4 bg-acid p-6 transition-colors duration-200 hover:bg-ink"
               >
                 <div>
@@ -71,44 +73,46 @@ export function Contact() {
   )
 }
 
-function HoldToCopy({ value }: { value: string }) {
-  // Emil's hold-to-delete pattern: slow press (1.6s linear), snappy release.
-  // Releases trigger clipboard copy if held to completion.
+function CopyEmail({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false)
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(value)
+    } catch {
+      /* ignore — still show confirmation */
+    }
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 1600)
+  }
+
   return (
     <button
       type="button"
-      data-cursor="hover"
-      onPointerUp={async (e) => {
-        const btn = e.currentTarget
-        const held = btn.dataset.held === "true"
-        btn.dataset.held = "false"
-        if (held) {
-          try {
-            await navigator.clipboard.writeText(value)
-            btn.dataset.copied = "true"
-            setTimeout(() => (btn.dataset.copied = "false"), 1400)
-          } catch {
-            /* noop */
-          }
-        }
-      }}
-      onPointerDown={(e) => {
-        const btn = e.currentTarget
-        setTimeout(() => (btn.dataset.held = "true"), 1550)
-      }}
-      className="hold-btn press relative overflow-hidden border-2 border-ink bg-ink px-5 py-4 font-display text-sm uppercase tracking-widest text-bone shadow-[6px_6px_0_0_#0a0a0a]"
+      onClick={copy}
+      aria-label={copied ? "Email copied" : `Copy email ${value}`}
+      data-state={copied ? "copied" : "idle"}
+      className="press group relative overflow-hidden border-2 border-ink bg-ink px-5 py-4 font-display text-sm uppercase tracking-widest text-bone shadow-[6px_6px_0_0_#0a0a0a] transition-colors duration-150 data-[state=copied]:bg-acid data-[state=copied]:text-ink"
     >
-      <span className="relative z-10 flex items-center gap-3">
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inset-0 animate-ping rounded-full bg-acid opacity-60" />
-          <span className="relative rounded-full bg-acid" />
+      {/* Crossfade label: Emil's blur-mask for imperfect crossfades */}
+      <span className="relative grid">
+        {/* Idle label */}
+        <span
+          aria-hidden={copied}
+          className="col-start-1 row-start-1 flex items-center gap-3 transition-[opacity,filter,transform] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-data-[state=copied]:-translate-y-1 group-data-[state=copied]:opacity-0 group-data-[state=copied]:blur-[2px]"
+        >
+          <Copy className="size-4" />
+          {value}
         </span>
-        Hold to copy email
+        {/* Copied label */}
+        <span
+          aria-hidden={!copied}
+          className="col-start-1 row-start-1 flex items-center gap-3 translate-y-1 opacity-0 blur-[2px] transition-[opacity,filter,transform] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-data-[state=copied]:translate-y-0 group-data-[state=copied]:opacity-100 group-data-[state=copied]:blur-0"
+        >
+          <Check className="size-4" strokeWidth={3} />
+          Copied to clipboard
+        </span>
       </span>
-      <span
-        aria-hidden
-        className="hold-overlay bg-acid mix-blend-difference"
-      />
     </button>
   )
 }

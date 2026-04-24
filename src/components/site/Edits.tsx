@@ -1,3 +1,4 @@
+import { useRef } from "react"
 import { Play, Clock } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
 import { Tilt } from "@/components/motion/Tilt"
@@ -7,7 +8,8 @@ type Edit = {
   runtime: string
   year: string
   location: string
-  image: string
+  video: string
+  poster: string
   tag?: "new" | "vhs" | "featured"
 }
 
@@ -17,7 +19,8 @@ const edits: Edit[] = [
     runtime: "4:12",
     year: "2026",
     location: "Peckham → Elephant",
-    image:
+    video: "/videos/video2.mp4",
+    poster:
       "https://images.unsplash.com/photo-1520975661595-6453be3f7070?w=1600&q=80&auto=format&fit=crop",
     tag: "new",
   },
@@ -26,7 +29,8 @@ const edits: Edit[] = [
     runtime: "3:44",
     year: "2025",
     location: "Barbican · after hours",
-    image:
+    video: "/videos/video3.mp4",
+    poster:
       "https://images.unsplash.com/photo-1502014822147-1aedfb0676e0?w=1600&q=80&auto=format&fit=crop",
     tag: "featured",
   },
@@ -35,7 +39,8 @@ const edits: Edit[] = [
     runtime: "2:58",
     year: "2025",
     location: "Southbank undercroft",
-    image:
+    video: "/videos/video4.mp4",
+    poster:
       "https://images.unsplash.com/photo-1583252997434-7a7dca85eba7?w=1600&q=80&auto=format&fit=crop",
   },
   {
@@ -43,7 +48,8 @@ const edits: Edit[] = [
     runtime: "5:30",
     year: "2024",
     location: "Canada Water → Rotherhithe",
-    image:
+    video: "/videos/video5.mp4",
+    poster:
       "https://images.unsplash.com/photo-1565108150403-c0f12d458bf6?w=1600&q=80&auto=format&fit=crop",
     tag: "vhs",
   },
@@ -81,40 +87,68 @@ export function Edits() {
 }
 
 function EditCard({ edit, featured }: { edit: Edit; featured: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const play = () => {
+    const v = videoRef.current
+    if (!v) return
+    // Lazy-hydrate the video source on first hover
+    if (!v.src) v.src = edit.video
+    v.play().catch(() => {
+      /* ignore — autoplay policy */
+    })
+  }
+  const stop = () => {
+    const v = videoRef.current
+    if (!v) return
+    v.pause()
+    v.currentTime = 0
+  }
+
   return (
     <Tilt max={5}>
       <article
-        data-cursor="hover"
+        onPointerEnter={play}
+        onPointerLeave={stop}
+        onFocus={play}
+        onBlur={stop}
         className={`group relative overflow-hidden border-2 border-bone/15 bg-ink-2 transition-colors duration-200 hover:border-acid ${
           featured ? "md:translate-y-6" : ""
         }`}
       >
         <div className="relative aspect-[16/10] overflow-hidden">
+          {/* Poster — cross-fades out when video is ready */}
           <img
-            src={edit.image}
-            alt={edit.title}
-            className="h-full w-full object-cover grayscale transition-all duration-[700ms] ease-out group-hover:scale-[1.03] group-hover:grayscale-0"
+            src={edit.poster}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover grayscale transition-[opacity,filter,transform] duration-[500ms] ease-out group-hover:opacity-0 group-hover:grayscale-0"
             loading="lazy"
           />
-          <div className="absolute inset-0 scanlines opacity-40 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
+          <video
+            ref={videoRef}
+            muted
+            loop
+            playsInline
+            preload="none"
+            className="h-full w-full object-cover opacity-0 transition-opacity duration-[500ms] ease-out group-hover:opacity-100"
+            aria-label={`${edit.title} preview`}
+          />
+          <div className="pointer-events-none absolute inset-0 scanlines opacity-30 mix-blend-multiply" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
 
-          {/* Top-left timestamp */}
           <div className="absolute left-3 top-3 flex items-center gap-2 border border-acid/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-acid">
             <Clock size={10} />
             {edit.runtime} · {edit.year}
           </div>
 
-          {/* Tag sticker */}
           {edit.tag && (
             <div className="absolute right-3 top-3 border-2 border-ink bg-hazard px-2 py-1 font-display text-[10px] uppercase tracking-widest text-ink">
               {edit.tag}
             </div>
           )}
 
-          {/* Play button — scale on group hover */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="press flex h-20 w-20 items-center justify-center rounded-full border-2 border-bone bg-acid text-ink opacity-0 transition-all duration-300 ease-out group-hover:scale-100 group-hover:opacity-100 scale-[0.92]">
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <div className="press flex h-20 w-20 scale-[0.92] items-center justify-center rounded-full border-2 border-bone bg-acid text-ink opacity-0 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-100 group-hover:opacity-100">
               <Play className="ml-1 size-7 fill-ink" />
             </div>
           </div>

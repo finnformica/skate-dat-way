@@ -63,7 +63,7 @@ export function About() {
             {glossary.map((g) => (
               <article
                 key={g.term}
-                data-cursor="hover"
+               
                 className="group relative overflow-hidden bg-ink-2 p-6 transition-colors duration-200 hover:bg-ink"
               >
                 <span className="absolute right-4 top-4 font-mono text-[10px] uppercase tracking-widest text-bone/40">
