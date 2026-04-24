@@ -28,13 +28,35 @@ export function Hero({ ready, videoSrc }: Props) {
       data-ready={ready}
       className="relative overflow-hidden border-b border-bone/15"
     >
-      {/* Ambient urban background */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
+      {/* Ambient urban background — stencil, technical markings, outline type */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute inset-0 chainlink opacity-60" />
         <div className="absolute inset-0 halftone opacity-40" />
         <div className="absolute inset-x-0 top-0 h-px bg-bone/10" />
-        <div className="absolute -right-40 top-24 h-[520px] w-[520px] rounded-full bg-acid/10 blur-[140px]" />
-        <div className="absolute -left-40 bottom-0 h-[420px] w-[420px] rounded-full bg-hot/10 blur-[140px]" />
+
+        {/* Right-edge WIZARD wordmark */}
+        <div
+          aria-hidden
+          className="absolute -right-6 top-16 hidden select-none font-display text-[clamp(7rem,16vw,14rem)] leading-none text-bone/[0.04] md:block"
+        >
+          WIZARD
+        </div>
+
+        {/* Left-edge LONDON wordmark — rotated vertical */}
+        <div
+          aria-hidden
+          className="absolute inset-y-0 left-0 hidden items-center md:flex"
+        >
+          <span className="block -translate-x-[40%] -rotate-90 whitespace-nowrap font-display text-[clamp(6rem,13vw,11rem)] leading-none text-bone/[0.04]">
+            LONDON
+          </span>
+        </div>
+
+        {/* Faint baseline grid line */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-20 hidden h-px bg-gradient-to-r from-transparent via-bone/10 to-transparent md:block"
+        />
       </div>
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-end gap-10 px-5 py-16 md:grid-cols-12 md:px-8 md:py-24">
@@ -177,18 +199,11 @@ export function Hero({ ready, videoSrc }: Props) {
             }}
           >
             <MapPin className="mr-1 inline size-3 -translate-y-px" />
-            51.4816° N · 0.1226° W
+            London, UK
           </div>
         </div>
       </div>
 
-      {/* Outline wordmark */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-6 top-16 -z-10 hidden select-none font-display text-[200px] leading-none text-bone/[0.035] md:block"
-      >
-        WIZARD
-      </div>
     </section>
   )
 }

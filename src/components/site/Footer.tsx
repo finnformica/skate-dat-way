@@ -84,8 +84,8 @@ export function Footer() {
     }
   }, [progress])
 
-  const wordmarkY = useTransform(progress, [0, 1], [120, -40])
-  const wordmarkScale = useTransform(progress, [0, 1], [0.96, 1])
+  const wordmarkY = useTransform(progress, [0, 1], [50, 0])
+  const wordmarkOpacity = useTransform(progress, [0, 0.4], [0, 1])
   const contentY = useTransform(progress, [0, 1], [60, 0])
   const contentOpacity = useTransform(progress, [0, 0.55], [0, 1])
 
@@ -97,12 +97,17 @@ export function Footer() {
       <div className="pointer-events-none absolute inset-0 halftone opacity-25" />
       <div className="pointer-events-none absolute inset-0 chainlink opacity-30" />
 
+      {/* Bottom wordmark — single line, clamped so it never exceeds viewport.
+          Positioned just below the visible area so its descenders tuck under
+          the fold, anchoring the composition without getting cut off. */}
       <motion.div
         aria-hidden
-        style={reduce ? undefined : { y: wordmarkY, scale: wordmarkScale }}
-        className="pointer-events-none absolute inset-x-0 bottom-[-6vw] select-none text-center font-display text-[18vw] leading-[0.85] text-bone/[0.06]"
+        style={reduce ? undefined : { y: wordmarkY, opacity: wordmarkOpacity }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 flex select-none justify-center"
       >
-        SKATE DAT WAY
+        <span className="inline-block translate-y-[0.12em] whitespace-nowrap font-display text-[clamp(3.5rem,14vw,11rem)] leading-[0.85] text-bone/[0.06]">
+          SKATE DAT WAY
+        </span>
       </motion.div>
 
       <motion.div

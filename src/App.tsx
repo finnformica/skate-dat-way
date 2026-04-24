@@ -46,7 +46,7 @@ function App() {
         <Header />
         <main>
           <Hero ready={ready} videoSrc={HERO_VIDEO} />
-          <Marquee />
+          <Marquee ready={ready} />
           <About />
           <Edits />
           <Spots />

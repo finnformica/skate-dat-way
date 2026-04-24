@@ -59,26 +59,36 @@ export function About() {
         </div>
 
         <div className="md:col-span-7">
-          <Reveal stagger as="div" className="grid grid-cols-1 gap-px bg-bone/15 sm:grid-cols-2">
-            {glossary.map((g) => (
+          <Reveal
+            stagger
+            as="div"
+            className="grid grid-cols-1 gap-px bg-bone/15 sm:grid-cols-2"
+          >
+            {glossary.map((g, i) => (
               <article
                 key={g.term}
-               
                 className="group relative overflow-hidden bg-ink-2 p-6 transition-colors duration-200 hover:bg-ink"
               >
-                <span className="absolute right-4 top-4 font-mono text-[10px] uppercase tracking-widest text-bone/40">
-                  /def
-                </span>
-                <h3 className="font-display text-2xl uppercase leading-none text-bone transition-colors duration-200 group-hover:text-acid">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-bone/40">
+                    def · {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="font-display text-3xl leading-none tabular-nums text-bone/15"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <h3 className="mt-6 font-display text-2xl uppercase leading-none text-bone transition-colors duration-200 group-hover:text-acid">
                   {g.term}
                 </h3>
                 <p className="mt-3 text-sm text-bone/70">{g.def}</p>
+                {/* Accent rule — a thin line that slides in on hover */}
                 <span
                   aria-hidden
-                  className="absolute -bottom-10 -right-10 font-display text-[120px] leading-none text-bone/[0.04]"
-                >
-                  {g.term.charAt(0)}
-                </span>
+                  className="pointer-events-none absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-acid transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-x-100"
+                />
               </article>
             ))}
           </Reveal>

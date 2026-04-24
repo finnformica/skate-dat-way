@@ -7,7 +7,7 @@ type Asset =
 type Props = {
   assets: Asset[]
   onDone: () => void
-  /** Minimum time the loader is visible — keeps the animation intentional */
+  /** Minimum time the loader is visible before it's allowed to exit */
   minMs?: number
 }
 
@@ -20,30 +20,26 @@ const STATUS_LINES = [
 ]
 
 export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
-  const [progress, setProgress] = useState(() =>
-    assets.length === 0 ? 100 : 0,
-  )
+  const [progress, setProgress] = useState(0)
   const [status, setStatus] = useState(0)
   const [phase, setPhase] = useState<"loading" | "out">("loading")
-  const startedAt = useRef<number | null>(null)
 
-  useEffect(() => {
-    if (startedAt.current === null) startedAt.current = performance.now()
-  }, [])
+  // Refs for values read inside the RAF loop — no re-render cost
+  const loadedRef = useRef(0)
+  const totalRef = useRef(assets.length)
+  const startedAtRef = useRef<number | null>(null)
+  const doneCalledRef = useRef(false)
 
+  // Kick off asset preloading
   useEffect(() => {
+    totalRef.current = assets.length
     if (!assets.length) return
-    let loaded = 0
-    const advance = () => {
-      loaded += 1
-      setProgress(Math.round((loaded / assets.length) * 100))
-    }
-    const cleanups: Array<() => void> = []
 
+    const cleanups: Array<() => void> = []
     assets.forEach((a) => {
       if (a.type === "image") {
         const img = new Image()
-        const done = () => advance()
+        const done = () => (loadedRef.current += 1)
         img.addEventListener("load", done, { once: true })
         img.addEventListener("error", done, { once: true })
         img.src = a.src
@@ -56,10 +52,15 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
         v.preload = "auto"
         v.muted = true
         v.playsInline = true
-        const done = () => advance()
+        let settled = false
+        const done = () => {
+          if (settled) return
+          settled = true
+          loadedRef.current += 1
+        }
         v.addEventListener("canplaythrough", done, { once: true })
         v.addEventListener("error", done, { once: true })
-        // Safari sometimes stalls on canplaythrough — fall back
+        // Safari sometimes stalls on canplaythrough
         const fallback = window.setTimeout(done, 6000)
         v.src = a.src
         v.load()
@@ -92,18 +93,30 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
     }
   }, [])
 
-  // Trigger exit when progress hits 100 AND min-time has elapsed
+  // Single RAF loop — progress = min(time_fraction, load_fraction) so the bar
+  // only hits 100 when BOTH the minimum time has passed AND assets are ready.
   useEffect(() => {
-    if (progress < 100) return
-    const elapsed = performance.now() - (startedAt.current ?? performance.now())
-    const wait = Math.max(0, minMs - elapsed)
-    const t1 = window.setTimeout(() => setPhase("out"), wait)
-    const t2 = window.setTimeout(onDone, wait + 720) // match CSS exit duration
-    return () => {
-      window.clearTimeout(t1)
-      window.clearTimeout(t2)
+    let raf = 0
+    const loop = (now: number) => {
+      if (startedAtRef.current === null) startedAtRef.current = now
+      const elapsed = now - startedAtRef.current
+      const timeP = Math.min(1, elapsed / minMs)
+      const loadP =
+        totalRef.current === 0 ? 1 : loadedRef.current / totalRef.current
+      const p = Math.min(timeP, loadP)
+      setProgress(Math.round(p * 100))
+
+      if (p >= 1 && !doneCalledRef.current) {
+        doneCalledRef.current = true
+        setPhase("out")
+        window.setTimeout(onDone, 720) // match clip-path exit duration
+        return
+      }
+      raf = requestAnimationFrame(loop)
     }
-  }, [progress, minMs, onDone])
+    raf = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(raf)
+  }, [minMs, onDone])
 
   const pct = String(progress).padStart(3, "0")
 
@@ -111,12 +124,11 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
     <div
       data-phase={phase}
       aria-hidden={phase === "out"}
-      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-ink text-bone data-[phase=out]:[clip-path:inset(0_0_100%_0)] [clip-path:inset(0_0_0_0)] transition-[clip-path] duration-[720ms] ease-[cubic-bezier(0.77,0,0.175,1)]"
+      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-ink text-bone [clip-path:inset(0_0_0_0)] transition-[clip-path] duration-[720ms] ease-[cubic-bezier(0.77,0,0.175,1)] data-[phase=out]:[clip-path:inset(0_0_100%_0)]"
     >
       <div className="pointer-events-none absolute inset-0 scanlines opacity-30" />
       <div className="pointer-events-none absolute inset-0 halftone opacity-20" />
 
-      {/* Top bar: tape + filename */}
       <div className="flex items-center justify-between border-b border-bone/15 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-bone/60 md:px-8">
         <span className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
@@ -125,14 +137,16 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
           </span>
           Reel · SDW_2026.mp4
         </span>
-        <span className="tabular-nums">TC 00:00:{String(Math.floor(progress / 4)).padStart(2, "0")}:{pct.slice(-2)}</span>
+        <span className="tabular-nums">
+          TC 00:00:{String(Math.floor(progress / 4)).padStart(2, "0")}:
+          {pct.slice(-2)}
+        </span>
       </div>
 
-      {/* Middle: giant wordmark */}
       <div className="relative flex flex-1 items-center justify-center px-5">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 select-none text-center font-display text-[clamp(5rem,19vw,18rem)] leading-[0.85] text-bone/[0.05]"
+          className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 select-none text-center font-display text-[clamp(5rem,19vw,18rem)] leading-[0.85] text-bone/5"
         >
           WIZARD
         </div>
@@ -154,7 +168,6 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
         </div>
       </div>
 
-      {/* Bottom: progress bar + counter */}
       <div className="border-t border-bone/15 px-5 pb-6 pt-4 md:px-8">
         <div className="flex items-end justify-between gap-6 font-display uppercase">
           <span className="text-[11px] tracking-widest text-bone/50">
@@ -166,15 +179,18 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
         </div>
         <div className="mt-2 flex items-center gap-4">
           <div
-            className="flex-1 overflow-hidden border border-bone/20 bg-bone/[0.04]"
+            className="flex-1 overflow-hidden border border-bone/20 bg-bone/5"
             role="progressbar"
             aria-valuenow={progress}
             aria-valuemin={0}
             aria-valuemax={100}
           >
             <div
-              className="h-2 bg-acid transition-[width] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)]"
-              style={{ width: `${progress}%` }}
+              className="h-2 bg-acid"
+              style={{
+                width: `${progress}%`,
+                transition: "width 120ms linear",
+              }}
             />
           </div>
           <div className="w-[5.5ch] text-right font-display text-3xl leading-none tabular-nums text-bone">
