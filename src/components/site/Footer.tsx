@@ -11,36 +11,42 @@ const Youtube = (props: React.SVGProps<SVGSVGElement>) => (
     <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
   </svg>
 )
-const Twitch = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M21 2H3v16h5v4l4-4h5l4-4V2zm-10 9V5m5 6V5" />
+const Vimeo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M22.875 6.637c-.096 2.1-1.566 4.973-4.41 8.617-2.94 3.806-5.426 5.71-7.46 5.71-1.259 0-2.323-1.162-3.193-3.486L6.07 11.11c-.647-2.324-1.34-3.487-2.08-3.487-.162 0-.727.338-1.697 1.014L1.277 7.33c1.068-.94 2.122-1.88 3.16-2.821 1.426-1.233 2.495-1.88 3.208-1.946 1.68-.161 2.714.99 3.102 3.456.418 2.66.708 4.314.87 4.96.485 2.207.99 3.31 1.519 3.31.408 0 1.02-.645 1.833-1.936.812-1.292 1.247-2.274 1.305-2.947.113-1.078-.319-1.617-1.305-1.617-.464 0-.943.106-1.439.32.96-3.14 2.797-4.668 5.509-4.58 2.012.06 2.96 1.364 2.836 3.908z" />
   </svg>
 )
 
 export function Footer() {
   return (
-    <footer className="bg-ink">
+    <footer className="relative bg-ink">
+      <div className="pointer-events-none absolute inset-0 halftone opacity-20" />
       <div className="mx-auto max-w-7xl px-5 py-16 md:px-8">
         <div className="grid grid-cols-2 gap-10 border-b border-bone/15 pb-12 md:grid-cols-5">
           <div className="col-span-2">
-            <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center border-2 border-bone bg-acid text-ink">
-                <span className="font-display text-lg">S</span>
+            <div className="flex items-center gap-3">
+              <span aria-hidden className="relative grid h-10 w-10 place-items-center">
+                <span className="absolute inset-0 rounded-full border-[4px] border-acid" />
+                <span className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-bone" />
+                <span className="relative font-display text-[10px] uppercase tracking-widest text-ink">
+                  SDW
+                </span>
               </span>
               <span className="font-display text-2xl text-bone">
                 Skate Dat Way
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm text-bone/60">
-              Independent skate shop, Brooklyn → worldwide. Est. 2014. Still
-              skater-owned. Always will be.
+              A personal archive of London wizard skating — edits, spots,
+              notes. No shop, no team, no sponsors.
             </p>
             <div className="mt-6 flex items-center gap-3">
-              {[Instagram, Youtube, Twitch].map((Icon, i) => (
+              {[Instagram, Youtube, Vimeo].map((Icon, i) => (
                 <a
                   key={i}
                   href="#"
-                  className="flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone transition hover:border-acid hover:text-acid"
+                  data-cursor="hover"
+                  className="press flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone transition-colors duration-150 hover:border-acid hover:text-acid"
                   aria-label="social"
                 >
                   <Icon className="h-4 w-4" />
@@ -51,16 +57,29 @@ export function Footer() {
 
           {[
             {
-              title: "Shop",
-              links: ["Decks", "Completes", "Trucks", "Wheels", "Apparel"],
+              title: "Site",
+              links: [
+                { label: "About", href: "#about" },
+                { label: "Edits", href: "#edits" },
+                { label: "Spots", href: "#spots" },
+                { label: "Journal", href: "#journal" },
+              ],
             },
             {
-              title: "About",
-              links: ["Our story", "Team", "Journal", "Shipping", "Returns"],
+              title: "Colophon",
+              links: [
+                { label: "Anton / Inter", href: "#" },
+                { label: "Filmed on VX1000", href: "#" },
+                { label: "Edited in Resolve", href: "#" },
+              ],
             },
             {
-              title: "Hotline",
-              links: ["hello@skatedatway.com", "(917) 555-3210", "Mon–Sat, 10–6"],
+              title: "Signal",
+              links: [
+                { label: "hello@skatedatway.co.uk", href: "#contact" },
+                { label: "London, UK", href: "#" },
+                { label: "Open to filmers", href: "#contact" },
+              ],
             },
           ].map((col) => (
             <div key={col.title}>
@@ -69,9 +88,12 @@ export function Footer() {
               </h4>
               <ul className="space-y-2 text-sm text-bone/60">
                 {col.links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="hover:text-acid">
-                      {link}
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="link-underline hover:text-acid"
+                    >
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -81,23 +103,20 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 pt-8 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
-          <p>© 2026 Skate Dat Way · Made on a board, shipped from Brooklyn</p>
+          <p>© 2026 Skate Dat Way · London wizard · Eight wheels, two feet</p>
           <div className="flex items-center gap-5">
-            <a href="#" className="hover:text-acid">
+            <a href="#" className="link-underline hover:text-acid">
               Privacy
             </a>
-            <a href="#" className="hover:text-acid">
+            <a href="#" className="link-underline hover:text-acid">
               Terms
-            </a>
-            <a href="#" className="hover:text-acid">
-              Accessibility
             </a>
           </div>
         </div>
 
         <div
           aria-hidden
-          className="pointer-events-none mt-12 select-none text-center font-display text-[16vw] leading-none text-bone/[0.04]"
+          className="pointer-events-none mt-14 select-none text-center font-display text-[16vw] leading-none text-bone/[0.05]"
         >
           SKATE DAT WAY
         </div>

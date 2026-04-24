@@ -1,25 +1,29 @@
+const items = [
+  "Wizard skating",
+  "Soul grinds",
+  "Natural line",
+  "Anti-rocker",
+  "London ↔ concrete",
+  "No helmet cam",
+  "Rolled, not jumped",
+]
+
 export function Marquee() {
-  const items = [
-    "Free US shipping over $75",
-    "Hand-pressed in Brooklyn",
-    "Ride or don't — either way we won't judge",
-    "Spring '26 drop — live",
-    "Team rider applications open",
-    "Decks from $55",
-  ]
-  const doubled = [...items, ...items]
+  const row = [...items, ...items]
   return (
-    <div className="overflow-hidden border-y-2 border-bone bg-acid py-3 text-ink">
-      <div className="marquee whitespace-nowrap">
-        {doubled.map((text, i) => (
-          <span
-            key={i}
-            className="mx-6 inline-flex items-center gap-6 font-display text-xl uppercase tracking-wider"
-          >
-            {text}
-            <span className="text-2xl">★</span>
-          </span>
-        ))}
+    <div className="marquee-wrap overflow-hidden border-y-2 border-ink hazard-tape">
+      <div className="bg-ink/0">
+        <div className="marquee whitespace-nowrap py-3">
+          {row.map((text, i) => (
+            <span
+              key={i}
+              className="mx-8 inline-flex items-center gap-8 font-display text-lg uppercase tracking-widest text-ink"
+            >
+              <span className="inline-block h-5 w-5 -translate-y-px border-2 border-ink bg-bone" />
+              {text}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   )

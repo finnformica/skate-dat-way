@@ -1,25 +1,27 @@
 import { Header } from "@/components/site/Header"
 import { Hero } from "@/components/site/Hero"
 import { Marquee } from "@/components/site/Marquee"
-import { Shop } from "@/components/site/Shop"
+import { About } from "@/components/site/About"
+import { Edits } from "@/components/site/Edits"
 import { Spots } from "@/components/site/Spots"
-import { Team } from "@/components/site/Team"
 import { Journal } from "@/components/site/Journal"
-import { Newsletter } from "@/components/site/Newsletter"
+import { Contact } from "@/components/site/Contact"
 import { Footer } from "@/components/site/Footer"
+import { Cursor } from "@/components/motion/Cursor"
 
 function App() {
   return (
-    <div className="grain min-h-screen bg-ink text-bone">
+    <div className="min-h-screen bg-ink text-bone">
+      <Cursor />
       <Header />
       <main>
         <Hero />
         <Marquee />
-        <Shop />
+        <About />
+        <Edits />
         <Spots />
-        <Team />
         <Journal />
-        <Newsletter />
+        <Contact />
       </main>
       <Footer />
     </div>
