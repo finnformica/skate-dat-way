@@ -37,14 +37,14 @@ export function About() {
           <SectionHeader
             index="01"
             label="Manifesto"
-            tone="acid"
+            tone="rust"
             note="entry"
           >
             <Reveal>
               <h2 className="text-5xl text-bone md:text-7xl">
                 Blading,
                 <br />
-                <span className="text-acid italic">not skating.</span>
+                <span className="text-rust italic">not skating.</span>
               </h2>
             </Reveal>
           </SectionHeader>
@@ -63,8 +63,8 @@ export function About() {
             </p>
           </div>
 
-          <div className="mt-8 inline-flex items-center gap-3 border-2 border-acid bg-ink px-4 py-3">
-            <span className="h-2 w-2 rounded-full bg-acid" />
+          <div className="mt-8 inline-flex items-center gap-3 border-2 border-rust bg-ink px-4 py-3">
+            <span className="h-2 w-2 rounded-full bg-rust" />
             <span className="font-mono text-[11px] uppercase tracking-widest text-bone">
               Open to filmers · sessions welcome
             </span>
@@ -95,14 +95,14 @@ export function About() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="mt-6 font-display text-2xl uppercase leading-none text-bone transition-colors duration-200 group-hover:text-acid group-data-[active=true]:text-acid">
+                <h3 className="mt-6 font-display text-2xl uppercase leading-none text-bone transition-colors duration-200 group-hover:text-rust group-data-[active=true]:text-rust">
                   {g.term}
                 </h3>
                 <p className="mt-3 text-sm text-bone/70">{g.def}</p>
                 {/* Accent rule — slides in on hover OR when active on touch */}
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-acid transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-x-100 group-data-[active=true]:scale-x-100"
+                  className="pointer-events-none absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-rust transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-x-100 group-data-[active=true]:scale-x-100"
                 />
               </article>
             ))}

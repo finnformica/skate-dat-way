@@ -42,7 +42,7 @@ export function Journal() {
           <SectionHeader
             index="04"
             label="Journal"
-            tone="hazard"
+            tone="rust"
             note="words / notes"
           >
             <Reveal>
@@ -78,13 +78,13 @@ export function Journal() {
               </div>
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-3 flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest">
-                  <span className="border border-hazard px-2 py-1 text-hazard">
+                  <span className="border border-rust px-2 py-1 text-rust">
                     {post.tag}
                   </span>
                   <span className="text-bone/50">{post.date}</span>
                   <span className="text-bone/50">· {post.read}</span>
                 </div>
-                <h3 className="font-display text-2xl uppercase leading-tight text-bone transition-colors duration-150 group-hover:text-hazard group-data-[active=true]:text-hazard">
+                <h3 className="font-display text-2xl uppercase leading-tight text-bone transition-colors duration-150 group-hover:text-rust group-data-[active=true]:text-rust">
                   {post.title}
                 </h3>
                 <div className="mt-auto flex items-center gap-2 pt-4 font-display text-sm uppercase tracking-widest text-bone">

@@ -3,19 +3,19 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-display uppercase tracking-wider transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-acid focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-display uppercase tracking-wider transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rust focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-acid text-ink hover:bg-acid/90 border-2 border-ink shadow-[4px_4px_0_0_#0a0a0a]",
+          "bg-rust text-ink hover:bg-rust/90 border-2 border-ink shadow-[4px_4px_0_0_#0a0a0a]",
         destructive: "bg-rust text-bone hover:bg-rust/90 border-2 border-ink",
         outline:
           "border-2 border-bone/40 bg-transparent text-bone hover:bg-bone hover:text-ink",
         secondary:
           "bg-bone text-ink hover:bg-bone/90 border-2 border-ink shadow-[4px_4px_0_0_#0a0a0a]",
         ghost: "text-bone hover:bg-bone/10",
-        link: "text-acid underline-offset-4 hover:underline",
+        link: "text-rust underline-offset-4 hover:underline",
         hot: "bg-hot text-bone hover:bg-hot/90 border-2 border-ink shadow-[4px_4px_0_0_#0a0a0a]",
       },
       size: {

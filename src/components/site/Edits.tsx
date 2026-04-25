@@ -191,13 +191,13 @@ function EditCard({
           <div className="pointer-events-none absolute inset-0 scanlines opacity-25 mix-blend-multiply" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent" />
 
-          <div className="absolute left-3 top-3 flex items-center gap-1.5 border border-acid/60 bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-acid backdrop-blur-sm">
+          <div className="absolute left-3 top-3 flex items-center gap-1.5 border border-rust/60 bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-rust backdrop-blur-sm">
             <MapPin size={10} />
             {edit.location}
           </div>
 
           {edit.tag && (
-            <div className="absolute right-3 top-3 border-2 border-ink bg-hazard px-2 py-1 font-display text-[10px] uppercase tracking-widest text-ink">
+            <div className="absolute right-3 top-3 border-2 border-ink-fixed bg-hazard px-2 py-1 font-display text-[10px] uppercase tracking-widest text-on-accent">
               {edit.tag}
             </div>
           )}

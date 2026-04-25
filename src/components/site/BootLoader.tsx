@@ -132,8 +132,8 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
       <div className="flex items-center justify-between border-b border-bone/15 px-5 py-3 font-mono text-[10px] uppercase tracking-widest text-bone/60 md:px-8">
         <span className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
-            <span className="absolute inset-0 animate-ping rounded-full bg-acid opacity-80" />
-            <span className="relative block h-2 w-2 rounded-full bg-acid" />
+            <span className="absolute inset-0 animate-ping rounded-full bg-rust opacity-80" />
+            <span className="relative block h-2 w-2 rounded-full bg-rust" />
           </span>
           Reel · SDW_2026.mp4
         </span>
@@ -156,12 +156,12 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
           </p>
           <h1 className="mt-3 font-display text-[clamp(3rem,9vw,7rem)] leading-[0.9]">
             <span className="text-bone">Skate</span>{" "}
-            <span className="text-acid italic">dat</span>{" "}
+            <span className="text-rust italic">dat</span>{" "}
             <span className="text-bone">way.</span>
           </h1>
           <p className="mt-4 font-mono text-xs uppercase tracking-widest text-bone/50">
             {STATUS_LINES[status]}
-            <span className="ml-0.5 inline-block w-2 animate-pulse text-acid">
+            <span className="ml-0.5 inline-block w-2 animate-pulse text-rust">
               _
             </span>
           </p>
@@ -186,7 +186,7 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
             aria-valuemax={100}
           >
             <div
-              className="h-2 bg-acid"
+              className="h-2 bg-rust"
               style={{
                 width: `${progress}%`,
                 transition: "width 120ms linear",

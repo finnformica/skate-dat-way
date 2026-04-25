@@ -25,11 +25,11 @@
     <text font-family="Impact, 'Arial Narrow', sans-serif" font-size="220" fill="#f4f1ea" letter-spacing="-6">SKATE</text>
   </g>
   <g transform="translate(80, 445)">
-    <text font-family="Impact, 'Arial Narrow', sans-serif" font-size="220" fill="#f4f1ea" letter-spacing="-6"><tspan fill="#d6ff3e" font-style="italic">DAT</tspan><tspan dx="56">WAY.</tspan></text>
+    <text font-family="Impact, 'Arial Narrow', sans-serif" font-size="220" fill="#f4f1ea" letter-spacing="-6"><tspan fill="#fb5a1f" font-style="italic">DAT</tspan><tspan dx="56">WAY.</tspan></text>
   </g>
 
   <!-- Footer strip — EDITS · SPOTS · JOURNAL on the left, ★ 2026 on the right -->
   <line x1="0" y1="540" x2="1200" y2="540" stroke="rgba(244,241,234,0.15)" stroke-width="2" />
   <text x="80" y="585" font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="14" fill="rgba(244,241,234,0.55)" letter-spacing="4" font-weight="600">MANIFESTO · REELS · MAP · JOURNAL · CONTACT</text>
-  <text x="1120" y="585" font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="14" fill="rgba(214,255,62,0.85)" text-anchor="end" letter-spacing="4" font-weight="700">★ 2026</text>
+  <text x="1120" y="585" font-family="ui-monospace, 'SF Mono', Consolas, monospace" font-size="14" fill="rgba(251,90,31,0.9)" text-anchor="end" letter-spacing="4" font-weight="700">★ 2026</text>
 </svg>

@@ -65,13 +65,13 @@ export function Spots() {
             <SectionHeader
               index="03"
               label="Map"
-              tone="rust"
+              tone="hazard"
               note="spots / london"
             >
               <Reveal>
                 <h2 className="text-5xl text-bone md:text-7xl">
                   London, as{" "}
-                  <span className="text-rust italic">a grind line.</span>
+                  <span className="text-hazard italic">a grind line.</span>
                 </h2>
               </Reveal>
             </SectionHeader>
@@ -108,11 +108,11 @@ export function Spots() {
               </div>
 
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-rust">
+                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-hazard">
                   <MapPin size={10} />
                   {spot.zone} · {spot.tube}
                 </div>
-                <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-rust group-data-[active=true]:text-rust">
+                <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-hazard group-data-[active=true]:text-hazard">
                   {spot.name}
                 </h3>
                 <div className="grid grid-rows-[0fr] overflow-hidden opacity-0 transition-[grid-template-rows,opacity] duration-[420ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:grid-rows-[1fr] group-hover:opacity-100 group-data-[active=true]:grid-rows-[1fr] group-data-[active=true]:opacity-100">
@@ -122,7 +122,7 @@ export function Spots() {
                 </div>
               </div>
 
-              <div className="absolute right-4 top-4 border border-rust/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-rust">
+              <div className="absolute right-4 top-4 border border-hazard/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-hazard">
                 {spot.type}
               </div>
             </article>

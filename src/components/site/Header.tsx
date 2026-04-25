@@ -113,7 +113,7 @@ function Roundel() {
       aria-hidden
       className="relative grid h-10 w-10 place-items-center"
     >
-      <span className="absolute inset-0 rounded-full border-[4px] border-acid" />
+      <span className="absolute inset-0 rounded-full border-[4px] border-rust" />
       <span className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-bone" />
       <span className="relative font-display text-[10px] uppercase tracking-widest text-ink">
         SDW

@@ -142,7 +142,7 @@ export function Footer() {
                 aria-hidden
                 className="relative grid h-10 w-10 place-items-center"
               >
-                <span className="absolute inset-0 rounded-full border-[4px] border-acid" />
+                <span className="absolute inset-0 rounded-full border-[4px] border-rust" />
                 <span className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-bone" />
                 <span className="relative font-display text-[10px] uppercase tracking-widest text-ink">
                   SDW
@@ -161,7 +161,7 @@ export function Footer() {
                 <a
                   key={i}
                   href="#"
-                  className="press flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone transition-colors duration-150 hover:border-acid hover:text-acid"
+                  className="press flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
                   aria-label="social"
                 >
                   <Icon className="h-4 w-4" />
@@ -180,7 +180,7 @@ export function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="link-underline hover:text-acid"
+                      className="link-underline hover:text-rust"
                     >
                       {link.label}
                     </a>
@@ -194,10 +194,10 @@ export function Footer() {
         <div className="mt-auto flex flex-col items-center justify-between gap-3 pt-6 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
           <p>© 2026 Skate Dat Way · London</p>
           <div className="flex items-center gap-5">
-            <a href="#" className="link-underline hover:text-acid">
+            <a href="#" className="link-underline hover:text-rust">
               Privacy
             </a>
-            <a href="#" className="link-underline hover:text-acid">
+            <a href="#" className="link-underline hover:text-rust">
               Terms
             </a>
           </div>

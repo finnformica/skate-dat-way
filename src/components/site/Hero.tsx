@@ -73,7 +73,7 @@ export function Hero({ ready, videoSrc }: Props) {
                 Skate
               </LineWipe>
               <LineWipe show={ready} delay={220}>
-                <span className="text-acid italic">dat</span>
+                <span className="text-rust italic">dat</span>
                 <span className="text-bone"> way.</span>
               </LineWipe>
             </h1>
@@ -103,12 +103,12 @@ export function Hero({ ready, videoSrc }: Props) {
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
 
               {/* CCTV timestamp */}
-              <div className="absolute left-3 top-3 flex items-center gap-2 border border-acid/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-acid">
+              <div className="absolute left-3 top-3 flex items-center gap-2 border border-rust/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-rust">
                 <span className="relative flex h-1.5 w-1.5">
                   <span
-                    className={`absolute inset-0 rounded-full bg-acid ${ready ? "animate-ping" : ""}`}
+                    className={`absolute inset-0 rounded-full bg-rust ${ready ? "animate-ping" : ""}`}
                   />
-                  <span className="relative block h-1.5 w-1.5 rounded-full bg-acid" />
+                  <span className="relative block h-1.5 w-1.5 rounded-full bg-rust" />
                 </span>
                 REC · 01:04:27
               </div>
@@ -130,9 +130,10 @@ export function Hero({ ready, videoSrc }: Props) {
           </Tilt>
 
           {/* "new edit" sticker — mobile: inside top-right of video;
-              desktop: outside the video's left edge. */}
+              desktop: outside the video's left edge.
+              Text on bg-hot uses text-on-accent so it flips with theme. */}
           <div
-            className="absolute right-3 top-3 z-10 flex h-16 w-16 items-center justify-center border-2 border-ink bg-hot text-center font-display text-[10px] uppercase leading-tight text-bone shadow-[4px_4px_0_0_#0a0a0a] transition-[transform,opacity] duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] md:-left-6 md:right-auto md:top-1/3 md:h-24 md:w-24 md:text-xs"
+            className="absolute right-3 top-3 z-10 flex h-16 w-16 items-center justify-center border-2 border-ink-fixed bg-hot text-center font-display text-[10px] uppercase leading-tight text-on-accent shadow-[4px_4px_0_0_#0a0a0a] transition-[transform,opacity] duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] md:-left-6 md:right-auto md:top-1/3 md:h-24 md:w-24 md:text-xs"
             style={{
               transitionDelay: ready ? "900ms" : "0ms",
               transform: ready
@@ -148,9 +149,10 @@ export function Hero({ ready, videoSrc }: Props) {
             <span className="text-sm md:text-lg">↓</span>
           </div>
 
-          {/* Hazard tape — London, UK label */}
+          {/* Hazard tape — London, UK label. Text uses text-on-accent so
+              it tracks the hazard's theme-appropriate depth. */}
           <div
-            className="absolute -bottom-2 -right-2 border-2 border-ink bg-hazard px-2 py-1.5 font-mono text-[10px] uppercase tracking-widest text-ink transition-[transform,opacity] duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)] md:-bottom-3 md:-right-3 md:px-3 md:py-2"
+            className="absolute -bottom-2 -right-2 border-2 border-ink-fixed bg-hazard px-2 py-1.5 font-mono text-[10px] uppercase tracking-widest text-on-accent transition-[transform,opacity] duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)] md:-bottom-3 md:-right-3 md:px-3 md:py-2"
             style={{
               transitionDelay: ready ? "1100ms" : "0ms",
               transform: ready ? "translateY(0)" : "translateY(10px)",
@@ -174,7 +176,7 @@ export function Hero({ ready, videoSrc }: Props) {
               <Magnetic>
                 <a
                   href="#reels"
-                  className="press inline-flex items-center gap-3 border-2 border-ink bg-acid px-6 py-4 font-display text-sm uppercase tracking-widest text-ink shadow-[6px_6px_0_0_#0a0a0a]"
+                  className="press inline-flex items-center gap-3 border-2 border-ink-fixed bg-rust px-6 py-4 font-display text-sm uppercase tracking-widest text-on-accent shadow-[6px_6px_0_0_#0a0a0a]"
                 >
                   Watch the reels
                   <ArrowDown className="size-4" />
@@ -183,7 +185,7 @@ export function Hero({ ready, videoSrc }: Props) {
               <Magnetic strength={0.25}>
                 <a
                   href="#manifesto"
-                  className="press inline-flex items-center gap-3 border-2 border-bone/40 px-6 py-4 font-display text-sm uppercase tracking-widest text-bone transition-colors duration-150 hover:border-acid hover:text-acid"
+                  className="press inline-flex items-center gap-3 border-2 border-bone/40 px-6 py-4 font-display text-sm uppercase tracking-widest text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
                 >
                   What is wizard?
                 </a>
@@ -251,7 +253,7 @@ function Stat({
 }) {
   return (
     <div>
-      <div className="font-display text-4xl leading-none text-acid tabular-nums md:text-5xl">
+      <div className="font-display text-4xl leading-none text-rust tabular-nums md:text-5xl">
         <CountUp to={value} suffix={suffix} />
       </div>
       <div className="mt-1 font-mono text-[11px] uppercase tracking-widest text-bone/60">

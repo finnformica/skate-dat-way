@@ -46,7 +46,7 @@ export function RouteError() {
 
       <section className="my-auto grid max-w-5xl gap-6">
         <div className="inline-flex w-fit items-stretch border-2 border-rust">
-          <span className="flex items-center gap-1.5 bg-rust px-3 py-1.5 font-display text-xs uppercase tracking-widest text-bone">
+          <span className="flex items-center gap-1.5 bg-rust px-3 py-1.5 font-display text-xs uppercase tracking-widest text-on-accent">
             <Asterisk size={12} strokeWidth={3} aria-hidden />
             {status}
           </span>
@@ -77,7 +77,7 @@ export function RouteError() {
         <div className="flex flex-wrap items-center gap-4 pt-2">
           <a
             href="/"
-            className="press inline-flex items-center gap-3 border-2 border-ink bg-acid px-6 py-4 font-display text-sm uppercase tracking-widest text-ink shadow-[6px_6px_0_0_#0a0a0a]"
+            className="press inline-flex items-center gap-3 border-2 border-ink-fixed bg-rust px-6 py-4 font-display text-sm uppercase tracking-widest text-on-accent shadow-[6px_6px_0_0_#0a0a0a]"
           >
             <ArrowLeft className="size-4" />
             Back to the spots
@@ -87,7 +87,7 @@ export function RouteError() {
 
       <div className="flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-widest text-bone/40">
         <span>Skate Dat Way · London · Est. 2020</span>
-        <a href="/#contact" className="text-bone/55 hover:text-acid">
+        <a href="/#contact" className="text-bone/55 hover:text-rust">
           hello@skatedatway.com
         </a>
       </div>
@@ -98,7 +98,7 @@ export function RouteError() {
 function Roundel() {
   return (
     <span aria-hidden className="relative grid h-9 w-9 place-items-center">
-      <span className="absolute inset-0 rounded-full border-[4px] border-acid" />
+      <span className="absolute inset-0 rounded-full border-[4px] border-rust" />
       <span className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-bone" />
       <span className="relative font-display text-[9px] uppercase tracking-widest text-ink">
         SDW

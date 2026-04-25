@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 import { Asterisk } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-type Tone = "acid" | "hot" | "rust" | "hazard"
+type Tone = "rust" | "hot" | "hazard"
 
 type Props = {
   index: string
@@ -13,37 +13,34 @@ type Props = {
   children: ReactNode
 }
 
-/** Static class lookups (Tailwind needs literal strings to compile). */
+/** Static class lookups (Tailwind needs literal strings to compile).
+ *  `onBg` is the foreground on the pill's filled cell — uses
+ *  `text-on-accent` so the colour tracks the active theme
+ *  (dark text on bright accents in dark mode, cream text on deep
+ *  accents in light mode). */
 const tones: Record<
   Tone,
   { border: string; bg: string; text: string; onBg: string; tape: string }
 > = {
-  acid: {
-    border: "border-acid",
-    bg: "bg-acid",
-    text: "text-acid",
-    onBg: "text-ink",
-    tape: "bg-acid",
+  rust: {
+    border: "border-rust",
+    bg: "bg-rust",
+    text: "text-rust",
+    onBg: "text-on-accent",
+    tape: "bg-rust",
   },
   hot: {
     border: "border-hot",
     bg: "bg-hot",
     text: "text-hot",
-    onBg: "text-bone",
+    onBg: "text-on-accent",
     tape: "bg-hot",
-  },
-  rust: {
-    border: "border-rust",
-    bg: "bg-rust",
-    text: "text-rust",
-    onBg: "text-bone",
-    tape: "bg-rust",
   },
   hazard: {
     border: "border-hazard",
     bg: "bg-hazard",
     text: "text-hazard",
-    onBg: "text-ink",
+    onBg: "text-on-accent",
     tape: "bg-hazard",
   },
 }
