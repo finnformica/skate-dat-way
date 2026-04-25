@@ -27,9 +27,9 @@
      HSL so the saturation/lightness relationships are explicit:
      all three live around 97-100% saturation, with hue + lightness
      varied for character. */
-  --color-rust: hsl(16 97% 55%);
-  --color-hot: hsl(336 97% 66%);
-  --color-hazard: hsl(48 100% 50%);
+  --color-rust: hsl(16 90% 58%);
+  --color-hot: hsl(336 88% 65%);
+  --color-hazard: hsl(48 95% 58%);
 
   /* Foreground colour for text/icons that sit directly on an accent
      surface (bg-rust / bg-hot / bg-hazard). The accents are bright,
