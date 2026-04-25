@@ -66,28 +66,20 @@ export function Spots() {
     <section id="map" className="relative border-b border-bone/15 bg-ink-2">
       <div className="pointer-events-none absolute inset-0 chainlink opacity-40" />
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
-        <div className="mb-12 grid grid-cols-1 items-end gap-6 md:grid-cols-12">
-          <div className="md:col-span-7">
-            <SectionHeader
-              index="03"
-              label="Map"
-              tone="hazard"
-              note="spots / london"
-            >
-              <Reveal>
-                <h2 className="text-5xl text-bone md:text-7xl">
-                  London, as{" "}
-                  <span className="text-hazard italic">a grind line.</span>
-                </h2>
-              </Reveal>
-            </SectionHeader>
-          </div>
-          <div className="md:col-span-5">
-            <p className="text-bone/70">
-              A personal list — not a guidebook. If you skate these, skate
-              respectful, skate quiet, and take your bottles with you.
-            </p>
-          </div>
+        <div className="mb-12">
+          <SectionHeader
+            index="03"
+            label="Map"
+            tone="hazard"
+            note="spots / london"
+          >
+            <Reveal>
+              <h2 className="text-5xl text-bone md:text-7xl">
+                London, as{" "}
+                <span className="text-hazard italic">a grind line.</span>
+              </h2>
+            </Reveal>
+          </SectionHeader>
         </div>
 
         <div className="grid grid-cols-1 gap-px bg-bone/15 sm:grid-cols-2 lg:grid-cols-4">

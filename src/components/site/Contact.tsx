@@ -59,9 +59,8 @@ export function Contact() {
             </h2>
           </Reveal>
           <p className="mt-5 max-w-lg text-on-accent/80">
-            Drop a line if you're a filmer in London, want to share a spot, or
-            just want to roll. Not interested in sponsorships, affiliate deals,
-            or your AI side project — thanks in advance.
+            Down to meet at a spot, go for a roll, or film a session? Drop a
+            message.
           </p>
 
           <div className="mt-8 inline-block">

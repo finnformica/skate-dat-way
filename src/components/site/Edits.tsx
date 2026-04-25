@@ -100,10 +100,6 @@ export function Edits() {
               </h2>
             </Reveal>
           </SectionHeader>
-          <p className="max-w-md text-bone/60 md:pb-2">
-            All handheld, all London, all the sections that didn't get cut. No
-            drone shots, no slow-mo abuse. Fisheye only.
-          </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

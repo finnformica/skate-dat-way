@@ -3,10 +3,9 @@ import { Menu, X } from "lucide-react"
 import { useActiveSection } from "@/hooks/useActiveSection"
 
 const NAV = [
-  { label: "Manifesto", href: "#manifesto", id: "manifesto" },
   { label: "Reels", href: "#reels", id: "reels" },
   { label: "Map", href: "#map", id: "map" },
-  { label: "Journal", href: "#journal", id: "journal" },
+  { label: "Diary", href: "#diary", id: "diary" },
   { label: "Contact", href: "#contact", id: "contact" },
 ] as const
 

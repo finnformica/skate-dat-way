@@ -12,47 +12,50 @@ const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const }
 
 const posts = [
   {
-    tag: "Setup",
-    title: "Why I switched to anti-rocker and stopped apologising for it",
-    date: "Apr 19, 2026",
-    read: "6 min",
+    tag: "Spot",
+    title: "Ethan locks his first soul at Stockwell — full stall, no foot down",
+    date: "Apr 22, 2026",
+    read: "3 min",
     image:
       "https://images.unsplash.com/photo-1531565637446-32307b194362?w=1200&q=80&auto=format&fit=crop",
   },
   {
-    tag: "Field notes",
-    title: "Three sessions at Southbank before security learns your face",
-    date: "Apr 08, 2026",
-    read: "4 min",
+    tag: "Setup",
+    title: "Built Ethan's first anti-rocker — frame swap, plate, the works",
+    date: "Mar 14, 2026",
+    read: "5 min",
     image:
       "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&q=80&auto=format&fit=crop",
   },
   {
-    tag: "Essay",
-    title: "Wizard isn't a style, it's a willingness to get bored at a curb",
-    date: "Mar 27, 2026",
-    read: "9 min",
+    tag: "Day one",
+    title: "Ethan straps in for the first time — cul-de-sac, knee pads, grin",
+    date: "Jan 28, 2026",
+    read: "2 min",
     image:
       "https://images.unsplash.com/photo-1565108150403-c0f12d458bf6?w=1200&q=80&auto=format&fit=crop",
   },
 ]
 
-export function Journal() {
+export function Diary() {
   const touch = useIsTouch()
   const { activeIndex, setCardRef } = useActiveCardIndex(posts.length, touch)
 
   return (
-    <section id="journal" className="border-b border-bone/15 bg-ink">
+    <section id="diary" className="border-b border-bone/15 bg-ink">
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <div className="mb-12 flex items-end justify-between gap-6">
           <SectionHeader
             index="04"
-            label="Journal"
+            label="Diary"
             tone="rust"
-            note="words / notes"
+            note="ethan / progression"
           >
             <Reveal>
-              <h2 className="text-5xl text-bone md:text-7xl">Journal.</h2>
+              <h2 className="text-5xl text-bone md:text-7xl">
+                Diary,{" "}
+                <span className="text-rust italic">Ethan rolling.</span>
+              </h2>
             </Reveal>
           </SectionHeader>
           <a

@@ -26,7 +26,7 @@ export function Hero({ ready, videoSrc }: Props) {
     <section
       id="top"
       data-ready={ready}
-      className="relative overflow-hidden border-b border-bone/15"
+      className="relative flex min-h-[80vh] flex-col overflow-hidden border-b border-bone/15"
     >
       {/* Ambient urban background — stencil, technical markings, outline type */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -165,9 +165,7 @@ export function Hero({ ready, videoSrc }: Props) {
         <div className="md:col-span-7 md:col-start-1 md:row-start-2">
           <Reveal stagger show={ready} className="space-y-5">
             <p className="max-w-xl text-sm text-bone/70 md:text-base">
-              Rollerblading out of London. Deep in the wizard scene — soul
-              slides down tube ramps, natural-line spots, anti-rocker trucks and
-              no helmet cam cinema. This is the personal archive.
+              London on eight wheels. The personal archive.
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-1">
               <Magnetic>
@@ -177,14 +175,6 @@ export function Hero({ ready, videoSrc }: Props) {
                 >
                   Watch the reels
                   <ArrowDown className="size-4" />
-                </a>
-              </Magnetic>
-              <Magnetic strength={0.25}>
-                <a
-                  href="#manifesto"
-                  className="press inline-flex items-center gap-3 border-2 border-bone/40 px-6 py-4 font-display text-sm uppercase tracking-widest text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
-                >
-                  What is wizard?
                 </a>
               </Magnetic>
             </div>

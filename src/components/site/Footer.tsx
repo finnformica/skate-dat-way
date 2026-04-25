@@ -45,10 +45,9 @@ const columns = [
   {
     title: "Site",
     links: [
-      { label: "Manifesto", href: "#manifesto" },
       { label: "Reels", href: "#reels" },
       { label: "Map", href: "#map" },
-      { label: "Journal", href: "#journal" },
+      { label: "Diary", href: "#diary" },
       { label: "Contact", href: "#contact" },
     ],
   },

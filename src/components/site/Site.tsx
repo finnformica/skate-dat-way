@@ -2,10 +2,9 @@ import { useCallback, useState } from "react"
 import { Header } from "@/components/site/Header"
 import { Hero } from "@/components/site/Hero"
 import { Marquee } from "@/components/site/Marquee"
-import { About } from "@/components/site/About"
 import { Edits } from "@/components/site/Edits"
 import { Spots } from "@/components/site/Spots"
-import { Journal } from "@/components/site/Journal"
+import { Diary } from "@/components/site/Diary"
 import { Contact } from "@/components/site/Contact"
 import { Footer } from "@/components/site/Footer"
 import { BootLoader } from "@/components/site/BootLoader"
@@ -43,10 +42,9 @@ export function Site() {
         <main>
           <Hero ready={ready} videoSrc={HERO_VIDEO} />
           <Marquee ready={ready} />
-          <About />
           <Edits />
           <Spots />
-          <Journal />
+          <Diary />
           <Contact />
         </main>
       </div>
