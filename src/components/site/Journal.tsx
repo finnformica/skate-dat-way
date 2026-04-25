@@ -1,8 +1,14 @@
+import { motion } from "motion/react"
 import { ArrowUpRight } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
 import { SectionHeader } from "@/components/site/SectionHeader"
 import { useIsTouch } from "@/hooks/useIsTouch"
 import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
+
+const CARD_INITIAL = { opacity: 0, y: 24 }
+const CARD_VISIBLE = { opacity: 1, y: 0 }
+const CARD_VIEWPORT = { once: true, amount: 0.5 } as const
+const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const }
 
 const posts = [
   {
@@ -57,15 +63,16 @@ export function Journal() {
           </a>
         </div>
 
-        <Reveal
-          stagger
-          className="grid grid-cols-1 gap-px bg-bone/15 md:grid-cols-3"
-        >
+        <div className="grid grid-cols-1 gap-px bg-bone/15 md:grid-cols-3">
           {posts.map((post, i) => (
-            <article
+            <motion.article
               key={post.title}
               ref={setCardRef(i)}
               data-active={touch && activeIndex === i ? "true" : undefined}
+              initial={CARD_INITIAL}
+              whileInView={CARD_VISIBLE}
+              viewport={CARD_VIEWPORT}
+              transition={CARD_TRANSITION}
               className="group flex flex-col bg-ink transition-colors duration-200 hover:bg-ink-2 data-[active=true]:bg-ink-2"
             >
               <div className="aspect-[16/10] overflow-hidden">
@@ -92,9 +99,9 @@ export function Journal() {
                   <ArrowUpRight className="size-4 transition-transform duration-200 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-data-[active=true]:-translate-y-1 group-data-[active=true]:translate-x-1" />
                 </div>
               </div>
-            </article>
+            </motion.article>
           ))}
-        </Reveal>
+        </div>
       </div>
     </section>
   )

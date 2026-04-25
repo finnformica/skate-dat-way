@@ -1,8 +1,14 @@
+import { motion } from "motion/react"
 import { MapPin } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
 import { SectionHeader } from "@/components/site/SectionHeader"
 import { useIsTouch } from "@/hooks/useIsTouch"
 import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
+
+const CARD_INITIAL = { opacity: 0, y: 24 }
+const CARD_VISIBLE = { opacity: 1, y: 0 }
+const CARD_VIEWPORT = { once: true, amount: 0.5 } as const
+const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const }
 
 type Spot = {
   name: string
@@ -84,15 +90,16 @@ export function Spots() {
           </div>
         </div>
 
-        <Reveal
-          stagger
-          className="grid grid-cols-1 gap-px bg-bone/15 sm:grid-cols-2 lg:grid-cols-4"
-        >
+        <div className="grid grid-cols-1 gap-px bg-bone/15 sm:grid-cols-2 lg:grid-cols-4">
           {spots.map((spot, i) => (
-            <article
+            <motion.article
               key={spot.name}
               ref={setCardRef(i)}
               data-active={touch && activeIndex === i ? "true" : undefined}
+              initial={CARD_INITIAL}
+              whileInView={CARD_VISIBLE}
+              viewport={CARD_VIEWPORT}
+              transition={CARD_TRANSITION}
               className="group relative aspect-[3/4] overflow-hidden bg-ink-2"
             >
               <img
@@ -125,9 +132,9 @@ export function Spots() {
               <div className="absolute right-4 top-4 border border-hazard/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-hazard">
                 {spot.type}
               </div>
-            </article>
+            </motion.article>
           ))}
-        </Reveal>
+        </div>
       </div>
     </section>
   )

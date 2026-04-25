@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { useInView } from "@/hooks/useInView"
+import { useInView } from "motion/react"
 
 type Props = {
   to: number
@@ -9,7 +9,8 @@ type Props = {
 }
 
 export function CountUp({ to, suffix = "", duration = 1200, className }: Props) {
-  const { ref, visible } = useInView<HTMLSpanElement>()
+  const ref = useRef<HTMLSpanElement>(null)
+  const visible = useInView(ref, { once: true, amount: 0.1 })
   const [n, setN] = useState(0)
   const raf = useRef<number | null>(null)
 

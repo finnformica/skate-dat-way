@@ -1,10 +1,17 @@
 import { useEffect, useRef } from "react"
+import { motion } from "motion/react"
 import { MapPin } from "lucide-react"
 import { Reveal } from "@/components/motion/Reveal"
 import { Tilt } from "@/components/motion/Tilt"
 import { SectionHeader } from "@/components/site/SectionHeader"
 import { useIsTouch } from "@/hooks/useIsTouch"
 import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
+
+const CARD_EASE = [0.23, 1, 0.32, 1] as const
+const CARD_INITIAL = { opacity: 0, y: 24 }
+const CARD_VISIBLE = { opacity: 1, y: 0 }
+const CARD_VIEWPORT = { once: true, amount: 0.5 } as const
+const CARD_TRANSITION = { duration: 0.55, ease: CARD_EASE }
 
 type Edit = {
   title: string
@@ -99,7 +106,7 @@ export function Edits() {
           </p>
         </div>
 
-        <Reveal stagger className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {edits.map((e, i) => (
             <EditCard
               edit={e}
@@ -110,7 +117,7 @@ export function Edits() {
               articleRef={setCardRef(i)}
             />
           ))}
-        </Reveal>
+        </div>
       </div>
     </section>
   )
@@ -167,11 +174,15 @@ function EditCard({
 
   return (
     <Tilt max={touch ? 0 : 4}>
-      <article
+      <motion.article
         ref={articleRef}
         {...hoverProps}
         tabIndex={0}
         data-active={isActive ? "true" : undefined}
+        initial={CARD_INITIAL}
+        whileInView={CARD_VISIBLE}
+        viewport={CARD_VIEWPORT}
+        transition={CARD_TRANSITION}
         className={`group relative overflow-hidden border-2 border-bone/15 bg-ink-2 transition-colors duration-200 hover:border-hot focus-visible:border-hot focus-visible:outline-none data-[active=true]:border-hot ${
           offset ? "md:translate-y-6" : ""
         }`}
@@ -216,7 +227,7 @@ function EditCard({
             watch ↗
           </span>
         </div>
-      </article>
+      </motion.article>
     </Tilt>
   )
 }

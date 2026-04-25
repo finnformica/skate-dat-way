@@ -1,7 +1,13 @@
-import { Reveal } from "@/components/motion/Reveal"
-import { SectionHeader } from "@/components/site/SectionHeader"
-import { useIsTouch } from "@/hooks/useIsTouch"
-import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
+import { Reveal } from "@/components/motion/Reveal";
+import { SectionHeader } from "@/components/site/SectionHeader";
+import { useActiveCardIndex } from "@/hooks/useActiveCardIndex";
+import { useIsTouch } from "@/hooks/useIsTouch";
+import { motion } from "motion/react";
+
+const CARD_INITIAL = { opacity: 0, y: 24 };
+const CARD_VISIBLE = { opacity: 1, y: 0 };
+const CARD_VIEWPORT = { once: true, amount: 0.5 } as const;
+const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const };
 
 const glossary = [
   {
@@ -20,26 +26,24 @@ const glossary = [
     term: "Soul",
     def: "The defining grind of the scene — outside foot on the rail, inside foot along the side. The one you learn last and keep forever.",
   },
-]
+];
 
 export function About() {
-  const touch = useIsTouch()
+  const touch = useIsTouch();
   const { activeIndex, setCardRef } = useActiveCardIndex(
     glossary.length,
     touch,
-  )
+  );
 
   return (
-    <section id="manifesto" className="relative border-b border-bone/15 bg-ink-2">
+    <section
+      id="manifesto"
+      className="relative border-b border-bone/15 bg-ink-2"
+    >
       <div className="pointer-events-none absolute inset-0 halftone opacity-30" />
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 py-20 md:grid-cols-12 md:px-8 md:py-28">
         <div className="md:col-span-5">
-          <SectionHeader
-            index="01"
-            label="Manifesto"
-            tone="rust"
-            note="entry"
-          >
+          <SectionHeader index="01" label="Manifesto" tone="rust" note="entry">
             <Reveal>
               <h2 className="text-5xl text-bone md:text-7xl">
                 Blading,
@@ -54,8 +58,8 @@ export function About() {
               skateboard/rollerblade distinction war. Somewhere around 2020 I
               fell into <strong className="text-bone">wizard skating</strong> —
               the London-via-Minnesota slow-burn corner of the scene where the
-              spot matters more than the trick, and the curb you've skated
-              forty times hasn't finished teaching you anything.
+              spot matters more than the trick, and the curb you've skated forty
+              times hasn't finished teaching you anything.
             </p>
             <p>
               This site is an archive: edits I've filmed, spots I ride, and
@@ -72,16 +76,16 @@ export function About() {
         </div>
 
         <div className="md:col-span-7">
-          <Reveal
-            stagger
-            as="div"
-            className="grid grid-cols-1 gap-px bg-bone/15 sm:grid-cols-2"
-          >
+          <div className="grid grid-cols-1 gap-px bg-bone/15 sm:grid-cols-2">
             {glossary.map((g, i) => (
-              <article
+              <motion.article
                 key={g.term}
                 ref={setCardRef(i)}
                 data-active={touch && activeIndex === i ? "true" : undefined}
+                initial={CARD_INITIAL}
+                whileInView={CARD_VISIBLE}
+                viewport={CARD_VIEWPORT}
+                transition={CARD_TRANSITION}
                 className="group relative overflow-hidden bg-ink-2 p-6 transition-colors duration-200 hover:bg-ink data-[active=true]:bg-ink"
               >
                 <div className="flex items-start justify-between gap-4">
@@ -104,11 +108,11 @@ export function About() {
                   aria-hidden
                   className="pointer-events-none absolute inset-x-6 bottom-0 h-px origin-left scale-x-0 bg-rust transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-x-100 group-data-[active=true]:scale-x-100"
                 />
-              </article>
+              </motion.article>
             ))}
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

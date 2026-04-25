@@ -1,26 +1,26 @@
-import { useEffect, useRef } from "react"
-import { ArrowDown, MapPin } from "lucide-react"
-import { Magnetic } from "@/components/motion/Magnetic"
-import { Tilt } from "@/components/motion/Tilt"
-import { CountUp } from "@/components/motion/CountUp"
-import { Reveal } from "@/components/motion/Reveal"
+import { CountUp } from "@/components/motion/CountUp";
+import { Magnetic } from "@/components/motion/Magnetic";
+import { Reveal } from "@/components/motion/Reveal";
+import { Tilt } from "@/components/motion/Tilt";
+import { ArrowDown, MapPin } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 type Props = {
-  ready: boolean
-  videoSrc: string
-}
+  ready: boolean;
+  videoSrc: string;
+};
 
 export function Hero({ ready, videoSrc }: Props) {
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (!ready) return
-    const v = videoRef.current
-    if (!v) return
+    if (!ready) return;
+    const v = videoRef.current;
+    if (!v) return;
     v.play().catch(() => {
       /* autoplay blocked — leave poster visible */
-    })
-  }, [ready])
+    });
+  }, [ready]);
 
   return (
     <section
@@ -122,9 +122,6 @@ export function Hero({ ready, videoSrc }: Props) {
                     Soul on the deathbox
                   </p>
                 </div>
-                <span className="hidden h-11 w-11 items-center justify-center border-2 border-bone bg-ink text-bone sm:flex">
-                  ↗
-                </span>
               </figcaption>
             </figure>
           </Tilt>
@@ -168,9 +165,9 @@ export function Hero({ ready, videoSrc }: Props) {
         <div className="md:col-span-7 md:col-start-1 md:row-start-2">
           <Reveal stagger show={ready} className="space-y-5">
             <p className="max-w-xl text-sm text-bone/70 md:text-base">
-              Rollerblading out of London. Deep in the wizard scene — soul slides
-              down tube ramps, natural-line spots, anti-rocker trucks and no
-              helmet cam cinema. This is the personal archive.
+              Rollerblading out of London. Deep in the wizard scene — soul
+              slides down tube ramps, natural-line spots, anti-rocker trucks and
+              no helmet cam cinema. This is the personal archive.
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-1">
               <Magnetic>
@@ -208,7 +205,7 @@ export function Hero({ ready, videoSrc }: Props) {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function LineWipe({
@@ -216,9 +213,9 @@ function LineWipe({
   show,
   delay = 0,
 }: {
-  children: React.ReactNode
-  show: boolean
-  delay?: number
+  children: React.ReactNode;
+  show: boolean;
+  delay?: number;
 }) {
   // Anton's ascent+descent exceeds 1em, so a 0.85em mask clips the cap top.
   // Give the mask 1.05em to fit the glyph, then pull the next line up with
@@ -239,7 +236,7 @@ function LineWipe({
         {children}
       </span>
     </span>
-  )
+  );
 }
 
 function Stat({
@@ -247,9 +244,9 @@ function Stat({
   suffix,
   label,
 }: {
-  value: number
-  suffix?: string
-  label: string
+  value: number;
+  suffix?: string;
+  label: string;
 }) {
   return (
     <div>
@@ -260,5 +257,5 @@ function Stat({
         {label}
       </div>
     </div>
-  )
+  );
 }

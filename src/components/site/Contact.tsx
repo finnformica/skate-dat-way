@@ -1,13 +1,19 @@
-import { useState } from "react"
-import { Check, Copy } from "lucide-react"
-import { Reveal } from "@/components/motion/Reveal"
+import { Reveal } from "@/components/motion/Reveal";
+import { Check, Copy } from "lucide-react";
+import { motion } from "motion/react";
+import { useState } from "react";
+
+const CARD_INITIAL = { opacity: 0, y: 24 };
+const CARD_VISIBLE = { opacity: 1, y: 0 };
+const CARD_VIEWPORT = { once: true, amount: 0.5 } as const;
+const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const };
 
 const links = [
   { label: "Instagram", handle: "@skatedatway", href: "#" },
   { label: "YouTube", handle: "/@skatedatway", href: "#" },
   { label: "Vimeo", handle: "/skatedatway", href: "#" },
   { label: "Email", handle: "hello@skatedatway.com", href: "#" },
-]
+];
 
 export function Contact() {
   // Section is entirely bg-rust — any text sitting directly on it uses
@@ -68,14 +74,15 @@ export function Contact() {
               in both themes. Cards default to rust bg with on-accent text,
               flip on hover to the always-dark surface with always-cream
               text (the hover inversion is intentional). */}
-          <Reveal
-            stagger
-            className="grid grid-cols-1 gap-px bg-ink-fixed sm:grid-cols-2"
-          >
+          <div className="grid grid-cols-1 gap-px bg-ink-fixed sm:grid-cols-2">
             {links.map((l) => (
-              <a
+              <motion.a
                 key={l.label}
                 href={l.href}
+                initial={CARD_INITIAL}
+                whileInView={CARD_VISIBLE}
+                viewport={CARD_VIEWPORT}
+                transition={CARD_TRANSITION}
                 className="group relative flex items-center justify-between gap-4 bg-rust p-6 transition-colors duration-200 hover:bg-ink-fixed"
               >
                 <div className="min-w-0 flex-1">
@@ -89,26 +96,26 @@ export function Contact() {
                 <span className="shrink-0 font-display text-2xl text-on-accent transition-all duration-200 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-rust">
                   ↗
                 </span>
-              </a>
+              </motion.a>
             ))}
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function CopyEmail({ value }: { value: string }) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
 
   async function copy() {
     try {
-      await navigator.clipboard.writeText(value)
+      await navigator.clipboard.writeText(value);
     } catch {
       /* ignore — still show confirmation */
     }
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 1600)
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1600);
   }
 
   // Button sits on the rust section. Default state is an always-dark button
@@ -139,5 +146,5 @@ function CopyEmail({ value }: { value: string }) {
         </span>
       </span>
     </button>
-  )
+  );
 }
