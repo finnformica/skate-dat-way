@@ -127,7 +127,7 @@ function CopyEmail({ value }: { value: string }) {
       onClick={copy}
       aria-label={copied ? "Email copied" : `Copy email ${value}`}
       data-state={copied ? "copied" : "idle"}
-      className="press group relative overflow-hidden border-2 border-ink-fixed bg-ink-fixed px-5 py-4 font-display text-sm uppercase tracking-widest text-bone-fixed shadow-[6px_6px_0_0_#0a0a0a] transition-colors duration-150 data-[state=copied]:bg-rust data-[state=copied]:text-on-accent"
+      className="press group relative cursor-pointer overflow-hidden border-2 border-ink-fixed bg-ink-fixed px-5 py-4 font-display text-sm uppercase tracking-widest text-bone-fixed shadow-[6px_6px_0_0_#0a0a0a] transition-colors duration-300 ease-out hover:bg-concrete data-[state=copied]:bg-rust data-[state=copied]:text-on-accent"
     >
       <span className="relative grid">
         <span
