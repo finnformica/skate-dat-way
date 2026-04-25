@@ -5,6 +5,7 @@ import {
   useTransform,
 } from "motion/react";
 import { useEffect } from "react";
+import { Roundel } from "@/components/site/Roundel";
 
 const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -137,16 +138,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 border-b border-bone/15 pb-8 md:grid-cols-5 md:gap-10 md:pb-10">
           <div className="col-span-2">
             <div className="flex items-center gap-3">
-              <span
-                aria-hidden
-                className="relative grid h-10 w-10 place-items-center"
-              >
-                <span className="absolute inset-0 rounded-full border-[4px] border-rust" />
-                <span className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-bone" />
-                <span className="relative font-display text-[10px] uppercase tracking-widest text-ink">
-                  SDW
-                </span>
-              </span>
+              <Roundel />
               <span className="font-display text-2xl text-bone">
                 Skate Dat Way
               </span>
