@@ -17,9 +17,30 @@ export function Hero({ ready, videoSrc }: Props) {
     if (!ready) return;
     const v = videoRef.current;
     if (!v) return;
-    v.play().catch(() => {
-      /* autoplay blocked — leave poster visible */
-    });
+
+    let cancelled = false;
+    const tryPlay = () => {
+      if (cancelled || !v.paused) return;
+      v.play().catch(() => {
+        // iOS Safari can reject autoplay even with muted+playsInline
+        // (Low Power Mode, Data Saver, etc.). Fall back to playing on
+        // the first user gesture, then unbind.
+        const onGesture = () => {
+          v.play().catch(() => {});
+          document.removeEventListener("touchstart", onGesture);
+          document.removeEventListener("pointerdown", onGesture);
+        };
+        document.addEventListener("touchstart", onGesture, {
+          once: true,
+          passive: true,
+        });
+        document.addEventListener("pointerdown", onGesture, { once: true });
+      });
+    };
+    tryPlay();
+    return () => {
+      cancelled = true;
+    };
   }, [ready]);
 
   return (
@@ -84,7 +105,7 @@ export function Hero({ ready, videoSrc }: Props) {
         <div className="relative md:col-span-5 md:col-start-8 md:row-start-1 md:row-span-3">
           <Tilt max={6} className="relative">
             <figure
-              className="relative aspect-video w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_var(--color-hazard)] transition-[clip-path] duration-900 ease-in-out md:aspect-4/5 md:shadow-[14px_14px_0_0_var(--color-hazard)]"
+              className="relative aspect-4/5 w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_var(--color-hazard)] transition-[clip-path] duration-900 ease-in-out md:shadow-[14px_14px_0_0_var(--color-hazard)]"
               style={{
                 clipPath: ready ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
               }}
@@ -94,7 +115,10 @@ export function Hero({ ready, videoSrc }: Props) {
                 src={videoSrc}
                 muted
                 loop
+                autoPlay
                 playsInline
+                // some older Safari builds where `playsInline` isn't honoured.
+                webkit-playsinline="true"
                 preload="auto"
                 className="h-full w-full object-cover"
                 poster="https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?w=1200&q=80&auto=format&fit=crop"
