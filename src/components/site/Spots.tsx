@@ -70,13 +70,13 @@ export function Spots() {
           <SectionHeader
             index="02"
             label="Map"
-            tone="hazard"
+            tone="hot"
             note="spots / london"
           >
             <Reveal>
               <h2 className="text-5xl text-bone md:text-7xl">
                 London, as{" "}
-                <span className="text-hazard italic">a grind line.</span>
+                <span className="text-hot italic">a grind line.</span>
               </h2>
             </Reveal>
           </SectionHeader>
@@ -107,11 +107,11 @@ export function Spots() {
               </div>
 
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-hazard">
+                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-hot">
                   <MapPin size={10} />
                   {spot.zone} · {spot.tube}
                 </div>
-                <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-hazard group-data-[active=true]:text-hazard">
+                <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-hot group-data-[active=true]:text-hot">
                   {spot.name}
                 </h3>
                 <div className="grid grid-rows-[0fr] overflow-hidden opacity-0 transition-[grid-template-rows,opacity] duration-420 ease-out group-hover:grid-rows-[1fr] group-hover:opacity-100 group-data-[active=true]:grid-rows-[1fr] group-data-[active=true]:opacity-100">
@@ -121,7 +121,7 @@ export function Spots() {
                 </div>
               </div>
 
-              <div className="absolute right-4 top-4 border border-hazard/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-hazard">
+              <div className="absolute right-4 top-4 border border-hot/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-hot">
                 {spot.type}
               </div>
             </motion.article>

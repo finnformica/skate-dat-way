@@ -90,12 +90,12 @@ export function Edits() {
           <SectionHeader
             index="01"
             label="Reels"
-            tone="hot"
+            tone="rust"
             note="filmed / edited"
           >
             <Reveal>
               <h2 className="text-5xl text-bone md:text-7xl">
-                Reels, <span className="text-hot italic">filmed flat.</span>
+                Reels, <span className="text-rust italic">filmed flat.</span>
               </h2>
             </Reveal>
           </SectionHeader>
@@ -178,7 +178,7 @@ function EditCard({
         whileInView={CARD_VISIBLE}
         viewport={CARD_VIEWPORT}
         transition={CARD_TRANSITION}
-        className={`group relative overflow-hidden border-2 border-bone/15 bg-ink-2 transition-colors duration-200 hover:border-hot focus-visible:border-hot focus-visible:outline-none data-[active=true]:border-hot ${
+        className={`group relative overflow-hidden border-2 border-bone/15 bg-ink-2 transition-colors duration-200 hover:border-rust focus-visible:border-rust focus-visible:outline-none data-[active=true]:border-rust ${
           offset ? "md:translate-y-6" : ""
         }`}
       >
@@ -214,11 +214,11 @@ function EditCard({
             <p className="font-mono text-[11px] uppercase tracking-widest text-bone/50">
               Reel · {edit.year}
             </p>
-            <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-hot group-data-[active=true]:text-hot">
+            <h3 className="mt-1 font-display text-2xl uppercase text-bone transition-colors duration-150 group-hover:text-rust group-data-[active=true]:text-rust">
               {edit.title}
             </h3>
           </div>
-          <span className="font-mono text-xs uppercase tracking-widest text-hot transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-data-[active=true]:-translate-y-0.5 group-data-[active=true]:translate-x-0.5">
+          <span className="font-mono text-xs uppercase tracking-widest text-rust transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-data-[active=true]:-translate-y-0.5 group-data-[active=true]:translate-x-0.5">
             watch ↗
           </span>
         </div>

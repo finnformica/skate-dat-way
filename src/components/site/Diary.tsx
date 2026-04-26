@@ -48,12 +48,12 @@ export function Diary() {
           <SectionHeader
             index="03"
             label="Diary"
-            tone="rust"
+            tone="hazard"
             note="ethan / progression"
           >
             <Reveal>
               <h2 className="text-5xl text-bone md:text-7xl">
-                Diary, <span className="text-rust italic">Ethan rolling.</span>
+                Diary, <span className="text-hazard italic">Ethan rolling.</span>
               </h2>
             </Reveal>
           </SectionHeader>
@@ -87,13 +87,13 @@ export function Diary() {
               </div>
               <div className="flex flex-1 flex-col p-5">
                 <div className="mb-3 flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest">
-                  <span className="border border-rust px-2 py-1 text-rust">
+                  <span className="border border-hazard px-2 py-1 text-hazard">
                     {post.tag}
                   </span>
                   <span className="text-bone/50">{post.date}</span>
                   <span className="text-bone/50">· {post.read}</span>
                 </div>
-                <h3 className="font-display text-2xl uppercase leading-tight text-bone transition-colors duration-150 group-hover:text-rust group-data-[active=true]:text-rust">
+                <h3 className="font-display text-2xl uppercase leading-tight text-bone transition-colors duration-150 group-hover:text-hazard group-data-[active=true]:text-hazard">
                   {post.title}
                 </h3>
                 <div className="mt-auto flex items-center gap-2 pt-4 font-display text-sm uppercase tracking-widest text-bone">

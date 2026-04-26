@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion/Reveal";
+import { SectionHeader } from "@/components/site/SectionHeader";
 import { Check, Copy } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
@@ -35,29 +36,21 @@ export function Contact() {
       />
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-5 py-20 md:grid-cols-12 md:px-8 md:py-28">
         <div className="md:col-span-6">
-          {/* Eyebrow pill — intentionally inverted: always-dark pill on
-              the rust section. Uses -fixed tokens so it stays dark in
-              both themes. Text on the dark pill uses text-bone-fixed
-              (always cream). */}
-          <div className="mb-6 inline-flex items-stretch border-2 border-ink-fixed">
-            <span className="flex items-center gap-1.5 bg-ink-fixed px-3 py-1.5 font-display text-xs uppercase tracking-widest text-rust">
-              <span aria-hidden>✱</span>
-              04
-            </span>
-            <span className="flex items-center gap-3 px-3 py-1.5 font-display text-xs uppercase tracking-widest text-on-accent">
-              Contact
-              <span className="font-mono text-[10px] tracking-widest text-on-accent/50">
-                / say hello
-              </span>
-            </span>
-          </div>
-          <Reveal>
-            <h2 className="text-5xl text-on-accent md:text-7xl">
-              Filming, spots,
-              <br />
-              sessions.
-            </h2>
-          </Reveal>
+          <SectionHeader
+            index="04"
+            label="Contact"
+            tone="rust"
+            note="say hello"
+            invert
+          >
+            <Reveal>
+              <h2 className="text-5xl text-on-accent md:text-7xl">
+                Filming, spots,
+                <br />
+                sessions.
+              </h2>
+            </Reveal>
+          </SectionHeader>
           <p className="mt-5 max-w-lg text-on-accent/80">
             Down to meet at a spot, go for a roll, or film a session? Drop a
             message.
