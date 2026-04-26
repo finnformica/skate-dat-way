@@ -9,11 +9,11 @@ export function Roundel({ className }: Props) {
     <span
       aria-hidden
       className={cn(
-        "inline-flex items-center border-2 border-bone px-2 py-1 font-display text-xl leading-none tracking-tight text-bone",
+        "inline-flex items-center border-2 border-bone bg-ink-fixed px-2 py-1 font-display text-xl leading-none tracking-tight text-bone",
         className,
       )}
     >
-      S<span className="italic text-rust">D</span>W
+      S<span className="relative mr-1 italic text-rust">D</span>W
     </span>
   );
 }
