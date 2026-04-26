@@ -42,7 +42,7 @@ export function Contact() {
           <div className="mb-6 inline-flex items-stretch border-2 border-ink-fixed">
             <span className="flex items-center gap-1.5 bg-ink-fixed px-3 py-1.5 font-display text-xs uppercase tracking-widest text-rust">
               <span aria-hidden>✱</span>
-              05
+              04
             </span>
             <span className="flex items-center gap-3 px-3 py-1.5 font-display text-xs uppercase tracking-widest text-on-accent">
               Contact

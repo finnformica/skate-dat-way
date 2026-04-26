@@ -150,7 +150,7 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
         </div>
         <div className="relative text-center">
           <p className="font-mono text-[11px] uppercase tracking-[0.35em] text-bone/60">
-            Now loading — Skate Dat Way
+            Now loading
           </p>
           <h1 className="mt-3 font-display text-[clamp(3rem,9vw,7rem)] leading-[0.9]">
             <span className="text-bone">Skate</span>{" "}

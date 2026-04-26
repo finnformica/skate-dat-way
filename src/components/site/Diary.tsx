@@ -13,7 +13,7 @@ const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const };
 const posts = [
   {
     tag: "Spot",
-    title: "Ethan locks his first soul at Stockwell — full stall, no foot down",
+    title: "Ethan locks his first soul at Stockwell, full stall, no foot down",
     date: "Apr 22, 2026",
     read: "3 min",
     image:
@@ -21,7 +21,7 @@ const posts = [
   },
   {
     tag: "Setup",
-    title: "Built Ethan's first anti-rocker — frame swap, plate, the works",
+    title: "Built Ethan's first anti-rocker: frame swap, plate, the works",
     date: "Mar 14, 2026",
     read: "5 min",
     image:
@@ -29,7 +29,7 @@ const posts = [
   },
   {
     tag: "Day one",
-    title: "Ethan straps in for the first time — cul-de-sac, knee pads, grin",
+    title: "Ethan straps in for the first time: cul-de-sac, knee pads, grin",
     date: "Jan 28, 2026",
     read: "2 min",
     image:
@@ -46,7 +46,7 @@ export function Diary() {
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <div className="mb-12 flex items-end justify-between gap-6">
           <SectionHeader
-            index="04"
+            index="03"
             label="Diary"
             tone="rust"
             note="ethan / progression"

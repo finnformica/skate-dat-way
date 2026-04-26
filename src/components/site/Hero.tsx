@@ -84,7 +84,7 @@ export function Hero({ ready, videoSrc }: Props) {
         <div className="relative md:col-span-5 md:col-start-8 md:row-start-1 md:row-span-3">
           <Tilt max={6} className="relative">
             <figure
-              className="relative aspect-video w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_#d6ff3e] transition-[clip-path] duration-900 ease-in-out md:aspect-4/5 md:shadow-[14px_14px_0_0_#d6ff3e]"
+              className="relative aspect-video w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_var(--color-hazard)] transition-[clip-path] duration-900 ease-in-out md:aspect-4/5 md:shadow-[14px_14px_0_0_var(--color-hazard)]"
               style={{
                 clipPath: ready ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
               }}

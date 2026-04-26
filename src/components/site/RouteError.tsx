@@ -65,7 +65,7 @@ export function RouteError() {
 
         <p className="max-w-xl text-sm leading-relaxed text-bone/70 md:text-base">
           The app threw an error while rendering this page. Shouldn't happen
-          often — roll back home and try again.
+          often. Roll back home and try again.
         </p>
 
         {message && (

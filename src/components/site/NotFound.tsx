@@ -61,7 +61,7 @@ export function NotFound() {
           <p className="max-w-xl text-sm leading-relaxed text-bone/70 md:text-base">
             This URL isn't in the archive. You've either followed a busted link,
             mistyped a path, or skated somewhere I haven't filmed yet. Either
-            way — <strong className="text-bone">roll back to the top</strong>{" "}
+            way, <strong className="text-bone">roll back to the top</strong>{" "}
             and start over.
           </p>
 

@@ -43,7 +43,7 @@ const spots: Spot[] = [
     zone: "Zone 2 · SE15",
     tube: "Peckham Rye",
     type: "Street / ledges",
-    note: "Long marble ledges behind the station. Sunday mornings only — the rest is too busy to ride.",
+    note: "Long marble ledges behind the station. Sunday mornings only; the rest is too busy to ride.",
     image:
       "https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?w=1600&q=80&auto=format&fit=crop",
   },
@@ -68,7 +68,7 @@ export function Spots() {
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <div className="mb-12">
           <SectionHeader
-            index="03"
+            index="02"
             label="Map"
             tone="hazard"
             note="spots / london"

@@ -146,7 +146,7 @@ export function Footer() {
               <Roundel />
             </div>
             <p className="mt-3 max-w-sm text-sm text-bone/60">
-              A personal archive of London wizard skating - edits, spots, notes.
+              A personal archive of London wizard skating: edits, spots, notes.
             </p>
             <div className="mt-5 flex items-center gap-3">
               {[Instagram, Youtube, Vimeo].map((Icon, i) => (
