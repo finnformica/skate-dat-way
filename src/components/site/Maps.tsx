@@ -36,7 +36,7 @@ const spots: Spot[] = [
     type: "Concrete park",
     note: "The Brixton Beach. Moon-crater bowls and a death box that's tried to kill me.",
     image:
-      "https://images.unsplash.com/photo-1520975867597-0af37a22e31a?w=1600&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1600&q=80&auto=format&fit=crop",
   },
   {
     name: "Peckham Rye",
@@ -58,7 +58,7 @@ const spots: Spot[] = [
   },
 ];
 
-export function Spots() {
+export function Maps() {
   const touch = useIsTouch();
   const { activeIndex, setCardRef } = useActiveCardIndex(spots.length, touch);
 
@@ -97,14 +97,10 @@ export function Spots() {
               <img
                 src={spot.image}
                 alt={spot.name}
-                className="h-full w-full object-cover grayscale transition-[filter,transform] duration-700 ease-out group-hover:scale-[1.04] group-hover:grayscale-0 group-data-[active=true]:scale-[1.04] group-data-[active=true]:grayscale-0"
+                className="h-full w-full object-cover grayscale transition-all duration-700 ease-out group-hover:scale-[1.04] group-hover:grayscale-0 group-data-[active=true]:scale-[1.04] group-data-[active=true]:grayscale-0"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-linear-to-t from-ink via-ink/30 to-transparent" />
-
-              <div className="absolute left-4 top-4 font-display text-5xl leading-none text-bone/80 mix-blend-difference">
-                {String(i + 1).padStart(2, "0")}
-              </div>
 
               <div className="absolute inset-x-0 bottom-0 p-5">
                 <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-hot">

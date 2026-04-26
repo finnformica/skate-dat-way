@@ -7,7 +7,7 @@ import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { Marquee } from "@/components/site/Marquee";
-import { Spots } from "@/components/site/Spots";
+import { Maps } from "@/components/site/Maps";
 import { useCallback, useState } from "react";
 
 const HERO_VIDEO = "/videos/video1.mp4";
@@ -40,7 +40,7 @@ export function Site() {
           <Hero ready={ready} videoSrc={HERO_VIDEO} />
           <Marquee ready={ready} />
           <Reels />
-          <Spots />
+          <Maps />
           <Diary />
           <Contact />
         </main>
