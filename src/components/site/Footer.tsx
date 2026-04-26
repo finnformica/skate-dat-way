@@ -114,24 +114,32 @@ export function Footer() {
       <div className="pointer-events-none absolute inset-0 chainlink opacity-30" />
 
       <motion.div
-        aria-hidden
-        style={reduce ? undefined : { opacity: wordmarkOpacity }}
-        className="pointer-events-none absolute inset-0 flex select-none flex-col justify-between px-5 py-6 md:px-10 md:py-8"
-      >
-        {["SKATE", "DAT", "WAY"].map((word) => (
-          <span
-            key={word}
-            className="block font-display text-[clamp(5rem,19vw,16rem)] leading-[0.78] text-bone/6"
-          >
-            {word}
-          </span>
-        ))}
-      </motion.div>
-
-      <motion.div
         style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
         className="relative mx-auto flex h-full max-w-7xl flex-col px-5 pb-10 pt-14 md:px-8"
       >
+        <motion.div
+          aria-hidden
+          style={reduce ? undefined : { opacity: wordmarkOpacity }}
+          className="pointer-events-none absolute inset-x-2 bottom-2 select-none"
+        >
+          <svg
+            viewBox="0 0 1000 200"
+            preserveAspectRatio="xMinYMax meet"
+            className="block w-full"
+          >
+            <text
+              x="0"
+              y="200"
+              textLength="1000"
+              lengthAdjust="spacingAndGlyphs"
+              fontSize="200"
+              className="font-display fill-bone/6"
+            >
+              SKATE DAT WAY
+            </text>
+          </svg>
+        </motion.div>
+
         <div className="grid grid-cols-2 gap-8 border-b border-bone/15 pb-8 md:grid-cols-5 md:gap-10 md:pb-10">
           <div className="col-span-2">
             <div className="flex items-center gap-3">
