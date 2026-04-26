@@ -82,12 +82,20 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
-  // Lock scroll while the loader is up
+  // Lock scroll while the loader is up. Body overflow alone isn't enough —
+  // Lenis hijacks the wheel and runs its own RAF loop, so we also signal
+  // LenisProvider to stop()/start() via a window flag + custom events.
+  // The flag covers the init race: child effects run before parent effects,
+  // so the dispatched event might fire before LenisProvider listens.
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    window.__lenisLocked = true;
+    window.dispatchEvent(new CustomEvent("lenis:stop"));
     return () => {
       document.body.style.overflow = prev;
+      window.__lenisLocked = false;
+      window.dispatchEvent(new CustomEvent("lenis:start"));
     };
   }, []);
 
@@ -107,7 +115,7 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
       if (p >= 1 && !doneCalledRef.current) {
         doneCalledRef.current = true;
         setPhase("out");
-        window.setTimeout(onDone, 720); // match clip-path exit duration
+        window.setTimeout(onDone, 700); // match slide-up exit duration
         return;
       }
       raf = requestAnimationFrame(loop);
@@ -122,7 +130,7 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
     <div
       data-phase={phase}
       aria-hidden={phase === "out"}
-      className="fixed inset-0 z-100 flex flex-col overflow-hidden bg-ink text-bone [clip-path:inset(0_0_0_0)] transition-[clip-path] duration-720 ease-in-out data-[phase=out]:[clip-path:inset(0_0_100%_0)]"
+      className="fixed inset-0 z-100 flex flex-col overflow-hidden bg-ink text-bone transition-transform duration-700 ease-in-out will-change-transform data-[phase=out]:-translate-y-full"
     >
       <div className="pointer-events-none absolute inset-0 scanlines opacity-30" />
       <div className="pointer-events-none absolute inset-0 halftone opacity-20" />

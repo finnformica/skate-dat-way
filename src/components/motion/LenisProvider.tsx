@@ -5,6 +5,12 @@ type Props = {
   children: ReactNode
 }
 
+declare global {
+  interface Window {
+    __lenisLocked?: boolean
+  }
+}
+
 // Header height offset so in-page anchors don't land under the sticky nav
 const SCROLL_OFFSET = -80
 
@@ -18,6 +24,11 @@ export function LenisProvider({ children }: Props) {
       easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     })
+
+    // If a child effect (e.g. BootLoader) ran before us and set the lock flag,
+    // honour it — its dispatched event would have fired before our listener
+    // was attached.
+    if (window.__lenisLocked) lenis.stop()
 
     let raf = 0
     const loop = (time: number) => {
@@ -44,9 +55,17 @@ export function LenisProvider({ children }: Props) {
     }
     document.addEventListener("click", onAnchorClick)
 
+    // External pause/resume — used by BootLoader to lock scroll while it's up.
+    const onStop = () => lenis.stop()
+    const onStart = () => lenis.start()
+    window.addEventListener("lenis:stop", onStop)
+    window.addEventListener("lenis:start", onStart)
+
     return () => {
       cancelAnimationFrame(raf)
       document.removeEventListener("click", onAnchorClick)
+      window.removeEventListener("lenis:stop", onStop)
+      window.removeEventListener("lenis:start", onStart)
       lenis.destroy()
     }
   }, [])
