@@ -33,7 +33,7 @@ const posts = [
     date: "Jan 28, 2026",
     read: "2 min",
     image:
-      "https://images.unsplash.com/photo-1565108150403-c0f12d458bf6?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1507915135761-41a0a222c709?w=1200&q=80&auto=format&fit=crop",
   },
 ];
 
