@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 /**
  * `true` on devices without a hover-capable pointer (phones, tablets).
- * Used to switch the Edits reel behaviour: hover-to-play on desktop,
+ * Used to switch the Reels behaviour: hover-to-play on desktop,
  * play-when-in-view on touch.
  */
 export function useIsTouch(): boolean {

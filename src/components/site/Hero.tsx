@@ -117,11 +117,9 @@ export function Hero({ ready, videoSrc }: Props) {
                 loop
                 autoPlay
                 playsInline
-                // some older Safari builds where `playsInline` isn't honoured.
                 webkit-playsinline="true"
                 preload="auto"
                 className="h-full w-full object-cover"
-                poster="https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?w=1200&q=80&auto=format&fit=crop"
               />
               <div className="absolute inset-0 scanlines opacity-25 mix-blend-multiply" />
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-ink/80 via-ink/10 to-transparent" />
@@ -214,7 +212,7 @@ export function Hero({ ready, videoSrc }: Props) {
           >
             <Stat value={ready ? 7 : 0} suffix="y" label="Bladed" />
             <Stat value={ready ? 43 : 0} label="Spots logged" />
-            <Stat value={ready ? 12 : 0} label="Edits dropped" />
+            <Stat value={ready ? 12 : 0} label="Reels dropped" />
           </Reveal>
         </div>
       </div>

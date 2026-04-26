@@ -2,7 +2,7 @@ import { LenisProvider } from "@/components/motion/LenisProvider";
 import { BootLoader } from "@/components/site/BootLoader";
 import { Contact } from "@/components/site/Contact";
 import { Diary } from "@/components/site/Diary";
-import { Edits } from "@/components/site/Edits";
+import { Reels } from "@/components/site/Reels";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
@@ -11,12 +11,9 @@ import { Spots } from "@/components/site/Spots";
 import { useCallback, useState } from "react";
 
 const HERO_VIDEO = "/videos/video1.mp4";
-const HERO_POSTER =
-  "https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?w=1200&q=80&auto=format&fit=crop";
 
 const PRELOAD_ASSETS: Array<{ type: "image" | "video"; src: string }> = [
   { type: "video", src: HERO_VIDEO },
-  { type: "image", src: HERO_POSTER },
 ];
 
 export function Site() {
@@ -42,7 +39,7 @@ export function Site() {
         <main>
           <Hero ready={ready} videoSrc={HERO_VIDEO} />
           <Marquee ready={ready} />
-          <Edits />
+          <Reels />
           <Spots />
           <Diary />
           <Contact />
