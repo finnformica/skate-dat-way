@@ -1,15 +1,13 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 
-type Asset =
-  | { type: "image"; src: string }
-  | { type: "video"; src: string }
+type Asset = { type: "image"; src: string } | { type: "video"; src: string };
 
 type Props = {
-  assets: Asset[]
-  onDone: () => void
+  assets: Asset[];
+  onDone: () => void;
   /** Minimum time the loader is visible before it's allowed to exit */
-  minMs?: number
-}
+  minMs?: number;
+};
 
 const STATUS_LINES = [
   "Scanning curb geometry",
@@ -17,114 +15,114 @@ const STATUS_LINES = [
   "Syncing grind plates",
   "Tuning anti-rocker",
   "Rolling",
-]
+];
 
 export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
-  const [progress, setProgress] = useState(0)
-  const [status, setStatus] = useState(0)
-  const [phase, setPhase] = useState<"loading" | "out">("loading")
+  const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState(0);
+  const [phase, setPhase] = useState<"loading" | "out">("loading");
 
   // Refs for values read inside the RAF loop — no re-render cost
-  const loadedRef = useRef(0)
-  const totalRef = useRef(assets.length)
-  const startedAtRef = useRef<number | null>(null)
-  const doneCalledRef = useRef(false)
+  const loadedRef = useRef(0);
+  const totalRef = useRef(assets.length);
+  const startedAtRef = useRef<number | null>(null);
+  const doneCalledRef = useRef(false);
 
   // Kick off asset preloading
   useEffect(() => {
-    totalRef.current = assets.length
-    if (!assets.length) return
+    totalRef.current = assets.length;
+    if (!assets.length) return;
 
-    const cleanups: Array<() => void> = []
+    const cleanups: Array<() => void> = [];
     assets.forEach((a) => {
       if (a.type === "image") {
-        const img = new Image()
-        const done = () => (loadedRef.current += 1)
-        img.addEventListener("load", done, { once: true })
-        img.addEventListener("error", done, { once: true })
-        img.src = a.src
+        const img = new Image();
+        const done = () => (loadedRef.current += 1);
+        img.addEventListener("load", done, { once: true });
+        img.addEventListener("error", done, { once: true });
+        img.src = a.src;
         cleanups.push(() => {
-          img.removeEventListener("load", done)
-          img.removeEventListener("error", done)
-        })
+          img.removeEventListener("load", done);
+          img.removeEventListener("error", done);
+        });
       } else {
-        const v = document.createElement("video")
-        v.preload = "auto"
-        v.muted = true
-        v.playsInline = true
-        let settled = false
+        const v = document.createElement("video");
+        v.preload = "auto";
+        v.muted = true;
+        v.playsInline = true;
+        let settled = false;
         const done = () => {
-          if (settled) return
-          settled = true
-          loadedRef.current += 1
-        }
-        v.addEventListener("canplaythrough", done, { once: true })
-        v.addEventListener("error", done, { once: true })
+          if (settled) return;
+          settled = true;
+          loadedRef.current += 1;
+        };
+        v.addEventListener("canplaythrough", done, { once: true });
+        v.addEventListener("error", done, { once: true });
         // Safari sometimes stalls on canplaythrough
-        const fallback = window.setTimeout(done, 6000)
-        v.src = a.src
-        v.load()
+        const fallback = window.setTimeout(done, 6000);
+        v.src = a.src;
+        v.load();
         cleanups.push(() => {
-          v.removeEventListener("canplaythrough", done)
-          v.removeEventListener("error", done)
-          window.clearTimeout(fallback)
-          v.src = ""
-        })
+          v.removeEventListener("canplaythrough", done);
+          v.removeEventListener("error", done);
+          window.clearTimeout(fallback);
+          v.src = "";
+        });
       }
-    })
+    });
 
-    return () => cleanups.forEach((fn) => fn())
-  }, [assets])
+    return () => cleanups.forEach((fn) => fn());
+  }, [assets]);
 
   // Cycle the status line while loading
   useEffect(() => {
     const id = window.setInterval(() => {
-      setStatus((s) => (s + 1) % STATUS_LINES.length)
-    }, 520)
-    return () => window.clearInterval(id)
-  }, [])
+      setStatus((s) => (s + 1) % STATUS_LINES.length);
+    }, 520);
+    return () => window.clearInterval(id);
+  }, []);
 
   // Lock scroll while the loader is up
   useEffect(() => {
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = prev
-    }
-  }, [])
+      document.body.style.overflow = prev;
+    };
+  }, []);
 
   // Single RAF loop — progress = min(time_fraction, load_fraction) so the bar
   // only hits 100 when BOTH the minimum time has passed AND assets are ready.
   useEffect(() => {
-    let raf = 0
+    let raf = 0;
     const loop = (now: number) => {
-      if (startedAtRef.current === null) startedAtRef.current = now
-      const elapsed = now - startedAtRef.current
-      const timeP = Math.min(1, elapsed / minMs)
+      if (startedAtRef.current === null) startedAtRef.current = now;
+      const elapsed = now - startedAtRef.current;
+      const timeP = Math.min(1, elapsed / minMs);
       const loadP =
-        totalRef.current === 0 ? 1 : loadedRef.current / totalRef.current
-      const p = Math.min(timeP, loadP)
-      setProgress(Math.round(p * 100))
+        totalRef.current === 0 ? 1 : loadedRef.current / totalRef.current;
+      const p = Math.min(timeP, loadP);
+      setProgress(Math.round(p * 100));
 
       if (p >= 1 && !doneCalledRef.current) {
-        doneCalledRef.current = true
-        setPhase("out")
-        window.setTimeout(onDone, 720) // match clip-path exit duration
-        return
+        doneCalledRef.current = true;
+        setPhase("out");
+        window.setTimeout(onDone, 720); // match clip-path exit duration
+        return;
       }
-      raf = requestAnimationFrame(loop)
-    }
-    raf = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(raf)
-  }, [minMs, onDone])
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [minMs, onDone]);
 
-  const pct = String(progress).padStart(3, "0")
+  const pct = String(progress).padStart(3, "0");
 
   return (
     <div
       data-phase={phase}
       aria-hidden={phase === "out"}
-      className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-ink text-bone [clip-path:inset(0_0_0_0)] transition-[clip-path] duration-[720ms] ease-[cubic-bezier(0.77,0,0.175,1)] data-[phase=out]:[clip-path:inset(0_0_100%_0)]"
+      className="fixed inset-0 z-100 flex flex-col overflow-hidden bg-ink text-bone [clip-path:inset(0_0_0_0)] transition-[clip-path] duration-720 ease-in-out data-[phase=out]:[clip-path:inset(0_0_100%_0)]"
     >
       <div className="pointer-events-none absolute inset-0 scanlines opacity-30" />
       <div className="pointer-events-none absolute inset-0 halftone opacity-20" />
@@ -199,5 +197,5 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
         </div>
       </div>
     </div>
-  )
+  );
 }

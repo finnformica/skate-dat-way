@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react"
-import { Menu, X } from "lucide-react"
-import { useActiveSection } from "@/hooks/useActiveSection"
-import { Roundel } from "@/components/site/Roundel"
+import { Roundel } from "@/components/site/Roundel";
+import { useActiveSection } from "@/hooks/useActiveSection";
+import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const NAV = [
   { label: "Reels", href: "#reels", id: "reels" },
   { label: "Map", href: "#map", id: "map" },
   { label: "Diary", href: "#diary", id: "diary" },
   { label: "Contact", href: "#contact", id: "contact" },
-] as const
+] as const;
 
-const NAV_IDS = NAV.map((n) => n.id)
+const NAV_IDS = NAV.map((n) => n.id);
 
 function getLondonClock(): string {
-  const now = new Date()
+  const now = new Date();
   const parts = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Europe/London",
     hour: "2-digit",
@@ -21,31 +21,28 @@ function getLondonClock(): string {
     second: "2-digit",
     hour12: false,
     timeZoneName: "short",
-  }).formatToParts(now)
+  }).formatToParts(now);
   const get = (type: Intl.DateTimeFormatPartTypes) =>
-    parts.find((p) => p.type === type)?.value ?? ""
-  const tz = get("timeZoneName") || "GMT"
-  return `LDN · ${get("hour")}:${get("minute")}:${get("second")} ${tz}`
+    parts.find((p) => p.type === type)?.value ?? "";
+  const tz = get("timeZoneName") || "GMT";
+  return `LDN · ${get("hour")}:${get("minute")}:${get("second")} ${tz}`;
 }
 
 export function Header() {
-  const [open, setOpen] = useState(false)
-  const [clock, setClock] = useState(getLondonClock)
-  const active = useActiveSection(NAV_IDS)
+  const [open, setOpen] = useState(false);
+  const [clock, setClock] = useState(getLondonClock);
+  const active = useActiveSection(NAV_IDS);
 
   useEffect(() => {
-    const id = window.setInterval(() => setClock(getLondonClock()), 1000)
-    return () => window.clearInterval(id)
-  }, [])
+    const id = window.setInterval(() => setClock(getLondonClock()), 1000);
+    return () => window.clearInterval(id);
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 border-b border-bone/15 bg-ink/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
         <a href="#top" className="press flex items-center gap-3">
           <Roundel />
-          <span className="font-display text-2xl leading-none tracking-tight">
-            Skate Dat Way
-          </span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -104,6 +101,5 @@ export function Header() {
         </nav>
       </div>
     </header>
-  )
+  );
 }
-

@@ -1,17 +1,17 @@
-import type { ReactNode } from "react"
-import { Asterisk } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
+import { Asterisk } from "lucide-react";
+import type { ReactNode } from "react";
 
-type Tone = "rust" | "hot" | "hazard"
+type Tone = "rust" | "hot" | "hazard";
 
 type Props = {
-  index: string
-  label: string
-  tone: Tone
-  note?: string
-  className?: string
-  children: ReactNode
-}
+  index: string;
+  label: string;
+  tone: Tone;
+  note?: string;
+  className?: string;
+  children: ReactNode;
+};
 
 /** Static class lookups (Tailwind needs literal strings to compile).
  *  `onBg` is the foreground on the pill's filled cell — uses
@@ -43,7 +43,7 @@ const tones: Record<
     onBg: "text-on-accent",
     tape: "bg-hazard",
   },
-}
+};
 
 export function SectionHeader({
   index,
@@ -53,17 +53,12 @@ export function SectionHeader({
   className,
   children,
 }: Props) {
-  const t = tones[tone]
+  const t = tones[tone];
   return (
     <div className={cn("flex flex-col gap-6", className)}>
       <div className="flex items-center gap-3">
         {/* Label pill — colour-blocked index + label name */}
-        <div
-          className={cn(
-            "inline-flex items-stretch border-2",
-            t.border,
-          )}
-        >
+        <div className={cn("inline-flex items-stretch border-2", t.border)}>
           <span
             className={cn(
               "flex items-center gap-1.5 px-3 py-1.5 font-display text-xs uppercase tracking-widest",
@@ -93,7 +88,7 @@ export function SectionHeader({
         <span
           aria-hidden
           className={cn(
-            "hidden h-[2px] flex-1 max-w-16 opacity-60 md:block",
+            "hidden h-0.5 flex-1 max-w-16 opacity-60 md:block",
             t.tape,
           )}
         />
@@ -101,5 +96,5 @@ export function SectionHeader({
 
       {children}
     </div>
-  )
+  );
 }

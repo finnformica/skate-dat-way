@@ -1,4 +1,4 @@
-import { Asterisk, ArrowLeft } from "lucide-react"
+import { ArrowLeft, Asterisk } from "lucide-react";
 
 /**
  * 404 page — mirrors the main site's visual language without any of its
@@ -14,7 +14,7 @@ export function NotFound() {
         <div className="absolute inset-0 halftone opacity-40" />
 
         {/* Giant outline 404 on the right — balances the left-aligned content */}
-        <div className="absolute right-[-3vw] top-1/2 hidden -translate-y-1/2 select-none font-display text-[clamp(12rem,34vw,36rem)] leading-none text-bone/[0.04] md:block">
+        <div className="absolute right-[-3vw] top-1/2 hidden -translate-y-1/2 select-none font-display text-[clamp(12rem,34vw,36rem)] leading-none text-bone/4 md:block">
           404
         </div>
       </div>
@@ -59,11 +59,10 @@ export function NotFound() {
           </h1>
 
           <p className="max-w-xl text-sm leading-relaxed text-bone/70 md:text-base">
-            This URL isn't in the archive. You've either followed a busted
-            link, mistyped a path, or skated somewhere I haven't filmed yet.
-            Either way —{" "}
-            <strong className="text-bone">roll back to the top</strong> and
-            start over.
+            This URL isn't in the archive. You've either followed a busted link,
+            mistyped a path, or skated somewhere I haven't filmed yet. Either
+            way — <strong className="text-bone">roll back to the top</strong>{" "}
+            and start over.
           </p>
 
           <div className="pt-2">
@@ -86,17 +85,17 @@ export function NotFound() {
         </a>
       </div>
     </main>
-  )
+  );
 }
 
 function Roundel() {
   return (
     <span aria-hidden className="relative grid h-9 w-9 place-items-center">
-      <span className="absolute inset-0 rounded-full border-[4px] border-rust" />
-      <span className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-bone" />
+      <span className="absolute inset-0 rounded-full border-4 border-rust" />
+      <span className="absolute left-0 right-0 top-1/2 h-0.75 -translate-y-1/2 bg-bone" />
       <span className="relative font-display text-[9px] uppercase tracking-widest text-ink">
         SDW
       </span>
     </span>
-  )
+  );
 }

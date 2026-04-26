@@ -1,6 +1,6 @@
-import { isRouteErrorResponse, useRouteError } from "react-router"
-import { Asterisk, ArrowLeft } from "lucide-react"
-import { NotFound } from "@/components/site/NotFound"
+import { NotFound } from "@/components/site/NotFound";
+import { ArrowLeft, Asterisk } from "lucide-react";
+import { isRouteErrorResponse, useRouteError } from "react-router";
 
 /**
  * Catches anything thrown during route rendering / loaders.
@@ -8,10 +8,10 @@ import { NotFound } from "@/components/site/NotFound"
  * Everything else gets the "Something bailed." screen with the message.
  */
 export function RouteError() {
-  const error = useRouteError()
+  const error = useRouteError();
 
   if (isRouteErrorResponse(error) && error.status === 404) {
-    return <NotFound />
+    return <NotFound />;
   }
 
   const message =
@@ -19,9 +19,9 @@ export function RouteError() {
       ? error.message
       : isRouteErrorResponse(error)
         ? error.statusText
-        : "Unknown error"
+        : "Unknown error";
 
-  const status = isRouteErrorResponse(error) ? error.status : 500
+  const status = isRouteErrorResponse(error) ? error.status : 500;
 
   return (
     <main className="relative flex min-h-svh flex-col justify-between overflow-hidden bg-ink px-5 py-6 text-bone md:px-10 md:py-8">
@@ -92,17 +92,17 @@ export function RouteError() {
         </a>
       </div>
     </main>
-  )
+  );
 }
 
 function Roundel() {
   return (
     <span aria-hidden className="relative grid h-9 w-9 place-items-center">
-      <span className="absolute inset-0 rounded-full border-[4px] border-rust" />
-      <span className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 bg-bone" />
+      <span className="absolute inset-0 rounded-full border-4 border-rust" />
+      <span className="absolute left-0 right-0 top-1/2 h-0.75 -translate-y-1/2 bg-bone" />
       <span className="relative font-display text-[9px] uppercase tracking-widest text-ink">
         SDW
       </span>
     </span>
-  )
+  );
 }

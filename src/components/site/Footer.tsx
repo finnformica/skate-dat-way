@@ -1,3 +1,4 @@
+import { Roundel } from "@/components/site/Roundel";
 import {
   motion,
   useMotionValue,
@@ -5,7 +6,6 @@ import {
   useTransform,
 } from "motion/react";
 import { useEffect } from "react";
-import { Roundel } from "@/components/site/Roundel";
 
 const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -108,14 +108,11 @@ export function Footer() {
   return (
     <footer
       aria-label="Footer"
-      className="fixed inset-x-0 bottom-0 z-0 h-[var(--footer-h)] overflow-hidden bg-ink-2"
+      className="fixed inset-x-0 bottom-0 z-0 h-(--footer-h) overflow-hidden bg-ink-2"
     >
       <div className="pointer-events-none absolute inset-0 halftone opacity-25" />
       <div className="pointer-events-none absolute inset-0 chainlink opacity-30" />
 
-      {/* Background wordmark — stacked SKATE / DAT / WAY, left-aligned,
-          using flex justify-between so the three lines fill the footer's
-          full height regardless of viewport. */}
       <motion.div
         aria-hidden
         style={reduce ? undefined : { opacity: wordmarkOpacity }}
@@ -124,7 +121,7 @@ export function Footer() {
         {["SKATE", "DAT", "WAY"].map((word) => (
           <span
             key={word}
-            className="block font-display text-[clamp(5rem,19vw,16rem)] leading-[0.78] text-bone/[0.06]"
+            className="block font-display text-[clamp(5rem,19vw,16rem)] leading-[0.78] text-bone/6"
           >
             {word}
           </span>
@@ -139,13 +136,9 @@ export function Footer() {
           <div className="col-span-2">
             <div className="flex items-center gap-3">
               <Roundel />
-              <span className="font-display text-2xl text-bone">
-                Skate Dat Way
-              </span>
             </div>
             <p className="mt-3 max-w-sm text-sm text-bone/60">
-              A personal archive of London wizard skating — edits, spots, notes.
-              No shop, no team, no sponsors.
+              A personal archive of London wizard skating - edits, spots, notes.
             </p>
             <div className="mt-5 flex items-center gap-3">
               {[Instagram, Youtube, Vimeo].map((Icon, i) => (
@@ -183,7 +176,7 @@ export function Footer() {
         </div>
 
         <div className="mt-auto flex flex-col items-center justify-between gap-3 pt-6 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
-          <p>© 2026 Skate Dat Way · London</p>
+          <p>© {new Date().getFullYear()} Skate Dat Way · London</p>
           <div className="flex items-center gap-5">
             <a href="#" className="link-underline hover:text-rust">
               Privacy

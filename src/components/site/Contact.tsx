@@ -88,7 +88,7 @@ export function Contact() {
                   <p className="font-mono text-[10px] uppercase tracking-widest text-on-accent/60 transition-colors duration-200 group-hover:text-bone-fixed/60">
                     {l.label}
                   </p>
-                  <p className="break-words font-display text-lg uppercase leading-tight text-on-accent transition-colors duration-200 group-hover:text-bone-fixed md:text-xl">
+                  <p className="wrap-break-word font-display text-lg uppercase leading-tight text-on-accent transition-colors duration-200 group-hover:text-bone-fixed md:text-xl">
                     {l.handle}
                   </p>
                 </div>
@@ -131,14 +131,14 @@ function CopyEmail({ value }: { value: string }) {
       <span className="relative grid">
         <span
           aria-hidden={copied}
-          className="col-start-1 row-start-1 flex items-center gap-3 transition-[opacity,filter,transform] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-data-[state=copied]:-translate-y-1 group-data-[state=copied]:opacity-0 group-data-[state=copied]:blur-[2px]"
+          className="col-start-1 row-start-1 flex items-center gap-3 transition-[opacity,filter,transform] duration-200 ease-out group-data-[state=copied]:-translate-y-1 group-data-[state=copied]:opacity-0 group-data-[state=copied]:blur-[2px]"
         >
           <Copy className="size-4" />
           {value}
         </span>
         <span
           aria-hidden={!copied}
-          className="col-start-1 row-start-1 flex items-center gap-3 translate-y-1 opacity-0 blur-[2px] transition-[opacity,filter,transform] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-data-[state=copied]:translate-y-0 group-data-[state=copied]:opacity-100 group-data-[state=copied]:blur-none"
+          className="col-start-1 row-start-1 flex items-center gap-3 translate-y-1 opacity-0 blur-[2px] transition-[opacity,filter,transform] duration-200 ease-out group-data-[state=copied]:translate-y-0 group-data-[state=copied]:opacity-100 group-data-[state=copied]:blur-none"
         >
           <Check className="size-4" strokeWidth={3} />
           Copied to clipboard

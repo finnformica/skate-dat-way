@@ -1,28 +1,28 @@
-import { useEffect, useRef } from "react"
-import { motion } from "motion/react"
-import { MapPin } from "lucide-react"
-import { Reveal } from "@/components/motion/Reveal"
-import { Tilt } from "@/components/motion/Tilt"
-import { SectionHeader } from "@/components/site/SectionHeader"
-import { useIsTouch } from "@/hooks/useIsTouch"
-import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
+import { Reveal } from "@/components/motion/Reveal";
+import { Tilt } from "@/components/motion/Tilt";
+import { SectionHeader } from "@/components/site/SectionHeader";
+import { useActiveCardIndex } from "@/hooks/useActiveCardIndex";
+import { useIsTouch } from "@/hooks/useIsTouch";
+import { MapPin } from "lucide-react";
+import { motion } from "motion/react";
+import { useEffect, useRef } from "react";
 
-const CARD_EASE = [0.23, 1, 0.32, 1] as const
-const CARD_INITIAL = { opacity: 0, y: 24 }
-const CARD_VISIBLE = { opacity: 1, y: 0 }
-const CARD_VIEWPORT = { once: true, amount: 0.5 } as const
-const CARD_TRANSITION = { duration: 0.55, ease: CARD_EASE }
+const CARD_EASE = [0.23, 1, 0.32, 1] as const;
+const CARD_INITIAL = { opacity: 0, y: 24 };
+const CARD_VISIBLE = { opacity: 1, y: 0 };
+const CARD_VIEWPORT = { once: true, amount: 0.5 } as const;
+const CARD_TRANSITION = { duration: 0.55, ease: CARD_EASE };
 
 type Edit = {
-  title: string
-  year: string
-  location: string
-  video: string
-  tag?: "new" | "vhs" | "featured"
+  title: string;
+  year: string;
+  location: string;
+  video: string;
+  tag?: "new" | "vhs" | "featured";
   /** Per-video framing — override when the action is off-centre.
    *  Use any valid `object-position` value, e.g. "50% 30%" or "center top". */
-  objectPosition?: string
-}
+  objectPosition?: string;
+};
 
 const edits: Edit[] = [
   {
@@ -77,11 +77,11 @@ const edits: Edit[] = [
     location: "Mayfair · W1J",
     video: "/videos/video8.mp4",
   },
-]
+];
 
 export function Edits() {
-  const touch = useIsTouch()
-  const { activeIndex, setCardRef } = useActiveCardIndex(edits.length, touch)
+  const touch = useIsTouch();
+  const { activeIndex, setCardRef } = useActiveCardIndex(edits.length, touch);
 
   return (
     <section id="reels" className="relative border-b border-bone/15 bg-ink">
@@ -95,8 +95,7 @@ export function Edits() {
           >
             <Reveal>
               <h2 className="text-5xl text-bone md:text-7xl">
-                Reels,{" "}
-                <span className="text-hot italic">filmed flat.</span>
+                Reels, <span className="text-hot italic">filmed flat.</span>
               </h2>
             </Reveal>
           </SectionHeader>
@@ -116,7 +115,7 @@ export function Edits() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function EditCard({
@@ -126,38 +125,38 @@ function EditCard({
   isActive,
   articleRef,
 }: {
-  edit: Edit
-  offset: boolean
-  touch: boolean
-  isActive: boolean
-  articleRef: (el: HTMLElement | null) => void
+  edit: Edit;
+  offset: boolean;
+  touch: boolean;
+  isActive: boolean;
+  articleRef: (el: HTMLElement | null) => void;
 }) {
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const play = () => {
-    const v = videoRef.current
-    if (!v) return
-    v.currentTime = 0
-    v.play().catch(() => {})
-  }
+    const v = videoRef.current;
+    if (!v) return;
+    v.currentTime = 0;
+    v.play().catch(() => {});
+  };
   const stop = () => {
-    const v = videoRef.current
-    if (!v) return
-    v.pause()
-    v.currentTime = 0
-  }
+    const v = videoRef.current;
+    if (!v) return;
+    v.pause();
+    v.currentTime = 0;
+  };
 
   // Touch: drive playback from the single "active" flag — only one at a time
   useEffect(() => {
-    if (!touch) return
-    const v = videoRef.current
-    if (!v) return
-    if (isActive) v.play().catch(() => {})
+    if (!touch) return;
+    const v = videoRef.current;
+    if (!v) return;
+    if (isActive) v.play().catch(() => {});
     else {
-      v.pause()
-      v.currentTime = 0
+      v.pause();
+      v.currentTime = 0;
     }
-  }, [isActive, touch])
+  }, [isActive, touch]);
 
   const hoverProps = touch
     ? {}
@@ -166,7 +165,7 @@ function EditCard({
         onPointerLeave: stop,
         onFocus: play,
         onBlur: stop,
-      }
+      };
 
   return (
     <Tilt max={touch ? 0 : 4}>
@@ -192,11 +191,11 @@ function EditCard({
             playsInline
             preload="metadata"
             style={{ objectPosition: edit.objectPosition ?? "center" }}
-            className="h-full w-full object-cover grayscale transition-[filter,transform] duration-[500ms] ease-out group-hover:scale-[1.02] group-hover:grayscale-0 group-focus-visible:scale-[1.02] group-focus-visible:grayscale-0 group-data-[active=true]:scale-[1.02] group-data-[active=true]:grayscale-0"
+            className="h-full w-full object-cover grayscale transition-[filter,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:grayscale-0 group-focus-visible:scale-[1.02] group-focus-visible:grayscale-0 group-data-[active=true]:scale-[1.02] group-data-[active=true]:grayscale-0"
             aria-label={`${edit.title} preview`}
           />
           <div className="pointer-events-none absolute inset-0 scanlines opacity-25 mix-blend-multiply" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink/90 via-ink/10 to-transparent" />
 
           <div className="absolute left-3 top-3 flex items-center gap-1.5 border border-rust/60 bg-ink/70 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-rust backdrop-blur-sm">
             <MapPin size={10} />
@@ -225,5 +224,5 @@ function EditCard({
         </div>
       </motion.article>
     </Tilt>
-  )
+  );
 }

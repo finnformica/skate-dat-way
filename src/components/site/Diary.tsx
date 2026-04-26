@@ -1,14 +1,14 @@
-import { motion } from "motion/react"
-import { ArrowUpRight } from "lucide-react"
-import { Reveal } from "@/components/motion/Reveal"
-import { SectionHeader } from "@/components/site/SectionHeader"
-import { useIsTouch } from "@/hooks/useIsTouch"
-import { useActiveCardIndex } from "@/hooks/useActiveCardIndex"
+import { Reveal } from "@/components/motion/Reveal";
+import { SectionHeader } from "@/components/site/SectionHeader";
+import { useActiveCardIndex } from "@/hooks/useActiveCardIndex";
+import { useIsTouch } from "@/hooks/useIsTouch";
+import { ArrowUpRight } from "lucide-react";
+import { motion } from "motion/react";
 
-const CARD_INITIAL = { opacity: 0, y: 24 }
-const CARD_VISIBLE = { opacity: 1, y: 0 }
-const CARD_VIEWPORT = { once: true, amount: 0.5 } as const
-const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const }
+const CARD_INITIAL = { opacity: 0, y: 24 };
+const CARD_VISIBLE = { opacity: 1, y: 0 };
+const CARD_VIEWPORT = { once: true, amount: 0.5 } as const;
+const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const };
 
 const posts = [
   {
@@ -35,11 +35,11 @@ const posts = [
     image:
       "https://images.unsplash.com/photo-1565108150403-c0f12d458bf6?w=1200&q=80&auto=format&fit=crop",
   },
-]
+];
 
 export function Diary() {
-  const touch = useIsTouch()
-  const { activeIndex, setCardRef } = useActiveCardIndex(posts.length, touch)
+  const touch = useIsTouch();
+  const { activeIndex, setCardRef } = useActiveCardIndex(posts.length, touch);
 
   return (
     <section id="diary" className="border-b border-bone/15 bg-ink">
@@ -53,8 +53,7 @@ export function Diary() {
           >
             <Reveal>
               <h2 className="text-5xl text-bone md:text-7xl">
-                Diary,{" "}
-                <span className="text-rust italic">Ethan rolling.</span>
+                Diary, <span className="text-rust italic">Ethan rolling.</span>
               </h2>
             </Reveal>
           </SectionHeader>
@@ -78,11 +77,11 @@ export function Diary() {
               transition={CARD_TRANSITION}
               className="group flex flex-col bg-ink transition-colors duration-200 hover:bg-ink-2 data-[active=true]:bg-ink-2"
             >
-              <div className="aspect-[16/10] overflow-hidden">
+              <div className="aspect-16/10 overflow-hidden">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="h-full w-full object-cover grayscale transition-all duration-[700ms] ease-out group-hover:scale-[1.03] group-hover:grayscale-0 group-data-[active=true]:scale-[1.03] group-data-[active=true]:grayscale-0"
+                  className="h-full w-full object-cover grayscale transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:grayscale-0 group-data-[active=true]:scale-[1.03] group-data-[active=true]:grayscale-0"
                   loading="lazy"
                 />
               </div>
@@ -107,5 +106,5 @@ export function Diary() {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -37,7 +37,7 @@ export function Hero({ ready, videoSrc }: Props) {
         {/* Right-edge WIZARD wordmark */}
         <div
           aria-hidden
-          className="absolute -right-6 top-16 hidden select-none font-display text-[clamp(7rem,16vw,14rem)] leading-none text-bone/[0.04] md:block"
+          className="absolute -right-6 top-16 hidden select-none font-display text-[clamp(7rem,16vw,14rem)] leading-none text-bone/4 md:block"
         >
           WIZARD
         </div>
@@ -47,7 +47,7 @@ export function Hero({ ready, videoSrc }: Props) {
           aria-hidden
           className="absolute inset-y-0 left-0 hidden items-center md:flex"
         >
-          <span className="block -translate-x-[40%] -rotate-90 whitespace-nowrap font-display text-[clamp(6rem,13vw,11rem)] leading-none text-bone/[0.04]">
+          <span className="block translate-x-[-40%] -rotate-90 whitespace-nowrap font-display text-[clamp(6rem,13vw,11rem)] leading-none text-bone/4">
             LONDON
           </span>
         </div>
@@ -55,7 +55,7 @@ export function Hero({ ready, videoSrc }: Props) {
         {/* Faint baseline grid line */}
         <div
           aria-hidden
-          className="absolute inset-x-0 bottom-20 hidden h-px bg-gradient-to-r from-transparent via-bone/10 to-transparent md:block"
+          className="absolute inset-x-0 bottom-20 hidden h-px bg-linear-to-r from-transparent via-bone/10 to-transparent md:block"
         />
       </div>
 
@@ -84,7 +84,7 @@ export function Hero({ ready, videoSrc }: Props) {
         <div className="relative md:col-span-5 md:col-start-8 md:row-start-1 md:row-span-3">
           <Tilt max={6} className="relative">
             <figure
-              className="relative aspect-video w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_#d6ff3e] transition-[clip-path] duration-[900ms] ease-[cubic-bezier(0.77,0,0.175,1)] md:aspect-[4/5] md:shadow-[14px_14px_0_0_#d6ff3e]"
+              className="relative aspect-video w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_#d6ff3e] transition-[clip-path] duration-900 ease-in-out md:aspect-4/5 md:shadow-[14px_14px_0_0_#d6ff3e]"
               style={{
                 clipPath: ready ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
               }}
@@ -100,7 +100,7 @@ export function Hero({ ready, videoSrc }: Props) {
                 poster="https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?w=1200&q=80&auto=format&fit=crop"
               />
               <div className="absolute inset-0 scanlines opacity-25 mix-blend-multiply" />
-              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-ink/80 via-ink/10 to-transparent" />
 
               {/* CCTV timestamp */}
               <div className="absolute left-3 top-3 flex items-center gap-2 border border-rust/60 bg-ink/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-rust">
@@ -130,7 +130,7 @@ export function Hero({ ready, videoSrc }: Props) {
               desktop: outside the video's left edge.
               Text on bg-hot uses text-on-accent so it flips with theme. */}
           <div
-            className="absolute right-3 top-3 z-10 flex h-16 w-16 items-center justify-center border-2 border-ink-fixed bg-hot text-center font-display text-[10px] uppercase leading-tight text-on-accent shadow-[4px_4px_0_0_#0a0a0a] transition-[transform,opacity] duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] md:-left-6 md:right-auto md:top-1/3 md:h-24 md:w-24 md:text-xs"
+            className="absolute right-3 top-3 z-10 flex h-16 w-16 items-center justify-center border-2 border-ink-fixed bg-hot text-center font-display text-[10px] uppercase leading-tight text-on-accent shadow-[4px_4px_0_0_#0a0a0a] transition-[transform,opacity] duration-600 ease-[cubic-bezier(0.34,1.56,0.64,1)] md:-left-6 md:right-auto md:top-1/3 md:h-24 md:w-24 md:text-xs"
             style={{
               transitionDelay: ready ? "900ms" : "0ms",
               transform: ready
@@ -149,7 +149,7 @@ export function Hero({ ready, videoSrc }: Props) {
           {/* Hazard tape — London, UK label. Text uses text-on-accent so
               it tracks the hazard's theme-appropriate depth. */}
           <div
-            className="absolute -bottom-2 -right-2 border-2 border-ink-fixed bg-hazard px-2 py-1.5 font-mono text-[10px] uppercase tracking-widest text-on-accent transition-[transform,opacity] duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)] md:-bottom-3 md:-right-3 md:px-3 md:py-2"
+            className="absolute -bottom-2 -right-2 border-2 border-ink-fixed bg-hazard px-2 py-1.5 font-mono text-[10px] uppercase tracking-widest text-on-accent transition-[transform,opacity] duration-500 ease-out md:-bottom-3 md:-right-3 md:px-3 md:py-2"
             style={{
               transitionDelay: ready ? "1100ms" : "0ms",
               transform: ready ? "translateY(0)" : "translateY(10px)",
