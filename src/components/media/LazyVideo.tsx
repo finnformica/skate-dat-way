@@ -6,11 +6,7 @@ type Props = {
   poster: string;
   /** Drives playback. Card hover on desktop, nearest-card on touch. */
   active: boolean;
-  /** How early to attach the media, as an IntersectionObserver rootMargin.
-   *  Roughly a viewport and a half of lead time: enough that a card has its
-   *  still by the time it is scrolled to at any normal speed, tight enough
-   *  that the tail of a twelve card grid stays unfetched for a visit that
-   *  never leaves the hero. */
+  /** How early to fetch the still, as an IntersectionObserver rootMargin. */
   rootMargin?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -18,25 +14,26 @@ type Props = {
 };
 
 /**
- * A <video> that costs nothing until it is nearly on screen.
+ * A still that becomes a video only while it is being watched.
  *
- * Three stages, so a grid of twelve clips doesn't cost twelve requests on load:
+ * The <video> element is *mounted on demand* rather than mounted-and-idle. A
+ * paused video is not free: each one holds a media decoder and gets its own
+ * composited layer, and with a grayscale filter over the top, fifteen of them
+ * on one grid is enough to cost frames while scrolling. So the resting state
+ * of a card is a single <img> and no video element at all — which means the
+ * grid costs the same whether it holds twelve cards or a hundred.
  *
- *   1. Well off screen — no `src`, and the still is not rendered at all, so
- *      the card makes zero network requests of any kind.
- *   2. Near the viewport — the source is attached at `preload="metadata"`.
- *      Every clip is encoded with `+faststart`, so the moov atom sits at the
- *      front and this costs a few KB rather than a progressive download.
- *   3. Play requested — the browser streams the frames.
+ * The swap is seamless because of how the assets were encoded: each still is
+ * frame 0 of its own clip. A freshly mounted video has no data yet and is
+ * therefore transparent, so the still shows through underneath; the moment the
+ * first frame decodes, the video paints the same image the still was already
+ * showing. Nothing needs to fade, and there is no flash of black. On the way
+ * out the video unmounts and the still is simply revealed again.
  *
- * The still is a separate <img> rather than the video's own `poster`
- * attribute, because browsers fetch `poster` eagerly no matter what `preload`
- * says — that alone put all twelve stills on the critical path. Its `src` is
- * gated on the same observer rather than on `loading="lazy"`, whose distance
- * threshold is a browser heuristic that in practice fetched the whole grid
- * anyway. The video — transparent until it has data — simply paints over the
- * still. Both show frame 0 of the same encode, so the handover and the reset
- * back to `currentTime = 0` are invisible.
+ * The still itself is still lazy — its `src` is withheld until the card is
+ * within `rootMargin` of the viewport. It is gated on the observer rather than
+ * `loading="lazy"`, whose distance threshold is a browser heuristic that in
+ * practice fetched the whole grid up front.
  */
 export function LazyVideo({
   src,
@@ -47,22 +44,17 @@ export function LazyVideo({
   style,
   label,
 }: Props) {
-  const ref = useRef<HTMLVideoElement>(null);
-  // Seeded true where there is no observer to do the job, so those browsers
-  // simply load everything rather than showing empty cards forever.
+  // The <img> is the permanent element, so it is what we observe — the video
+  // comes and goes and cannot be relied on as an observation target.
+  const imgRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [near, setNear] = useState(
     () => typeof IntersectionObserver === "undefined",
   );
 
-  // A fast scroll or an early hover can beat the observer, so `active` arms
-  // the media too. Derived rather than synced through an effect — the only
-  // thing that writes state here is the observer callback.
-  const armed = near || active;
-
-  // Stage 2: attach the media once the card is within reach of the viewport.
   useEffect(() => {
     if (near) return;
-    const el = ref.current;
+    const el = imgRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
       (entries) => {
@@ -74,51 +66,47 @@ export function LazyVideo({
     return () => io.disconnect();
   }, [near, rootMargin]);
 
-  // Stage 3.
+  // `autoPlay` covers most cases, but iOS Safari can refuse it even when muted
+  // (Low Power Mode, Data Saver). Nudge it once on mount; if that is refused
+  // too, the still stays up, which is a perfectly good fallback.
   useEffect(() => {
-    const v = ref.current;
-    if (!v || !armed) return;
-    if (active) {
-      // Seeking before any data has arrived is a no-op at best, so only
-      // rewind once there is something to rewind to.
-      if (v.readyState > 0) v.currentTime = 0;
-      v.play().catch(() => {
-        // Autoplay can be refused (Low Power Mode, Data Saver). The still
-        // stays up, which is a perfectly good fallback.
-      });
-    } else {
-      v.pause();
-      if (v.readyState > 0) v.currentTime = 0;
-    }
-  }, [active, armed]);
+    if (!active) return;
+    const v = videoRef.current;
+    if (!v) return;
+    v.play().catch(() => {});
+  }, [active]);
 
   return (
     <>
-      {armed && (
-        <img
-          src={poster}
-          alt=""
-          aria-hidden
-          decoding="async"
+      <img
+        ref={imgRef}
+        // No `src` until near: an <img> without the attribute makes no request
+        // but still lays out, which is exactly what the observer needs.
+        src={near ? poster : undefined}
+        alt=""
+        aria-hidden
+        decoding="async"
+        className={cn("absolute inset-0", className)}
+        style={style}
+      />
+      {active && (
+        <video
+          ref={videoRef}
+          src={src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          // iOS Safari still reads the legacy attribute in some versions.
+          webkit-playsinline="true"
+          preload="auto"
+          disablePictureInPicture
+          disableRemotePlayback
+          aria-label={label}
           className={cn("absolute inset-0", className)}
           style={style}
         />
       )}
-      <video
-        ref={ref}
-        src={armed ? src : undefined}
-        preload={armed ? "metadata" : "none"}
-        muted
-        loop
-        playsInline
-        // iOS Safari still reads the legacy attribute in some versions.
-        webkit-playsinline="true"
-        disablePictureInPicture
-        disableRemotePlayback
-        aria-label={label}
-        className={cn("absolute inset-0", className)}
-        style={style}
-      />
     </>
   );
 }
