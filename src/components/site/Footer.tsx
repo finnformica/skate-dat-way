@@ -114,41 +114,46 @@ export function Footer() {
           </svg>
         </motion.div>
 
-        <div className="grid grid-cols-2 gap-8 border-b border-bone/15 pb-8 md:grid-cols-3 md:gap-10 md:pb-10">
-          <div className="col-span-2">
+        {/* Two blocks of similar weight rather than a column grid. With the
+            Colophon and Signal columns gone, a three-column grid left one
+            narrow list stranded beside a double-width brand block. The nav
+            is set in display type instead of a small stacked list, which
+            gives the tall fixed footer something to hold. */}
+        <div className="flex flex-col gap-10 border-b border-bone/15 pb-8 md:flex-row md:items-start md:justify-between md:gap-16 md:pb-10">
+          <div>
             <div className="flex items-center gap-3">
               <Roundel />
             </div>
             <p className="mt-3 max-w-sm text-sm text-bone/60">
               A personal archive of London wizard skating: edits, spots, notes.
             </p>
-            <div className="mt-5 flex items-center gap-3">
-              <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="press flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
-                aria-label="Skate Dat Way on Instagram"
-              >
-                <Instagram className="h-4 w-4" />
-              </a>
-            </div>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="press mt-5 inline-flex items-center gap-3 border-2 border-bone/40 px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
+            >
+              <Instagram aria-hidden className="h-4 w-4" />
+              @skatedatway
+            </a>
           </div>
 
-          <div>
-            <h4 className="mb-3 font-display text-sm uppercase tracking-widest text-bone">
-              Site
-            </h4>
-            <ul className="space-y-2 text-sm text-bone/60">
+          <nav aria-label="Footer" className="md:text-right">
+            <ul className="flex flex-col gap-1">
               {siteLinks.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="link-underline hover:text-rust">
+                  <a
+                    href={link.href}
+                    // inline-block so the underline pseudo-element hugs the
+                    // text box rather than the full-width list item.
+                    className="link-underline inline-block font-display text-3xl uppercase leading-tight text-bone/80 transition-colors duration-150 hover:text-rust md:text-4xl"
+                  >
                     {link.label}
                   </a>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         </div>
 
         <div className="mt-auto flex flex-col items-center justify-between gap-3 pt-6 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
