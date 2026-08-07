@@ -74,11 +74,16 @@ export function Hero({ ready, clips }: Props) {
           </Reveal>
         </div>
 
-        {/* [2] Video — 2nd in DOM (mobile), spans right column on desktop */}
-        <div className="relative md:col-span-5 md:col-start-8 md:row-start-1 md:row-span-3">
+        {/* [2] Video — 2nd in DOM (mobile), spans right column on desktop.
+            Four columns rather than five: at 9:16 a five-column frame stood
+            ~890px tall, which pushed the CTA under the fold on a laptop.
+            Widen this back to col-span-5 / col-start-8 if you want it bigger. */}
+        <div className="relative md:col-span-4 md:col-start-9 md:row-start-1 md:row-span-3">
           <Tilt max={6} className="relative">
+            {/* 9:16 to match the footage — every hero clip is vertical, and a
+                4:5 frame was cutting the top and bottom off each one. */}
             <figure
-              className="relative aspect-4/5 w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_var(--color-hazard)] transition-[clip-path] duration-900 ease-in-out md:shadow-[14px_14px_0_0_var(--color-hazard)]"
+              className="relative aspect-9/16 w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_var(--color-hazard)] transition-[clip-path] duration-900 ease-in-out md:shadow-[14px_14px_0_0_var(--color-hazard)]"
               style={{
                 clipPath: ready ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
               }}
@@ -91,7 +96,6 @@ export function Hero({ ready, clips }: Props) {
                 ready={ready}
                 onClipChange={onClipChange}
                 className="h-full w-full object-cover"
-                style={{ objectPosition: "center 50%" }}
               />
               <div className="absolute inset-0 scanlines opacity-25" />
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-ink/80 via-ink/10 to-transparent" />

@@ -10,8 +10,8 @@ import { motion } from "motion/react";
 import { useState } from "react";
 
 const MOBILE_INITIAL_COUNT = 4;
-const DESKTOP_INITIAL_COUNT = 8;
-const REVEAL_INCREMENT = 4;
+const DESKTOP_INITIAL_COUNT = 6;
+const REVEAL_INCREMENT = 3;
 
 const CARD_EASE = [0.23, 1, 0.32, 1] as const;
 const CARD_INITIAL = { opacity: 0, y: 24 };
@@ -26,9 +26,6 @@ type Reel = {
   /** Only set where the source file actually carried a capture date. */
   date?: string;
   tag?: "new" | "vhs" | "featured";
-  /** Every clip is vertical and every card is square, so the browser crops.
-   *  Nudge this when the action sits high or low in the frame. */
-  objectPosition?: string;
 };
 
 const reels: Reel[] = [
@@ -38,7 +35,6 @@ const reels: Reel[] = [
     slug: "woodville",
     date: "Jun 2026",
     tag: "new",
-    objectPosition: "center 55%",
   },
   {
     title: "Second lap, same bank",
@@ -63,7 +59,6 @@ const reels: Reel[] = [
     location: "Slalom comp",
     slug: "slalom-cones",
     date: "Jun 2026",
-    objectPosition: "center 40%",
   },
   {
     title: "Last light on the tiles",
@@ -74,7 +69,6 @@ const reels: Reel[] = [
     title: "Straight down the middle",
     location: "Marrakech",
     slug: "medina-lanes",
-    objectPosition: "center 60%",
   },
   {
     title: "Dropping off the bank",
@@ -92,39 +86,33 @@ const reels: Reel[] = [
     location: "Barceloneta",
     slug: "w-hotel",
     tag: "vhs",
-    objectPosition: "center 40%",
   },
   {
     title: "Boardwalk, full sun",
     location: "Rambla de Mar",
     slug: "port-vell",
-    objectPosition: "center 40%",
   },
   {
     title: "Down past the Arc",
     location: "Passeig Lluís Companys",
     slug: "arc-de-triomf",
-    objectPosition: "center 55%",
   },
   {
     title: "Empty path, big trees",
     location: "City park",
     slug: "park-spin",
-    objectPosition: "center 35%",
   },
   {
     title: "Last of the sun",
     location: "Plaza, at dusk",
     slug: "last-light",
     date: "Apr 2026",
-    objectPosition: "center 55%",
   },
   {
     title: "Nothing but back roads",
     location: "Rural France",
     slug: "village-road",
     tag: "vhs",
-    objectPosition: "center 45%",
   },
 ];
 
@@ -146,7 +134,7 @@ export function Reels() {
             index="01"
             label="Reels"
             tone="rust"
-            note="twelve clips"
+            note="fifteen clips"
           >
             <Reveal>
               <h2 className="text-5xl text-bone md:text-7xl">
@@ -159,7 +147,10 @@ export function Reels() {
           </SectionHeader>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* Three columns on wide screens rather than two. The cards are now as
+            tall as the footage is, so two columns of 9:16 made the page
+            enormous; three keeps each card a sane height. */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {reels.map((reel, i) => {
             const hiddenOnMobile = i >= mobileVisible;
             const hiddenOnDesktop = i >= desktopVisible;
@@ -173,7 +164,9 @@ export function Reels() {
               >
                 <ReelCard
                   reel={reel}
-                  offset={i % 2 === 1}
+                  // Offset the middle column so the three-up grid keeps the
+                  // staggered look the two-up one had.
+                  offset={i % 3 === 1}
                   touch={touch}
                   isActive={touch && activeIndex === i}
                   articleRef={setCardRef(i)}
@@ -251,12 +244,13 @@ function ReelCard({
           offset ? "md:translate-y-6" : ""
         }`}
       >
-        <div className="relative aspect-square overflow-hidden">
+        {/* Matches the footage: every clip is vertical 9:16, so the card
+            shows the whole frame instead of cropping to a square. */}
+        <div className="relative aspect-9/16 overflow-hidden">
           <LazyVideo
             src={`/videos/${reel.slug}.mp4`}
             poster={`/posters/${reel.slug}.webp`}
             active={playing}
-            style={{ objectPosition: reel.objectPosition ?? "center" }}
             className="h-full w-full object-cover grayscale transition-[filter,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:grayscale-0 group-focus-visible:scale-[1.02] group-focus-visible:grayscale-0 group-data-[active=true]:scale-[1.02] group-data-[active=true]:grayscale-0"
             label={`${reel.title} preview`}
           />
