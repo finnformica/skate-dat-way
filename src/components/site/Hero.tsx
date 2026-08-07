@@ -22,7 +22,7 @@ export function Hero({ ready, clips }: Props) {
       data-ready={ready}
       className="relative flex min-h-[80vh] flex-col overflow-hidden border-b border-bone/15"
     >
-      {/* Ambient urban background — stencil, technical markings, outline type */}
+      {/* Ambient urban background: stencil, technical markings, outline type */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute inset-0 chainlink opacity-60" />
         <div className="absolute inset-0 halftone opacity-40" />
@@ -36,7 +36,7 @@ export function Hero({ ready, clips }: Props) {
           WIZARD
         </div>
 
-        {/* Left-edge LONDON wordmark — rotated vertical */}
+        {/* Left-edge LONDON wordmark, rotated vertical */}
         <div
           aria-hidden
           className="absolute inset-y-0 left-0 hidden items-center md:flex"
@@ -55,8 +55,8 @@ export function Hero({ ready, clips }: Props) {
 
       {/*
         Mobile flow (DOM order): headline → video → para+CTAs → stats.
-        Desktop (md+): explicit grid positions — left column stacks heading,
-        para+CTAs, and stats on rows 1/2/3; video spans rows 1–3 on the right.
+        Desktop (md+): explicit grid positions. Left column stacks heading,
+        para+CTAs, and stats on rows 1/2/3; video spans rows 1-3 on the right.
       */}
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-5 py-12 md:grid-cols-12 md:items-end md:gap-10 md:px-8 md:py-24">
         {/* [1] Headline */}
@@ -74,13 +74,13 @@ export function Hero({ ready, clips }: Props) {
           </Reveal>
         </div>
 
-        {/* [2] Video — 2nd in DOM (mobile), spans right column on desktop.
+        {/* [2] Video: 2nd in DOM (mobile), spans right column on desktop.
             Four columns rather than five: at 9:16 a five-column frame stood
             ~890px tall, which pushed the CTA under the fold on a laptop.
             Widen this back to col-span-5 / col-start-8 if you want it bigger. */}
         <div className="relative md:col-span-4 md:col-start-9 md:row-start-1 md:row-span-3">
           <Tilt max={6} className="relative">
-            {/* 9:16 to match the footage — every hero clip is vertical, and a
+            {/* 9:16 to match the footage. Every hero clip is vertical, and a
                 4:5 frame was cutting the top and bottom off each one. */}
             <figure
               className="relative aspect-9/16 w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_var(--color-hazard)] transition-[clip-path] duration-900 ease-in-out md:shadow-[14px_14px_0_0_var(--color-hazard)]"
@@ -129,7 +129,7 @@ export function Hero({ ready, clips }: Props) {
             </figure>
           </Tilt>
 
-          {/* "new edit" sticker — mobile: inside top-right of video;
+          {/* "new edit" sticker. Mobile: inside top-right of video;
               desktop: outside the video's left edge.
               Text on bg-hot uses text-on-accent so it flips with theme. */}
           <div
@@ -149,7 +149,7 @@ export function Hero({ ready, clips }: Props) {
             <span className="text-sm md:text-lg">↓</span>
           </div>
 
-          {/* Hazard tape — London, UK label. Text uses text-on-accent so
+          {/* Hazard tape: London, UK label. Text uses text-on-accent so
               it tracks the hazard's theme-appropriate depth. */}
           <div
             className="absolute -bottom-2 -right-2 border-2 border-ink-fixed bg-hazard px-2 py-1.5 font-mono text-[10px] uppercase tracking-widest text-on-accent transition-[transform,opacity] duration-500 ease-out md:-bottom-3 md:-right-3 md:px-3 md:py-2"

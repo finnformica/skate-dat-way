@@ -15,7 +15,7 @@ import {
 } from "@/lib/links";
 
 // One column. The Colophon and Signal columns went with the placeholder links
-// they were made of — every entry in them pointed at "#".
+// they were made of. Every entry in them pointed at "#".
 const siteLinks = [
   { label: "Reels", href: "#reels" },
   { label: "Map", href: "#map" },

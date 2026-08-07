@@ -25,8 +25,8 @@ const FADE_MS = 600;
  *
  * Two layers. The stills are permanent and carry the cross-fade on their own:
  * one <img> per clip, stacked, opacity driven by the current index. The videos
- * sit above them and are only mounted while the hero is actually on screen —
- * scroll it out of view and every hero decoder and compositing layer goes with
+ * sit above them and are only mounted while the hero is actually on screen.
+ * Scroll it out of view and every hero decoder and compositing layer goes with
  * it, leaving the still of whichever clip was playing.
  *
  * Because each still is frame 0 of its own clip, a video fading in over its own
@@ -85,7 +85,7 @@ export function HeroCycle({
 
     // Rewind before playing. On the wrap from the last clip back to the first,
     // and on every remount after scrolling back up, this element may already
-    // be sitting at its end — without the reset it would fire `ended`
+    // be sitting at its end. Without the reset it would fire `ended`
     // immediately and the rotation would spin.
     if (v.readyState > 0) v.currentTime = 0;
 

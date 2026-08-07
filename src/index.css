@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  /* Footer height — content wrapper uses the same value as margin-bottom
+  /* Footer height. Content wrapper uses the same value as margin-bottom
      so the fixed footer has scroll space to reveal into. */
   --footer-h: 720px;
 }
@@ -23,7 +23,7 @@
   --color-bone: #f4f1ea;
   --color-concrete: #1f1f1f;
 
-  /* Brand accents — orange (primary), pink, yellow.
+  /* Brand accents: orange (primary), pink, yellow.
      HSL so the saturation/lightness relationships are explicit:
      all three live around 97-100% saturation, with hue + lightness
      varied for character. */
@@ -36,12 +36,12 @@
      so dark text reads cleanest. Kept as a semantic token for clarity. */
   --color-on-accent: #0a0a0a;
 
-  /* Theme-invariant tokens — always-dark or always-cream — used for
+  /* Theme-invariant tokens, always-dark or always-cream, used for
      brutalist offset shadows, inverted pills, and similar cases. */
   --color-ink-fixed: #0a0a0a;
   --color-bone-fixed: #f4f1ea;
 
-  /* Emil curves — stronger than stock CSS easings */
+  /* Emil curves, stronger than stock CSS easings */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
@@ -132,7 +132,7 @@
   }
 }
 
-/* Hero caption swap — matches the 600ms video cross-fade */
+/* Hero caption swap, matching the 600ms video cross-fade */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -142,7 +142,7 @@
   }
 }
 
-/* Hazard tape — diagonal yellow/black */
+/* Hazard tape: diagonal yellow/black */
 .hazard-tape {
   background-image: repeating-linear-gradient(
     -45deg,
@@ -176,7 +176,7 @@
   );
 }
 
-/* Press scale — Emil's responsive-button rule (gated to fine pointers) */
+/* Press scale: Emil's responsive-button rule (gated to fine pointers) */
 .press {
   transition: transform 160ms var(--ease-out);
 }
@@ -186,7 +186,7 @@
   }
 }
 
-/* Animated underline on nav — clip-path based, origin-aware */
+/* Animated underline on nav: clip-path based, origin-aware */
 .link-underline {
   position: relative;
 }
@@ -206,7 +206,7 @@
   clip-path: inset(0 0 0 0);
 }
 
-/* Mobile-nav stagger — each link enters from the left when open,
+/* Mobile-nav stagger: each link enters from the left when open,
    exits in reverse order when closing. */
 .mobile-nav-item {
   opacity: 0;
@@ -234,7 +234,7 @@
 [data-mobile-open="true"] .mobile-nav-item:nth-child(5) {
   transition-delay: 360ms;
 }
-/* Exit — last child leaves first (reverse cascade) */
+/* Exit: last child leaves first (reverse cascade) */
 [data-mobile-open="false"] .mobile-nav-item:nth-child(5) {
   transition-delay: 0ms;
 }

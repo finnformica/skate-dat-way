@@ -253,7 +253,7 @@ function ReelCard({
             active={playing}
             // No `grayscale` filter. The stills are encoded desaturated, and
             // the video only ever appears on hover, where it is meant to be in
-            // colour — so neither layer needs a filter. That removes fifteen
+            // colour, so neither layer needs a filter. That removes fifteen
             // filter passes and the compositing layers they forced, which is
             // what made revealing the rest of the grid stutter.
             className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02] group-focus-visible:scale-[1.02] group-data-[active=true]:scale-[1.02]"

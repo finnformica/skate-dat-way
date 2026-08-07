@@ -1,7 +1,7 @@
 import { ArrowLeft, Asterisk } from "lucide-react";
 
 /**
- * 404 page — mirrors the main site's visual language without any of its
+ * 404 page. Mirrors the main site's visual language without any of its
  * runtime (no BootLoader, no sticky footer, no media). Rendered by the
  * router's catch-all route and by RouteError when the thrown response is 404.
  */
@@ -13,7 +13,7 @@ export function NotFound() {
         <div className="absolute inset-0 chainlink opacity-60" />
         <div className="absolute inset-0 halftone opacity-40" />
 
-        {/* Giant outline 404 on the right — balances the left-aligned content */}
+        {/* Giant outline 404 on the right, balancing the left-aligned content */}
         <div className="absolute right-[-3vw] top-1/2 hidden -translate-y-1/2 select-none font-display text-[clamp(12rem,34vw,36rem)] leading-none text-bone/4 md:block">
           404
         </div>
@@ -34,10 +34,10 @@ export function NotFound() {
         <span>404 · OUT OF FRAME</span>
       </div>
 
-      {/* Centre — vertically centred within remaining space */}
+      {/* Centre: vertically centred within remaining space */}
       <section className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 items-center px-5 md:px-10">
         <div className="grid max-w-3xl gap-6">
-          {/* Eyebrow pill — matches SectionHeader pattern */}
+          {/* Eyebrow pill, matching the SectionHeader pattern */}
           <div className="inline-flex w-fit items-stretch border-2 border-hot">
             <span className="flex items-center gap-1.5 bg-hot px-3 py-1.5 font-display text-xs uppercase tracking-widest text-on-accent">
               <Asterisk size={12} strokeWidth={3} aria-hidden />
@@ -51,7 +51,7 @@ export function NotFound() {
             </span>
           </div>
 
-          {/* Headline — scaled to match the hero's clamp (11vw max 10rem),
+          {/* Headline, scaled to match the hero's clamp (11vw max 10rem),
               tighter leading so the italic line doesn't collide with the roman */}
           <h1 className="font-display text-[clamp(3.5rem,11vw,10rem)] uppercase leading-[0.88] tracking-[-0.01em]">
             <span className="block">Bailed.</span>

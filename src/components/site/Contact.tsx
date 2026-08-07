@@ -10,7 +10,7 @@ const CARD_VIEWPORT = { once: true, amount: 0.5 } as const;
 const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const };
 
 export function Contact() {
-  // Section is entirely bg-rust — any text sitting directly on it uses
+  // Section is entirely bg-rust, so any text sitting directly on it uses
   // text-on-accent so the colour tracks the active theme (dark text on
   // bright rust in dark mode, cream text on deep rust in light mode).
   return (
@@ -45,7 +45,7 @@ export function Contact() {
             </Reveal>
           </SectionHeader>
           <p className="mt-5 max-w-lg text-on-accent/80">
-            Everything goes up on Instagram first. DMs are open — come film,
+            Everything goes up on Instagram first. DMs are open, so come film,
             share a spot, or just say hello.
           </p>
         </div>

@@ -16,7 +16,7 @@ type Spot = {
   type: string;
   slug: string;
   note: string;
-  /** Stills are vertical, cards are 3:4 — nudge when the subject sits high. */
+  /** Stills are vertical, cards are 3:4, so nudge when the subject sits high. */
   objectPosition?: string;
 };
 
@@ -85,7 +85,7 @@ export function Maps() {
             >
               <img
                 src={`/images/${spot.slug}.webp`}
-                alt={`${spot.name} — ${spot.place}`}
+                alt={`${spot.name}, ${spot.place}`}
                 width={900}
                 height={1200}
                 style={{ objectPosition: spot.objectPosition ?? "center" }}

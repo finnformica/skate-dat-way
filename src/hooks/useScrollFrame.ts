@@ -3,14 +3,14 @@ import { useEffect, useRef } from "react"
 /**
  * Runs `fn` at most once per animation frame while the page scrolls.
  *
- * Scrolling is native now, so scroll events already arrive at a sane cadence —
+ * Scrolling is native now, so scroll events already arrive at a sane cadence,
  * but a handler that reads layout (`getBoundingClientRect`, `scrollHeight`)
  * still forces a synchronous layout every time it runs, and events can fire
  * more than once per frame. Coalescing to a single RAF callback caps that at
  * one pass per frame and keeps the reads out of the event handler itself,
  * where they would block the scroll.
  *
- * Pass `enabled: false` to detach entirely — cheaper than a handler that
+ * Pass `enabled: false` to detach entirely, which is cheaper than a handler that
  * returns early, since no listener is registered at all.
  */
 export function useScrollFrame(fn: () => void, enabled = true) {

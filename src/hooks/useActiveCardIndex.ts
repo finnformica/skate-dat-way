@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 import { useScrollFrame } from "@/hooks/useScrollFrame"
 
 /**
- * Picks the single card closest to the viewport centre — used on touch
+ * Picks the single card closest to the viewport centre, used on touch
  * devices where there's no hover, so we need exactly one "active" card
  * at a time instead of every in-view card playing/highlighting at once.
  *
@@ -10,8 +10,8 @@ import { useScrollFrame } from "@/hooks/useScrollFrame"
  * on each card. When `enabled` is false no scroll listener is attached and
  * the hook reports null.
  *
- * Unlike the section offsets, these rects genuinely do have to be re-read —
- * cards animate in and the grid reflows when "show more" is pressed — so the
+ * Unlike the section offsets, these rects genuinely do have to be re-read:
+ * cards animate in and the grid reflows when "show more" is pressed, so the
  * saving here is the RAF coalescing rather than caching.
  */
 export function useActiveCardIndex(count: number, enabled = true) {

@@ -10,7 +10,7 @@ const router = createBrowserRouter([
     errorElement: <RouteError />,
   },
   {
-    // Catch-all — anything that isn't `/` renders NotFound.
+    // Catch-all: anything that isn't `/` renders NotFound.
     // Add more routes above this line as the site grows.
     path: "*",
     element: <NotFound />,

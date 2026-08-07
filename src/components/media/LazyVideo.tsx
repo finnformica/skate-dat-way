@@ -49,7 +49,7 @@ export function LazyVideo({
   style,
   label,
 }: Props) {
-  // The <img> is the permanent element, so it is what we observe — the video
+  // The <img> is the permanent element, so it is what we observe. The video
   // comes and goes and cannot be relied on as an observation target.
   const imgRef = useRef<HTMLImageElement>(null);
   const [near, setNear] = useState(

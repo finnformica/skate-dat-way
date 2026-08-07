@@ -22,7 +22,7 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
   const [status, setStatus] = useState(0);
   const [phase, setPhase] = useState<"loading" | "out">("loading");
 
-  // Refs for values read inside the RAF loop — no re-render cost
+  // Refs for values read inside the RAF loop, so no re-render cost
   const loadedRef = useRef(0);
   const totalRef = useRef(assets.length);
   const startedAtRef = useRef<number | null>(null);
@@ -57,7 +57,7 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
           loadedRef.current += 1;
         };
         // `loadeddata` (first frame decoded), not `canplaythrough` (whole clip
-        // buffered) — the hero only has to be able to paint, and waiting for a
+        // buffered). The hero only has to be able to paint, and waiting for a
         // full buffer put the entire reveal behind the slowest connection.
         v.addEventListener("loadeddata", done, { once: true });
         v.addEventListener("error", done, { once: true });
@@ -92,7 +92,7 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
   // ignores it regardless. Locking both elements covers it.
   //
   // The page is also pinned back to the top. A reload restores the previous
-  // scroll position, which the loader hides — so without this you sit through
+  // scroll position, which the loader hides, so without this you sit through
   // the whole preload only for it to lift on the middle of the page.
   useEffect(() => {
     const html = document.documentElement;
@@ -122,7 +122,7 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
     };
   }, []);
 
-  // Single RAF loop — progress = min(time_fraction, load_fraction) so the bar
+  // Single RAF loop: progress = min(time_fraction, load_fraction) so the bar
   // only hits 100 when BOTH the minimum time has passed AND assets are ready.
   useEffect(() => {
     let raf = 0;

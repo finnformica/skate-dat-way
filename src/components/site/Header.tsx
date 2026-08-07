@@ -72,7 +72,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile drawer — always mounted; visibility driven by data-mobile-open */}
+      {/* Mobile drawer: always mounted; visibility driven by data-mobile-open */}
       <div
         data-mobile-open={open}
         aria-hidden={!open}

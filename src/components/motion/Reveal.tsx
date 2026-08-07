@@ -14,7 +14,7 @@ type Props = {
   /** Children render with a small staggered fade-up. */
   stagger?: boolean;
   className?: string;
-  /** External trigger override — when defined, controls visibility directly
+  /** External trigger override. When defined, controls visibility directly
    *  (used by Hero to flip in sync with the BootLoader). When undefined,
    *  the component reveals itself when scrolled into view via whileInView. */
   show?: boolean;

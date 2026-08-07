@@ -1,5 +1,5 @@
 /**
- * Brand marks that lucide does not carry — it dropped its brand icon set in
+ * Brand marks that lucide does not carry. It dropped its brand icon set in
  * v1, so this one is hand-rolled and shared rather than redeclared per file.
  */
 export const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (

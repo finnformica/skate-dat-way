@@ -18,7 +18,7 @@ export function Tilt({ children, max = 8, className }: Props) {
 
   // With no tilt to apply, skip the motion wrapper entirely. A rotateX/rotateY
   // pair of zero still emits a 3D transform, which promotes every card to its
-  // own composited layer — fifteen of them on the reels grid, for no visible
+  // own composited layer: fifteen of them on the reels grid, for no visible
   // effect. Touch passes max={0}, so this covers the whole mobile grid.
   // Declared after the hooks: `reduce` and `max` both change at runtime, so an
   // early return above them would change the hook count between renders.

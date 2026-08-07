@@ -9,7 +9,7 @@ import { Maps } from "@/components/site/Maps";
 import { useCallback, useState } from "react";
 
 // The hero plays these in order, cross-fading and looping back round. Only
-// the first two are ever fetched up front — HeroCycle attaches the third
+// the first two are ever fetched up front. HeroCycle attaches the third
 // once the second is on screen.
 const HERO_CLIPS = [
   {
@@ -35,8 +35,8 @@ const HERO_CLIPS = [
 // The loader waits on the first clip's *poster*, not its video. The poster is
 // a ~45KB WebP of frame 0, so the reveal is gated on something that lands
 // fast, while the video streams in behind it. BootLoader still watches the
-// video, but only for `loadeddata` — first frame decoded, not the whole clip
-// buffered — so a slow connection delays the reveal by a beat instead of
+// video, but only for `loadeddata` (first frame decoded, not the whole clip
+// buffered), so a slow connection delays the reveal by a beat instead of
 // holding the entire site hostage.
 const PRELOAD_ASSETS: Array<{ type: "image" | "video"; src: string }> = [
   { type: "image", src: HERO_CLIPS[0].poster },

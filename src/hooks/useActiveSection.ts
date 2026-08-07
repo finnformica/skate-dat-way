@@ -10,7 +10,7 @@ import { useScrollFrame } from "@/hooks/useScrollFrame"
  * and the "most visible" answer flickers at section boundaries.
  *
  * Section offsets are measured once and re-measured on layout changes, never
- * on scroll — a section's position in the document does not change as you
+ * on scroll. A section's position in the document does not change as you
  * scroll past it, so reading it per frame was forcing layout for nothing.
  */
 export function useActiveSection(ids: readonly string[]): string | null {
