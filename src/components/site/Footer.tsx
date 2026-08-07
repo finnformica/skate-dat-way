@@ -5,69 +5,21 @@ import {
   useReducedMotion,
   useTransform,
 } from "motion/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useScrollFrame } from "@/hooks/useScrollFrame";
+import { InstagramIcon } from "@/components/site/icons";
+import {
+  INSTAGRAM_HANDLE,
+  INSTAGRAM_URL,
+  STUDIO_URL,
+} from "@/lib/links";
 
-const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <rect x="2" y="2" width="20" height="20" rx="5" />
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-  </svg>
-);
-const Youtube = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
-    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
-  </svg>
-);
-const Vimeo = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M22.875 6.637c-.096 2.1-1.566 4.973-4.41 8.617-2.94 3.806-5.426 5.71-7.46 5.71-1.259 0-2.323-1.162-3.193-3.486L6.07 11.11c-.647-2.324-1.34-3.487-2.08-3.487-.162 0-.727.338-1.697 1.014L1.277 7.33c1.068-.94 2.122-1.88 3.16-2.821 1.426-1.233 2.495-1.88 3.208-1.946 1.68-.161 2.714.99 3.102 3.456.418 2.66.708 4.314.87 4.96.485 2.207.99 3.31 1.519 3.31.408 0 1.02-.645 1.833-1.936.812-1.292 1.247-2.274 1.305-2.947.113-1.078-.319-1.617-1.305-1.617-.464 0-.943.106-1.439.32.96-3.14 2.797-4.668 5.509-4.58 2.012.06 2.96 1.364 2.836 3.908z" />
-  </svg>
-);
-
-const columns = [
-  {
-    title: "Site",
-    links: [
-      { label: "Reels", href: "#reels" },
-      { label: "Map", href: "#map" },
-      { label: "Diary", href: "#diary" },
-      { label: "Contact", href: "#contact" },
-    ],
-  },
-  {
-    title: "Colophon",
-    links: [
-      { label: "Anton / Inter", href: "#" },
-      { label: "Filmed on VX1000", href: "#" },
-      { label: "Edited in Resolve", href: "#" },
-    ],
-  },
-  {
-    title: "Signal",
-    links: [
-      { label: "hello@skatedatway.com", href: "#contact" },
-      { label: "London, UK", href: "#" },
-      { label: "Open to filmers", href: "#contact" },
-    ],
-  },
+// One column. The Colophon and Signal columns went with the placeholder links
+// they were made of — every entry in them pointed at "#".
+const siteLinks = [
+  { label: "Reels", href: "#reels" },
+  { label: "Map", href: "#map" },
+  { label: "Contact", href: "#contact" },
 ];
 
 function getFooterHeight() {
@@ -79,27 +31,37 @@ export function Footer() {
   const reduce = useReducedMotion();
   const progress = useMotionValue(0);
 
+  // `scrollHeight` forces a full-document layout, and the old handler read it
+  // on every single scroll event. The value only changes when the document
+  // does, so measure it on layout changes instead of while scrolling.
+  const metrics = useRef({ scrollable: 0, footerH: 0 });
+
   useEffect(() => {
-    const onScroll = () => {
-      const doc = document.documentElement.scrollHeight - window.innerHeight;
-      const footerH = getFooterHeight();
-      if (doc <= 0 || footerH <= 0) {
-        progress.set(0);
-        return;
-      }
-      const y = window.scrollY;
-      const start = doc - footerH;
-      const p = Math.max(0, Math.min(1, (y - start) / footerH));
-      progress.set(p);
+    const measure = () => {
+      metrics.current = {
+        scrollable: document.documentElement.scrollHeight - window.innerHeight,
+        footerH: getFooterHeight(),
+      };
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    measure();
+    window.addEventListener("resize", measure);
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", measure);
+      ro.disconnect();
     };
-  }, [progress]);
+  }, []);
+
+  useScrollFrame(() => {
+    const { scrollable, footerH } = metrics.current;
+    if (scrollable <= 0 || footerH <= 0) {
+      progress.set(0);
+      return;
+    }
+    const start = scrollable - footerH;
+    progress.set(Math.max(0, Math.min(1, (window.scrollY - start) / footerH)));
+  });
 
   const wordmarkOpacity = useTransform(progress, [0, 0.4], [0, 1]);
   const contentY = useTransform(progress, [0, 1], [60, 0]);
@@ -140,59 +102,61 @@ export function Footer() {
           </svg>
         </motion.div>
 
-        <div className="grid grid-cols-2 gap-8 border-b border-bone/15 pb-8 md:grid-cols-5 md:gap-10 md:pb-10">
-          <div className="col-span-2">
+        {/* Two blocks of similar weight rather than a column grid. With the
+            Colophon and Signal columns gone, a three-column grid left one
+            narrow list stranded beside a double-width brand block. The nav
+            is set in display type instead of a small stacked list, which
+            gives the tall fixed footer something to hold. */}
+        <div className="flex flex-col gap-10 border-b border-bone/15 pb-8 md:flex-row md:items-start md:justify-between md:gap-16 md:pb-10">
+          <div>
             <div className="flex items-center gap-3">
               <Roundel />
             </div>
             <p className="mt-3 max-w-sm text-sm text-bone/60">
               A personal archive of London wizard skating: edits, spots, notes.
             </p>
-            <div className="mt-5 flex items-center gap-3">
-              {[Instagram, Youtube, Vimeo].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="press flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
-                  aria-label="social"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="press mt-5 inline-flex items-center gap-3 border-2 border-bone/40 px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
+            >
+              <InstagramIcon aria-hidden className="h-4 w-4" />
+              {INSTAGRAM_HANDLE}
+            </a>
           </div>
 
-          {columns.map((col) => (
-            <div key={col.title}>
-              <h4 className="mb-3 font-display text-sm uppercase tracking-widest text-bone">
-                {col.title}
-              </h4>
-              <ul className="space-y-2 text-sm text-bone/60">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="link-underline hover:text-rust"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <nav aria-label="Footer" className="md:text-right">
+            <ul className="flex flex-col gap-1">
+              {siteLinks.map((link) => (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    // inline-block so the underline pseudo-element hugs the
+                    // text box rather than the full-width list item.
+                    className="link-underline inline-block font-display text-3xl uppercase leading-tight text-bone/80 transition-colors duration-150 hover:text-rust md:text-4xl"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
         <div className="mt-auto flex flex-col items-center justify-between gap-3 pt-6 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
           <p>© {new Date().getFullYear()} Skate Dat Way · London</p>
-          <div className="flex items-center gap-5">
-            <a href="#" className="link-underline hover:text-rust">
-              Privacy
+          <p>
+            Made by{" "}
+            <a
+              href={STUDIO_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="link-underline text-bone/70 hover:text-rust"
+            >
+              SMF Studio
             </a>
-            <a href="#" className="link-underline hover:text-rust">
-              Terms
-            </a>
-          </div>
+          </p>
         </div>
       </motion.div>
     </footer>

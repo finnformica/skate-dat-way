@@ -1,47 +1,20 @@
+import { HeroCycle, type HeroClip } from "@/components/media/HeroCycle";
 import { CountUp } from "@/components/motion/CountUp";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { Reveal } from "@/components/motion/Reveal";
 import { Tilt } from "@/components/motion/Tilt";
 import { ArrowDown, MapPin } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useCallback, useState } from "react";
 
 type Props = {
   ready: boolean;
-  videoSrc: string;
+  clips: HeroClip[];
 };
 
-export function Hero({ ready, videoSrc }: Props) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (!ready) return;
-    const v = videoRef.current;
-    if (!v) return;
-
-    let cancelled = false;
-    const tryPlay = () => {
-      if (cancelled || !v.paused) return;
-      v.play().catch(() => {
-        // iOS Safari can reject autoplay even with muted+playsInline
-        // (Low Power Mode, Data Saver, etc.). Fall back to playing on
-        // the first user gesture, then unbind.
-        const onGesture = () => {
-          v.play().catch(() => {});
-          document.removeEventListener("touchstart", onGesture);
-          document.removeEventListener("pointerdown", onGesture);
-        };
-        document.addEventListener("touchstart", onGesture, {
-          once: true,
-          passive: true,
-        });
-        document.addEventListener("pointerdown", onGesture, { once: true });
-      });
-    };
-    tryPlay();
-    return () => {
-      cancelled = true;
-    };
-  }, [ready]);
+export function Hero({ ready, clips }: Props) {
+  const [clipIndex, setClipIndex] = useState(0);
+  const onClipChange = useCallback((i: number) => setClipIndex(i), []);
+  const clip = clips[clipIndex] ?? clips[0];
 
   return (
     <section
@@ -101,27 +74,30 @@ export function Hero({ ready, videoSrc }: Props) {
           </Reveal>
         </div>
 
-        {/* [2] Video — 2nd in DOM (mobile), spans right column on desktop */}
-        <div className="relative md:col-span-5 md:col-start-8 md:row-start-1 md:row-span-3">
+        {/* [2] Video — 2nd in DOM (mobile), spans right column on desktop.
+            Four columns rather than five: at 9:16 a five-column frame stood
+            ~890px tall, which pushed the CTA under the fold on a laptop.
+            Widen this back to col-span-5 / col-start-8 if you want it bigger. */}
+        <div className="relative md:col-span-4 md:col-start-9 md:row-start-1 md:row-span-3">
           <Tilt max={6} className="relative">
+            {/* 9:16 to match the footage — every hero clip is vertical, and a
+                4:5 frame was cutting the top and bottom off each one. */}
             <figure
-              className="relative aspect-4/5 w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_var(--color-hazard)] transition-[clip-path] duration-900 ease-in-out md:shadow-[14px_14px_0_0_var(--color-hazard)]"
+              className="relative aspect-9/16 w-full overflow-hidden border-2 border-bone shadow-[8px_8px_0_0_var(--color-hazard)] transition-[clip-path] duration-900 ease-in-out md:shadow-[14px_14px_0_0_var(--color-hazard)]"
               style={{
                 clipPath: ready ? "inset(0 0 0 0)" : "inset(0 100% 0 0)",
               }}
             >
-              <video
-                ref={videoRef}
-                src={videoSrc}
-                muted
-                loop
-                autoPlay
-                playsInline
-                webkit-playsinline="true"
-                preload="auto"
+              {/* Each poster is frame 0 of its clip, so the first one is what
+                  the LCP paints and every cross-fade lands on a matching
+                  frame rather than a flash of black. */}
+              <HeroCycle
+                clips={clips}
+                ready={ready}
+                onClipChange={onClipChange}
                 className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 scanlines opacity-25 mix-blend-multiply" />
+              <div className="absolute inset-0 scanlines opacity-25" />
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-ink/80 via-ink/10 to-transparent" />
 
               {/* CCTV timestamp */}
@@ -135,13 +111,18 @@ export function Hero({ ready, videoSrc }: Props) {
                 REC · 01:04:27
               </div>
 
+              {/* Caption tracks the clip. Keyed so the fade restarts on each
+                  change instead of the text swapping mid-transition. */}
               <figcaption className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-                <div>
+                <div
+                  key={clip.src}
+                  className="animate-[fade-in_600ms_ease-in-out]"
+                >
                   <p className="font-mono text-[11px] uppercase tracking-widest text-bone/80">
-                    Stockwell skatepark · SW9
+                    {clip.place}
                   </p>
                   <p className="font-display text-2xl uppercase leading-none text-bone">
-                    Soul on the deathbox
+                    {clip.title}
                   </p>
                 </div>
               </figcaption>
@@ -187,7 +168,8 @@ export function Hero({ ready, videoSrc }: Props) {
         <div className="md:col-span-7 md:col-start-1 md:row-start-2">
           <Reveal stagger show={ready} className="space-y-5">
             <p className="max-w-xl text-sm text-bone/70 md:text-base">
-              London on eight wheels. The personal archive.
+              Eight wheels, a few too many countries, and a camera roll that's
+              getting out of hand.
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-1">
               <Magnetic>
@@ -210,9 +192,9 @@ export function Hero({ ready, videoSrc }: Props) {
             show={ready}
             className="mt-2 grid grid-cols-3 gap-6 border-t border-bone/15 pt-6 md:mt-6 md:gap-8 md:pt-8"
           >
-            <Stat value={ready ? 7 : 0} suffix="y" label="Bladed" />
-            <Stat value={ready ? 43 : 0} label="Spots logged" />
-            <Stat value={ready ? 12 : 0} label="Reels dropped" />
+            <Stat value={ready ? 7 : 0} suffix="y" label="Years bladed" />
+            <Stat value={ready ? 43 : 0} label="Spots hit" />
+            <Stat value={ready ? 12 : 0} label="Clips up" />
           </Reveal>
         </div>
       </div>
