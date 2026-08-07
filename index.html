@@ -9,12 +9,12 @@
     <title>Skate Dat Way</title>
     <meta
       name="description"
-      content="Personal archive of a London-based wizard rollerblader. Fisheye reels, a hand-picked map of street spots across London, and a journal of field notes."
+      content="A rollerblading camera roll that got out of hand. Clips from Barcelona, Marrakech, Berlin and around the UK, plus the spots worth going back to."
     />
     <meta name="author" content="Skate Dat Way" />
     <meta
       name="keywords"
-      content="wizard skating, rollerblading, aggressive inline, london, street skating, anti-rocker, soul grind, fisheye edits"
+      content="rollerblading, aggressive inline, wizard skating, street skating, slalom, barcelona, marrakech, london, skate spots"
     />
     <link rel="canonical" href="https://skatedatway.com/" />
 
@@ -22,18 +22,18 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Skate Dat Way" />
     <meta property="og:url" content="https://skatedatway.com/" />
-    <meta property="og:title" content="Skate Dat Way — London wizard skating" />
+    <meta property="og:title" content="Skate Dat Way — rollerblading archive" />
     <meta
       property="og:description"
-      content="Personal archive of a London-based wizard rollerblader. Fisheye reels, a hand-picked map of street spots, and field notes. No shop, no team, no sponsors."
+      content="A rollerblading camera roll that got out of hand. Clips from Barcelona, Marrakech, Berlin and around the UK. No shop, no team, no sponsors."
     />
-    <meta property="og:image" content="/og-image.png" />
-    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Skate Dat Way — London wizard skating, personal archive"
+      content="A skater rolling across open tarmac on inline skates"
     />
     <meta property="og:locale" content="en_GB" />
 
@@ -41,16 +41,27 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Skate Dat Way — London wizard skating"
+      content="Skate Dat Way — rollerblading archive"
     />
     <meta
       name="twitter:description"
-      content="Personal archive of a London wizard rollerblader. Fisheye reels, street spots, field notes."
+      content="A rollerblading camera roll that got out of hand. Barcelona, Marrakech, Berlin, and around the UK."
     />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image" content="/og-image.jpg" />
     <meta
       name="twitter:image:alt"
-      content="Skate Dat Way — London wizard skating, personal archive"
+      content="A skater rolling across open tarmac on inline skates"
+    />
+
+    <!-- The first hero poster is the LCP element. It is frame 0 of the first
+         clip, so fetching it early paints the hero before the video has
+         streamed. Later clips in the rotation are fetched on demand. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/posters/hero-1.webp"
+      type="image/webp"
+      fetchpriority="high"
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -16,6 +16,14 @@ export function Tilt({ children, max = 8, className }: Props) {
   const srx = useSpring(rx, { stiffness: 180, damping: 16, mass: 0.5 })
   const sry = useSpring(ry, { stiffness: 180, damping: 16, mass: 0.5 })
 
+  // With no tilt to apply, skip the motion wrapper entirely. A rotateX/rotateY
+  // pair of zero still emits a 3D transform, which promotes every card to its
+  // own composited layer — fifteen of them on the reels grid, for no visible
+  // effect. Touch passes max={0}, so this covers the whole mobile grid.
+  // Declared after the hooks: `reduce` and `max` both change at runtime, so an
+  // early return above them would change the hook count between renders.
+  const inert = reduce || max === 0
+
   function onMove(e: React.PointerEvent<HTMLDivElement>) {
     if (reduce) return
     const el = ref.current
@@ -29,6 +37,10 @@ export function Tilt({ children, max = 8, className }: Props) {
   function onLeave() {
     rx.set(0)
     ry.set(0)
+  }
+
+  if (inert) {
+    return <div className={className}>{children}</div>
   }
 
   return (

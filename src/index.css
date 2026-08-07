@@ -68,6 +68,22 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Native smooth scrolling, replacing Lenis. Lenis drove the page by calling
+     window.scrollTo on every frame of its own RAF loop, which pins scrolling
+     to the main thread; this hands it back to the compositor. The nav's
+     in-page anchors get their easing from the browser instead. */
+  html {
+    scroll-behavior: smooth;
+    /* Clears the 4rem sticky header so anchor targets are not hidden under it. */
+    scroll-padding-top: 4rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   ::selection {
     background: var(--color-bone);
     color: var(--color-ink);
@@ -108,6 +124,16 @@
   }
   to {
     transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Hero caption swap — matches the 600ms video cross-fade */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

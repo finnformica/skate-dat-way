@@ -56,14 +56,17 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
           settled = true;
           loadedRef.current += 1;
         };
-        v.addEventListener("canplaythrough", done, { once: true });
+        // `loadeddata` (first frame decoded), not `canplaythrough` (whole clip
+        // buffered) — the hero only has to be able to paint, and waiting for a
+        // full buffer put the entire reveal behind the slowest connection.
+        v.addEventListener("loadeddata", done, { once: true });
         v.addEventListener("error", done, { once: true });
-        // Safari sometimes stalls on canplaythrough
+        // Safari sometimes stalls without ever firing either
         const fallback = window.setTimeout(done, 6000);
         v.src = a.src;
         v.load();
         cleanups.push(() => {
-          v.removeEventListener("canplaythrough", done);
+          v.removeEventListener("loadeddata", done);
           v.removeEventListener("error", done);
           window.clearTimeout(fallback);
           v.src = "";
@@ -82,20 +85,14 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
-  // Lock scroll while the loader is up. Body overflow alone isn't enough —
-  // Lenis hijacks the wheel and runs its own RAF loop, so we also signal
-  // LenisProvider to stop()/start() via a window flag + custom events.
-  // The flag covers the init race: child effects run before parent effects,
-  // so the dispatched event might fire before LenisProvider listens.
+  // Lock scroll while the loader is up. Now that scrolling is native, body
+  // overflow is the whole mechanism — there is no hijacked wheel handler left
+  // to signal, so the old flag and custom events went with Lenis.
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    window.__lenisLocked = true;
-    window.dispatchEvent(new CustomEvent("lenis:stop"));
     return () => {
       document.body.style.overflow = prev;
-      window.__lenisLocked = false;
-      window.dispatchEvent(new CustomEvent("lenis:start"));
     };
   }, []);
 

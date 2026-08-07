@@ -2,7 +2,7 @@ import { ArrowLeft, Asterisk } from "lucide-react";
 
 /**
  * 404 page — mirrors the main site's visual language without any of its
- * runtime (no Lenis, no BootLoader, no sticky footer). Rendered by the
+ * runtime (no BootLoader, no sticky footer, no media). Rendered by the
  * router's catch-all route and by RouteError when the thrown response is 404.
  */
 export function NotFound() {

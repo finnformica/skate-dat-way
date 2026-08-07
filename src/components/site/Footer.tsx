@@ -5,7 +5,8 @@ import {
   useReducedMotion,
   useTransform,
 } from "motion/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useScrollFrame } from "@/hooks/useScrollFrame";
 
 const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -48,7 +49,6 @@ const columns = [
     links: [
       { label: "Reels", href: "#reels" },
       { label: "Map", href: "#map" },
-      { label: "Diary", href: "#diary" },
       { label: "Contact", href: "#contact" },
     ],
   },
@@ -56,8 +56,8 @@ const columns = [
     title: "Colophon",
     links: [
       { label: "Anton / Inter", href: "#" },
-      { label: "Filmed on VX1000", href: "#" },
-      { label: "Edited in Resolve", href: "#" },
+      { label: "Shot on a phone", href: "#" },
+      { label: "Barely edited", href: "#" },
     ],
   },
   {
@@ -65,7 +65,7 @@ const columns = [
     links: [
       { label: "hello@skatedatway.com", href: "#contact" },
       { label: "London, UK", href: "#" },
-      { label: "Open to filmers", href: "#contact" },
+      { label: "Always down to film", href: "#contact" },
     ],
   },
 ];
@@ -79,27 +79,37 @@ export function Footer() {
   const reduce = useReducedMotion();
   const progress = useMotionValue(0);
 
+  // `scrollHeight` forces a full-document layout, and the old handler read it
+  // on every single scroll event. The value only changes when the document
+  // does, so measure it on layout changes instead of while scrolling.
+  const metrics = useRef({ scrollable: 0, footerH: 0 });
+
   useEffect(() => {
-    const onScroll = () => {
-      const doc = document.documentElement.scrollHeight - window.innerHeight;
-      const footerH = getFooterHeight();
-      if (doc <= 0 || footerH <= 0) {
-        progress.set(0);
-        return;
-      }
-      const y = window.scrollY;
-      const start = doc - footerH;
-      const p = Math.max(0, Math.min(1, (y - start) / footerH));
-      progress.set(p);
+    const measure = () => {
+      metrics.current = {
+        scrollable: document.documentElement.scrollHeight - window.innerHeight,
+        footerH: getFooterHeight(),
+      };
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    measure();
+    window.addEventListener("resize", measure);
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", measure);
+      ro.disconnect();
     };
-  }, [progress]);
+  }, []);
+
+  useScrollFrame(() => {
+    const { scrollable, footerH } = metrics.current;
+    if (scrollable <= 0 || footerH <= 0) {
+      progress.set(0);
+      return;
+    }
+    const start = scrollable - footerH;
+    progress.set(Math.max(0, Math.min(1, (window.scrollY - start) / footerH)));
+  });
 
   const wordmarkOpacity = useTransform(progress, [0, 0.4], [0, 1]);
   const contentY = useTransform(progress, [0, 1], [60, 0]);
