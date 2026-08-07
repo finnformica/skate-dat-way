@@ -23,51 +23,15 @@ const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
   </svg>
 );
-const Youtube = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
-    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
-  </svg>
-);
-const Vimeo = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M22.875 6.637c-.096 2.1-1.566 4.973-4.41 8.617-2.94 3.806-5.426 5.71-7.46 5.71-1.259 0-2.323-1.162-3.193-3.486L6.07 11.11c-.647-2.324-1.34-3.487-2.08-3.487-.162 0-.727.338-1.697 1.014L1.277 7.33c1.068-.94 2.122-1.88 3.16-2.821 1.426-1.233 2.495-1.88 3.208-1.946 1.68-.161 2.714.99 3.102 3.456.418 2.66.708 4.314.87 4.96.485 2.207.99 3.31 1.519 3.31.408 0 1.02-.645 1.833-1.936.812-1.292 1.247-2.274 1.305-2.947.113-1.078-.319-1.617-1.305-1.617-.464 0-.943.106-1.439.32.96-3.14 2.797-4.668 5.509-4.58 2.012.06 2.96 1.364 2.836 3.908z" />
-  </svg>
-);
+const INSTAGRAM_URL = "https://www.instagram.com/skatedatway";
+const STUDIO_URL = "https://smfstudio.io";
 
-const columns = [
-  {
-    title: "Site",
-    links: [
-      { label: "Reels", href: "#reels" },
-      { label: "Map", href: "#map" },
-      { label: "Contact", href: "#contact" },
-    ],
-  },
-  {
-    title: "Colophon",
-    links: [
-      { label: "Anton / Inter", href: "#" },
-      { label: "Shot on a phone", href: "#" },
-      { label: "Barely edited", href: "#" },
-    ],
-  },
-  {
-    title: "Signal",
-    links: [
-      { label: "hello@skatedatway.com", href: "#contact" },
-      { label: "London, UK", href: "#" },
-      { label: "Always down to film", href: "#contact" },
-    ],
-  },
+// One column. The Colophon and Signal columns went with the placeholder links
+// they were made of — every entry in them pointed at "#".
+const siteLinks = [
+  { label: "Reels", href: "#reels" },
+  { label: "Map", href: "#map" },
+  { label: "Contact", href: "#contact" },
 ];
 
 function getFooterHeight() {
@@ -150,7 +114,7 @@ export function Footer() {
           </svg>
         </motion.div>
 
-        <div className="grid grid-cols-2 gap-8 border-b border-bone/15 pb-8 md:grid-cols-5 md:gap-10 md:pb-10">
+        <div className="grid grid-cols-2 gap-8 border-b border-bone/15 pb-8 md:grid-cols-3 md:gap-10 md:pb-10">
           <div className="col-span-2">
             <div className="flex items-center gap-3">
               <Roundel />
@@ -159,50 +123,47 @@ export function Footer() {
               A personal archive of London wizard skating: edits, spots, notes.
             </p>
             <div className="mt-5 flex items-center gap-3">
-              {[Instagram, Youtube, Vimeo].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="press flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
-                  aria-label="social"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="press flex h-10 w-10 items-center justify-center border-2 border-bone/40 text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
+                aria-label="Skate Dat Way on Instagram"
+              >
+                <Instagram className="h-4 w-4" />
+              </a>
             </div>
           </div>
 
-          {columns.map((col) => (
-            <div key={col.title}>
-              <h4 className="mb-3 font-display text-sm uppercase tracking-widest text-bone">
-                {col.title}
-              </h4>
-              <ul className="space-y-2 text-sm text-bone/60">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="link-underline hover:text-rust"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div>
+            <h4 className="mb-3 font-display text-sm uppercase tracking-widest text-bone">
+              Site
+            </h4>
+            <ul className="space-y-2 text-sm text-bone/60">
+              {siteLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="link-underline hover:text-rust">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className="mt-auto flex flex-col items-center justify-between gap-3 pt-6 font-mono text-xs uppercase tracking-widest text-bone/50 md:flex-row">
           <p>© {new Date().getFullYear()} Skate Dat Way · London</p>
-          <div className="flex items-center gap-5">
-            <a href="#" className="link-underline hover:text-rust">
-              Privacy
+          <p>
+            Made by{" "}
+            <a
+              href={STUDIO_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="link-underline text-bone/70 hover:text-rust"
+            >
+              SMF Studio
             </a>
-            <a href="#" className="link-underline hover:text-rust">
-              Terms
-            </a>
-          </div>
+          </p>
         </div>
       </motion.div>
     </footer>
