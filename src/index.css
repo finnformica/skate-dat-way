@@ -76,6 +76,11 @@
     scroll-behavior: smooth;
     /* Clears the 4rem sticky header so anchor targets are not hidden under it. */
     scroll-padding-top: 4rem;
+    /* The boot loader locks html overflow, which takes the scrollbar away and
+       would shift the whole page sideways when it unlocks. Reserving the
+       gutter permanently keeps that width constant. No-op on platforms with
+       overlay scrollbars. */
+    scrollbar-gutter: stable;
   }
 
   @media (prefers-reduced-motion: reduce) {

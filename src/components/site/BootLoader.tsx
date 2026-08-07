@@ -85,14 +85,40 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
-  // Lock scroll while the loader is up. Now that scrolling is native, body
-  // overflow is the whole mechanism — there is no hijacked wheel handler left
-  // to signal, so the old flag and custom events went with Lenis.
+  // Lock scroll while the loader is up.
+  //
+  // `overflow: hidden` on <body> alone is not enough: it only reaches the
+  // viewport while <html>'s own overflow is `visible`, and iOS Safari largely
+  // ignores it regardless. Locking both elements covers it.
+  //
+  // The page is also pinned back to the top. A reload restores the previous
+  // scroll position, which the loader hides — so without this you sit through
+  // the whole preload only for it to lift on the middle of the page.
   useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const html = document.documentElement;
+    const body = document.body;
+    const prev = {
+      htmlOverflow: html.style.overflow,
+      bodyOverflow: body.style.overflow,
+      scrollBehavior: html.style.scrollBehavior,
+      restoration: history.scrollRestoration,
+    };
+
+    // Stop the browser reinstating a scroll position behind our backs, and
+    // make the jump to the top instant rather than a smooth-scrolled animation.
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    html.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+
     return () => {
-      document.body.style.overflow = prev;
+      html.style.overflow = prev.htmlOverflow;
+      body.style.overflow = prev.bodyOverflow;
+      html.style.scrollBehavior = prev.scrollBehavior;
+      if ("scrollRestoration" in history)
+        history.scrollRestoration = prev.restoration;
     };
   }, []);
 
@@ -127,7 +153,10 @@ export function BootLoader({ assets, onDone, minMs = 1400 }: Props) {
     <div
       data-phase={phase}
       aria-hidden={phase === "out"}
-      className="fixed inset-0 z-100 flex flex-col overflow-hidden bg-ink text-bone transition-transform duration-700 ease-in-out will-change-transform data-[phase=out]:-translate-y-full"
+      // touch-none stops a swipe being interpreted as a scroll gesture at all,
+      // and overscroll-none kills the rubber-band that would otherwise let the
+      // page bounce behind a locked viewport on iOS.
+      className="fixed inset-0 z-100 flex touch-none flex-col overflow-hidden overscroll-none bg-ink text-bone transition-transform duration-700 ease-in-out will-change-transform data-[phase=out]:-translate-y-full"
     >
       <div className="pointer-events-none absolute inset-0 scanlines opacity-30" />
       <div className="pointer-events-none absolute inset-0 halftone opacity-20" />
