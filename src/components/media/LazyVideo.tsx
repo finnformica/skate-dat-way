@@ -13,27 +13,32 @@ type Props = {
   label: string;
 };
 
+const FADE_MS = 450;
+
 /**
  * A still that becomes a video only while it is being watched.
  *
  * The <video> element is *mounted on demand* rather than mounted-and-idle. A
  * paused video is not free: each one holds a media decoder and gets its own
- * composited layer, and with a grayscale filter over the top, fifteen of them
- * on one grid is enough to cost frames while scrolling. So the resting state
- * of a card is a single <img> and no video element at all — which means the
- * grid costs the same whether it holds twelve cards or a hundred.
+ * composited layer, so a grid of them costs frames while scrolling even though
+ * nothing is playing. The resting state of a card is a single <img> and no
+ * video element at all, which means the grid costs the same whether it holds
+ * twelve cards or a hundred.
  *
- * The swap is seamless because of how the assets were encoded: each still is
- * frame 0 of its own clip. A freshly mounted video has no data yet and is
- * therefore transparent, so the still shows through underneath; the moment the
- * first frame decodes, the video paints the same image the still was already
- * showing. Nothing needs to fade, and there is no flash of black. On the way
- * out the video unmounts and the still is simply revealed again.
+ * Neither layer carries a CSS filter. The stills are encoded desaturated and
+ * the video is only ever shown on hover, where it is meant to be in colour, so
+ * the grayscale/colour transition is done by cross-fading one over the other
+ * instead of animating `filter`. Fifteen filter passes and the layers they
+ * forced were the bulk of the cost of revealing the rest of the grid.
  *
- * The still itself is still lazy — its `src` is withheld until the card is
- * within `rootMargin` of the viewport. It is gated on the observer rather than
- * `loading="lazy"`, whose distance threshold is a browser heuristic that in
- * practice fetched the whole grid up front.
+ * The fade waits for the video's first frame. Both layers show frame 0 of the
+ * same encode, so what cross-fades is purely the colour coming back, and there
+ * is never a flash of an empty video element.
+ *
+ * The still's `src` is withheld until the card is within `rootMargin` of the
+ * viewport. It is gated on the observer rather than `loading="lazy"`, whose
+ * distance threshold is a browser heuristic that in practice fetched the whole
+ * grid up front.
  */
 export function LazyVideo({
   src,
@@ -47,7 +52,6 @@ export function LazyVideo({
   // The <img> is the permanent element, so it is what we observe — the video
   // comes and goes and cannot be relied on as an observation target.
   const imgRef = useRef<HTMLImageElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [near, setNear] = useState(
     () => typeof IntersectionObserver === "undefined",
   );
@@ -66,16 +70,6 @@ export function LazyVideo({
     return () => io.disconnect();
   }, [near, rootMargin]);
 
-  // `autoPlay` covers most cases, but iOS Safari can refuse it even when muted
-  // (Low Power Mode, Data Saver). Nudge it once on mount; if that is refused
-  // too, the still stays up, which is a perfectly good fallback.
-  useEffect(() => {
-    if (!active) return;
-    const v = videoRef.current;
-    if (!v) return;
-    v.play().catch(() => {});
-  }, [active]);
-
   return (
     <>
       <img
@@ -90,23 +84,64 @@ export function LazyVideo({
         style={style}
       />
       {active && (
-        <video
-          ref={videoRef}
+        <HoverVideo
           src={src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          // iOS Safari still reads the legacy attribute in some versions.
-          webkit-playsinline="true"
-          preload="auto"
-          disablePictureInPicture
-          disableRemotePlayback
-          aria-label={label}
-          className={cn("absolute inset-0", className)}
+          label={label}
+          className={className}
           style={style}
         />
       )}
     </>
+  );
+}
+
+/**
+ * Split out so the fade state lives and dies with the element. Unmounting
+ * resets it for free, which is both simpler than clearing it from an effect
+ * and avoids a synchronous setState during one.
+ */
+function HoverVideo({
+  src,
+  label,
+  className,
+  style,
+}: {
+  src: string;
+  label: string;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [shown, setShown] = useState(false);
+
+  // `autoPlay` covers most cases, but iOS Safari can refuse it even when muted
+  // (Low Power Mode, Data Saver). Nudge it once on mount; if that is refused
+  // too the still stays up, which is a perfectly good fallback.
+  useEffect(() => {
+    ref.current?.play().catch(() => {});
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      src={src}
+      autoPlay
+      muted
+      loop
+      playsInline
+      // iOS Safari still reads the legacy attribute in some versions.
+      webkit-playsinline="true"
+      preload="auto"
+      disablePictureInPicture
+      disableRemotePlayback
+      aria-label={label}
+      onLoadedData={() => setShown(true)}
+      className={cn("absolute inset-0", className)}
+      style={{
+        ...style,
+        opacity: shown ? 1 : 0,
+        transition: `opacity ${FADE_MS}ms ease-out`,
+      }}
+    />
   );
 }

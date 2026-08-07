@@ -1,20 +1,13 @@
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
-import { Check, Copy } from "lucide-react";
+import { InstagramIcon } from "@/components/site/icons";
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from "@/lib/links";
 import { motion } from "motion/react";
-import { useState } from "react";
 
 const CARD_INITIAL = { opacity: 0, y: 24 };
 const CARD_VISIBLE = { opacity: 1, y: 0 };
 const CARD_VIEWPORT = { once: true, amount: 0.5 } as const;
 const CARD_TRANSITION = { duration: 0.55, ease: [0.23, 1, 0.32, 1] as const };
-
-const links = [
-  { label: "Instagram", handle: "@skatedatway", href: "#" },
-  { label: "YouTube", handle: "/@skatedatway", href: "#" },
-  { label: "Vimeo", handle: "/skatedatway", href: "#" },
-  { label: "Email", handle: "hello@skatedatway.com", href: "#" },
-];
 
 export function Contact() {
   // Section is entirely bg-rust — any text sitting directly on it uses
@@ -34,13 +27,13 @@ export function Contact() {
           backgroundSize: "7px 7px",
         }}
       />
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-5 py-20 md:grid-cols-12 md:px-8 md:py-28">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-5 py-20 md:grid-cols-12 md:px-8 md:py-28">
         <div className="md:col-span-6">
           <SectionHeader
             index="04"
             label="Contact"
             tone="rust"
-            note="say hello"
+            note="dms open"
             invert
           >
             <Reveal>
@@ -52,91 +45,48 @@ export function Contact() {
             </Reveal>
           </SectionHeader>
           <p className="mt-5 max-w-lg text-on-accent/80">
-            Down to meet at a spot, go for a roll, or film a session? Drop a
-            message.
+            Everything goes up on Instagram first. DMs are open — come film,
+            share a spot, or just say hello.
           </p>
-
-          <div className="mt-8 inline-block">
-            <CopyEmail value="hello@skatedatway.com" />
-          </div>
         </div>
 
+        {/* One card, one place to go. The old 2x2 grid listed a YouTube, a
+            Vimeo and an email that all pointed at "#", so the section offered
+            four routes and none of them worked. Card sits on rust with
+            on-accent text and inverts to the always-dark surface on hover,
+            which is the same treatment the grid used. */}
         <div className="md:col-span-6">
-          {/* Gutter bg uses the fixed dark so the 1px grid lines stay dark
-              in both themes. Cards default to rust bg with on-accent text,
-              flip on hover to the always-dark surface with always-cream
-              text (the hover inversion is intentional). */}
-          <div className="grid grid-cols-1 gap-px bg-ink-fixed sm:grid-cols-2">
-            {links.map((l) => (
-              <motion.a
-                key={l.label}
-                href={l.href}
-                initial={CARD_INITIAL}
-                whileInView={CARD_VISIBLE}
-                viewport={CARD_VIEWPORT}
-                transition={CARD_TRANSITION}
-                className="group relative flex items-center justify-between gap-4 bg-rust p-6 transition-colors duration-200 hover:bg-ink-fixed"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-on-accent/60 transition-colors duration-200 group-hover:text-bone-fixed/60">
-                    {l.label}
-                  </p>
-                  <p className="wrap-break-word font-display text-lg uppercase leading-tight text-on-accent transition-colors duration-200 group-hover:text-bone-fixed md:text-xl">
-                    {l.handle}
-                  </p>
-                </div>
-                <span className="shrink-0 font-display text-2xl text-on-accent transition-all duration-200 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-rust">
-                  ↗
-                </span>
-              </motion.a>
-            ))}
-          </div>
+          <motion.a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noreferrer"
+            initial={CARD_INITIAL}
+            whileInView={CARD_VISIBLE}
+            viewport={CARD_VIEWPORT}
+            transition={CARD_TRANSITION}
+            className="group relative flex flex-col justify-between gap-16 border-2 border-ink-fixed bg-rust p-8 shadow-[8px_8px_0_0_#0a0a0a] transition-colors duration-200 hover:bg-ink-fixed md:p-10"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <InstagramIcon
+                aria-hidden
+                className="size-9 text-on-accent transition-colors duration-200 group-hover:text-bone-fixed md:size-11"
+              />
+              <span className="shrink-0 font-display text-3xl leading-none text-on-accent transition-all duration-200 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-bone-fixed">
+                ↗
+              </span>
+            </div>
+
+            <div className="min-w-0">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-on-accent/60 transition-colors duration-200 group-hover:text-bone-fixed/60">
+                Follow along
+              </p>
+              <p className="wrap-break-word mt-1 font-display text-4xl uppercase leading-none text-on-accent transition-colors duration-200 group-hover:text-bone-fixed md:text-5xl">
+                {INSTAGRAM_HANDLE}
+              </p>
+            </div>
+          </motion.a>
         </div>
       </div>
     </section>
-  );
-}
-
-function CopyEmail({ value }: { value: string }) {
-  const [copied, setCopied] = useState(false);
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(value);
-    } catch {
-      /* ignore — still show confirmation */
-    }
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
-  }
-
-  // Button sits on the rust section. Default state is an always-dark button
-  // with always-cream text. Copied state flips to bg-rust with on-accent text
-  // (tracks theme). Border stays always-dark for the brutalist outline.
-  return (
-    <button
-      type="button"
-      onClick={copy}
-      aria-label={copied ? "Email copied" : `Copy email ${value}`}
-      data-state={copied ? "copied" : "idle"}
-      className="press group relative cursor-pointer overflow-hidden border-2 border-ink-fixed bg-ink-fixed px-5 py-4 font-display text-sm uppercase tracking-widest text-bone-fixed shadow-[6px_6px_0_0_#0a0a0a] transition-colors duration-300 ease-out hover:bg-concrete data-[state=copied]:bg-rust data-[state=copied]:text-on-accent"
-    >
-      <span className="relative grid">
-        <span
-          aria-hidden={copied}
-          className="col-start-1 row-start-1 flex items-center gap-3 transition-[opacity,filter,transform] duration-200 ease-out group-data-[state=copied]:-translate-y-1 group-data-[state=copied]:opacity-0 group-data-[state=copied]:blur-[2px]"
-        >
-          <Copy className="size-4" />
-          {value}
-        </span>
-        <span
-          aria-hidden={!copied}
-          className="col-start-1 row-start-1 flex items-center gap-3 translate-y-1 opacity-0 blur-[2px] transition-[opacity,filter,transform] duration-200 ease-out group-data-[state=copied]:translate-y-0 group-data-[state=copied]:opacity-100 group-data-[state=copied]:blur-none"
-        >
-          <Check className="size-4" strokeWidth={3} />
-          Copied to clipboard
-        </span>
-      </span>
-    </button>
   );
 }

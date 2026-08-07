@@ -7,24 +7,12 @@ import {
 } from "motion/react";
 import { useEffect, useRef } from "react";
 import { useScrollFrame } from "@/hooks/useScrollFrame";
-
-const Instagram = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <rect x="2" y="2" width="20" height="20" rx="5" />
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-  </svg>
-);
-const INSTAGRAM_URL = "https://www.instagram.com/skatedatway";
-const STUDIO_URL = "https://smfstudio.io";
+import { InstagramIcon } from "@/components/site/icons";
+import {
+  INSTAGRAM_HANDLE,
+  INSTAGRAM_URL,
+  STUDIO_URL,
+} from "@/lib/links";
 
 // One column. The Colophon and Signal columns went with the placeholder links
 // they were made of — every entry in them pointed at "#".
@@ -133,8 +121,8 @@ export function Footer() {
               rel="noreferrer"
               className="press mt-5 inline-flex items-center gap-3 border-2 border-bone/40 px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-bone transition-colors duration-150 hover:border-rust hover:text-rust"
             >
-              <Instagram aria-hidden className="h-4 w-4" />
-              @skatedatway
+              <InstagramIcon aria-hidden className="h-4 w-4" />
+              {INSTAGRAM_HANDLE}
             </a>
           </div>
 
