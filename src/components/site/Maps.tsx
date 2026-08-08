@@ -44,11 +44,11 @@ const spots: Spot[] = [
     objectPosition: "center 40%",
   },
   {
-    name: "The court, golden hour",
-    place: "London",
-    type: "Tarmac / flat",
+    name: "Bethnal Green basketball court",
+    place: "London · Bethnal Green",
+    type: "Court / flat",
     slug: "court-dusk",
-    note: "Nothing technical about it. Just where everyone ends up when the light goes orange.",
+    note: "The hub of London skating. Nothing technical about it, just where everyone ends up when the light goes orange.",
     objectPosition: "center 35%",
   },
 ];

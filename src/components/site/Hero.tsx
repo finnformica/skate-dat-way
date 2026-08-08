@@ -11,6 +11,18 @@ type Props = {
   clips: HeroClip[];
 };
 
+// Started blading in July 2023. Counting whole years from that date rather
+// than hardcoding a number means the stat stays true without anyone
+// remembering to bump it every summer.
+const BLADING_SINCE = { year: 2023, month: 6 }; // month is 0-indexed: July
+
+function yearsBladed(now = new Date()) {
+  const years = now.getFullYear() - BLADING_SINCE.year;
+  return now.getMonth() < BLADING_SINCE.month ? years - 1 : years;
+}
+
+const YEARS_BLADED = yearsBladed();
+
 export function Hero({ ready, clips }: Props) {
   const [clipIndex, setClipIndex] = useState(0);
   const onClipChange = useCallback((i: number) => setClipIndex(i), []);
@@ -168,8 +180,8 @@ export function Hero({ ready, clips }: Props) {
         <div className="md:col-span-7 md:col-start-1 md:row-start-2">
           <Reveal stagger show={ready} className="space-y-5">
             <p className="max-w-xl text-sm text-bone/70 md:text-base">
-              Eight wheels, a few too many countries, and a camera roll that's
-              getting out of hand.
+              A few too many countries, and a camera roll that's getting out of
+              hand.
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-1">
               <Magnetic>
@@ -192,7 +204,11 @@ export function Hero({ ready, clips }: Props) {
             show={ready}
             className="mt-2 grid grid-cols-3 gap-6 border-t border-bone/15 pt-6 md:mt-6 md:gap-8 md:pt-8"
           >
-            <Stat value={ready ? 7 : 0} suffix="y" label="Years bladed" />
+            <Stat
+              value={ready ? YEARS_BLADED : 0}
+              suffix="y"
+              label="Years bladed"
+            />
             <Stat value={ready ? 43 : 0} label="Spots hit" />
             <Stat value={ready ? 12 : 0} label="Clips up" />
           </Reveal>

@@ -49,7 +49,7 @@ const reels: Reel[] = [
     tag: "featured",
   },
   {
-    title: "Locked on the ledge",
+    title: "Empty skate park",
     location: "Home park",
     slug: "ledge-grind",
     tag: "featured",
